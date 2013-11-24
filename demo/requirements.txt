@@ -1,0 +1,15 @@
+Werkzeug==0.9.4
+django-extensions==1.2.5
+ipython==1.1.0
+readline==6.2.4.1
+MySQL-python==1.2.4
+django-debug-toolbar==0.11
+django-grappelli==2.4.3
+pyzmq==14.0.0
+Jinja2==2.7.1
+tornado==3.1.1
+django-bootstrap-static==2.3.2
+django-celery==3.0.23
+django-registration==1.0
+django-rosetta==0.7.2
+South==0.8.4

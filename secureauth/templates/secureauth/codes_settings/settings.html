@@ -1,0 +1,21 @@
+{% extends "secureauth/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Codes Settings' %}{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'codes_settings' %}">
+    <table>
+        {{ form.as_table }}
+    </table>
+    {% csrf_token %}
+    <input type="submit" value="{% trans 'Save' %}"/>
+</form>
+<blockquote>
+    {% blocktrans %}
+    Recovery codes allow you to access your account in the event that you lose
+    your two-factor authentication device and don't have access to SMS messages
+    or an authentication app.
+    {% endblocktrans %}
+</blockquote>
+{% endblock content %}

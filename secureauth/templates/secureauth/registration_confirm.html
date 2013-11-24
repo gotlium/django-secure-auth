@@ -1,0 +1,14 @@
+{% extends "secureauth/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "SMS Configuration" %}{% endblock %}
+
+{% block content %}
+<form method="post" action="">
+    <table>
+        {{ form.as_table }}
+    </table>
+    {% csrf_token %}
+    <input type="submit" value="{% trans 'Save' %}"/>
+</form>
+{% endblock content %}

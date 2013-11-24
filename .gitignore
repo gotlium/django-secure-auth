@@ -1,0 +1,48 @@
+.project
+.pydevproject
+.idea
+.build
+*.log
+*.pot
+
+local_settings.py
+
+*.py[cod]
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Translations
+*.mo
+
+docs/build
+db.sqlite
+
+*.txt
+*.sh
+*.zip
+openshift-*
+.DS_Store
+*.ipynb
+.ipynb
+.ipynb_checkpoints

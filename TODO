@@ -1,0 +1,21 @@
+Forms for admin
+
+Registration:
+    captcha, if user can not auth after 3 attempts
+    add "I agree terms of use" to registration form
+    reset password by sms + link
+    auto auth, when activation complete
+
+Refactoring:
+    sign & unsign, instead of Sign().sign() & Sign().unsign()
+    check ip & user agent, when user register new auth methods
+
+clean_auth_trash - management command
+trust browser. add to settings how many days user can use browser without auth
+phonenumbers app for phone validation
+
+
+Readme
+Docs
+Tests
+Live demo

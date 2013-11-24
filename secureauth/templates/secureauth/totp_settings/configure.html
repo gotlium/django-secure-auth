@@ -1,0 +1,40 @@
+{% extends "secureauth/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Two-factor configuration' %}{% endblock %}
+
+{% block content %}
+{% if personal_data %}
+    <p>
+        {% blocktrans %}
+        You’ll need to install a two-factor authentication application on your
+        smartphone or tablet. For more information, visit
+        {% endblocktrans %}
+        <a href="http://en.wikipedia.org/wiki/Two-step_verification">wiki</a>.
+    </p>
+
+    <p>
+        <strong>1. {% trans 'Configure the app' %}</strong><br>
+        {% blocktrans %}
+        Open your two-factor authentication app and add your account by
+        scanning the QR code.
+        {% endblocktrans %}
+    </p>
+    <p>
+        <strong>2. {% trans 'Enter the code' %}</strong><br>
+        {% blocktrans %}
+        Enter the 6-digit code that the application generates into the form
+        bellow.
+        {% endblocktrans %}
+    </p>
+    <img src="{{ personal_data }}">
+
+    <form method="post" action="{% url 'totp_settings' %}?step=2">
+        <table>
+            {{ form.as_table }}
+        </table>
+        {% csrf_token %}
+        <input type="submit" value="{% trans 'Confirm' %}"/>
+    </form>
+{% endif %}
+{% endblock content %}

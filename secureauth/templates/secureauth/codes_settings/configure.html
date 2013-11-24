@@ -1,0 +1,22 @@
+{% extends "secureauth/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Codes configuration' %}{% endblock %}
+
+{% block content %}
+<h1>{% trans 'Save this codes' %}</h1>
+{% if personal_data %}
+    {% for k, v in personal_data.codes.items %}
+        <p>{{ k }}. {{ v }}</p>
+    {% endfor %}
+
+    <h2>{% trans 'Enter code number' %} '{{ personal_data.number }}'</h2>
+    <form method="post" action="{% url 'codes_settings' %}?step=2">
+        <table>
+            {{ form.as_table }}
+        </table>
+        {% csrf_token %}
+        <input type="submit" value="{% trans 'Confirm' %}"/>
+    </form>
+{% endif %}
+{% endblock content %}

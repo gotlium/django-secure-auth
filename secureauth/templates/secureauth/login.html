@@ -1,0 +1,27 @@
+{% extends "secureauth/auth_base.html" %}
+{% load i18n %}
+
+{% block title %}{% if not request.user.is_authenticated %}{% trans 'Please sign in' %}{% else %}{% trans 'Log out' %}{% endif %}{% endblock %}
+
+
+{% block content %}
+{% if request.user.is_authenticated and request.user.is_active %}
+<p>
+    {% trans 'You are logged in as' %} <b>{% firstof user.get_full_name user %}</b>.
+    <a href="{% url 'django.contrib.auth.views.logout' %}">
+        {% trans 'Click here to log out' %}
+    </a>.
+</p>
+{% else %}
+<form method="post" action="" id="login_form">
+    <table>
+        {{ form.as_table }}
+    </table>
+    {% csrf_token %}
+    <input type="submit" value="{% trans 'Log in' %}"/>
+</form>
+<script type="text/javascript">
+    document.getElementById('id_username').focus();
+</script>
+{% endif %}
+{% endblock content %}

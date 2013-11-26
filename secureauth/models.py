@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import collections
 import datetime
 import random
 import json
@@ -81,8 +82,11 @@ class UserAuthCode(UserAuthAbstract):
         self.generate_codes()
 
     def get_data(self):
+        codes = json.loads(Sign().unsign(self.code))
+        data = collections.OrderedDict(
+            sorted(codes.items(), key=lambda t: int(t[0])))
         return dict(
-            codes=json.loads(Sign().unsign(self.code)),
+            codes=data,
             number=self.get_code_number()
         )
 

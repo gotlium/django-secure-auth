@@ -1,22 +1,41 @@
 {% extends "secureauth/base.html" %}
 {% load i18n %}
+{% load render_table from django_tables2 %}
 
 {% block title %}{% trans 'Codes configuration' %}{% endblock %}
 
 {% block content %}
-<h1>{% trans 'Save this codes' %}</h1>
-{% if personal_data %}
-    {% for k, v in personal_data.codes.items %}
-        <p>{{ k }}. {{ v }}</p>
-    {% endfor %}
-
-    <h2>{% trans 'Enter code number' %} '{{ personal_data.number }}'</h2>
+  <h3 style="color: green;">{% trans 'Save this codes' %}</h3>
+  {% if personal_data %}
+    <style>
+    #code {
+      float: left;
+      width: 200px;
+      margin-right: 20px;
+    }
+    </style>
+    <div>
+    <table id="code">
+      {% for k,v in personal_data.codes.items %}
+        <tr>
+          <td width="50"><strong>{{ k }}</strong>.</td>
+          <td>{{ v }}</td>
+        </tr>
+        {% if k|divisibleby:"5" %}
+          </table><table id="code">
+        {% endif %}
+      {% endfor %}
+    </table>
+    </div>
+    <div style="clear: left;">
+    <h3 style="color: green;">{% trans 'Enter code number' %} '{{ personal_data.number }}'</h3>
     <form method="post" action="{% url 'codes_settings' %}?step=2">
-        <table>
-            {{ form.as_table }}
-        </table>
-        {% csrf_token %}
-        <input type="submit" value="{% trans 'Confirm' %}"/>
+      <table>
+        {{ form.as_table }}
+      </table>
+      {% csrf_token %}
+      <input type="submit" value="{% trans 'Confirm' %}"/>
     </form>
-{% endif %}
+    </div>
+  {% endif %}
 {% endblock content %}

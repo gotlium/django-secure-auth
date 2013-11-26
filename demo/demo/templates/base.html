@@ -107,18 +107,17 @@
         $('input[type="submit"]').attr('class', 'btn btn-primary');
         $('.errorlist').attr('class', 'alert alert-error');
 
+        var pagination = $('.pagination');
         var li = "";
-        $('.pagination').find('li').each(function() {
+        pagination.find('li').each(function() {
             if ($(this).find('a').length) {
                 li += '<li>'+$(this).html()+'</li>';
             } else {
                 li += '<li><a href="#">'+$(this).html()+'</a></li>';
             }
         });
-        var pagination = $('.pagination');
         pagination.before('<div class="pagination"><ul>'+li+'</ul></div>')
         pagination.remove();
-
     });
 </script>
 {% block extra_js %}

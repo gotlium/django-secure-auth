@@ -1,1 +1,1 @@
-recursive-include geoip *.py *.html *.po
+recursive-include secureauth *.py *.html *.po *.mo

@@ -6,8 +6,8 @@ from secureauth import get_version
 
 setup(
     name='django-secure-auth',
-    version=get_version('b1'),
-    description='Django Secure auth by TOTP, SMS, Codes & Question',
+    version=get_version('b2'),
+    description='Secure authentication by TOTP, SMS, Codes & Question',
     keywords='django secure auth totp sms codes question',
     long_description=open('README.rst').read(),
     classifiers=[

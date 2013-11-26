@@ -45,7 +45,15 @@ Run test server:
 Now you can open http://127.0.0.1:8000/accounts/register/ and register
 new account and setup all available authentication methods.
 
-*Note: activation link will be output on console.
+*Note: activation link will be output on console.*
+
+
+Screenshots
+-----------
+.. image:: /screenshots/login-confirmation.jpg
+.. image:: /screenshots/settings.jpg
+.. image:: /screenshots/two-factor-configuration.jpg
+.. image:: /screenshots/sms-settings.jpg
 
 
 .. image:: https://d2weczhvl823v0.cloudfront.net/gotlium/django-secure-auth/trend.png

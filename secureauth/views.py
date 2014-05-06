@@ -59,6 +59,10 @@ def login(request, template_name='secureauth/login.html',
             if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()
 
+                UserAuthActivity.check_location(request)
+                UserAuthActivity.log_auth(request)
+                UserAuthNotification.notify(request)
+
             user = form.get_user()
 
             if SMS_FORCE or len(get_available_auth_methods(user)) > 1:
@@ -113,7 +117,6 @@ def login_confirmation(request, template_name='secureauth/confirmation.html',
 
                 UserAuthActivity.check_location(request)
                 UserAuthActivity.log_auth(request)
-                UserAuthNotification.notify(request)
 
                 return HttpResponseRedirect(data.get('redirect_to'))
             else:

@@ -61,8 +61,8 @@ def send_mail(*args, **kwargs):
 def get_ip(request):
     ip = request.META['REMOTE_ADDR']
     if 'HTTP_X_FORWARDED_FOR' in request.META:
-        ip = request.META['HTTP_X_FORWARDED_FOR'].split(',')[0]
-    return ip
+        ip = request.META['HTTP_X_FORWARDED_FOR'].split(',')[-1]
+    return ip.strip()
 
 
 def get_geo(ip):
@@ -71,6 +71,6 @@ def get_geo(ip):
     if info is None:
         info = dict()
     return "%s:%s" % (
-        info.get('country_name', 'Unknown'),
-        info.get('city', 'Unknown')
+        info.get('country_name', 'Unknown') or 'Unknown',
+        info.get('city', 'Unknown') or 'Unknown',
     )

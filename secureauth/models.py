@@ -115,12 +115,12 @@ class UserAuthPhone(UserAuthAbstract):
     phone = models.CharField(_('Phone'), max_length=255, unique=True)
 
     def clean(self):
-        if not self.pk and not self.phone.startswith('+'):
+        if not self.phone or not self.phone.startswith('+'):
             raise ValidationError(
                 _('Phone does not contain spaces and must be starts with a +'))
 
     def save(self, *args, **kwargs):
-        if self.phone.startswith('+'):
+        if str(self.phone).startswith('+'):
             self.phone = Sign().sign(self.phone)
         super(UserAuthPhone, self).save(*args, **kwargs)
 

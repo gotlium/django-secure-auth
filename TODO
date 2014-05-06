@@ -1,4 +1,7 @@
+Secure code email
 Forms for admin
+Download codes
+Translation
 
 Registration:
     captcha, if user can not auth after 3 attempts
@@ -19,5 +22,4 @@ Readme
 Docs
 Tests
 Live demo
-
 table on codes confirmation

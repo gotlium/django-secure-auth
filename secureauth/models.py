@@ -203,7 +203,7 @@ class UserAuthActivity(models.Model):
 
     @classmethod
     def check_location(cls, request):
-        obj = cls.objects.filter(user=request.user).order_by('-id')[:1]
+        obj = cls.objects.filter(user_id=request.user.pk).order_by('-id')[:1]
         if obj.exists() and get_geo(get_ip(request)) != obj[0].geo:
             show_msg = """%s<br/>GEO: %s<br/>IP: %s<br/>PC: %s<br/>%s""" % (
                 unicode(_('Your location has changed. Former location:')),

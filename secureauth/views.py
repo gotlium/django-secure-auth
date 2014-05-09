@@ -17,6 +17,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 
+from django_tables2 import RequestConfig
+
 from secureauth.auth_forms import get_available_auth_methods
 from secureauth.auth_forms import ConfirmAuthenticationForm
 from secureauth.utils.sign import Sign
@@ -317,7 +319,8 @@ def auth_activity(request):
         user=request.user)
     queryset = UserAuthActivityFilter(request.GET, queryset=queryset)
     table = UserAuthActivityTable(queryset)
-    table.paginate(page=request.GET.get('page', 1))
+    # table.paginate(page=request.GET.get('page', 1))
+    RequestConfig(request).configure(table)
     return render(request, 'secureauth/auth_activity.html', {
         'table': table,
         'filter': queryset

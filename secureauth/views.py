@@ -75,10 +75,6 @@ def login(request, template_name='secureauth/login.html',
                     '%s?data=%s' % (reverse('auth_confirmation'), data))
             else:
                 auth_login(request, user)
-
-                UserAuthActivity.check_location(request)
-                UserAuthActivity.log_auth(request)
-
                 return HttpResponseRedirect(redirect_to)
     else:
         form = authentication_form(request)

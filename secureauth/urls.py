@@ -18,4 +18,6 @@ urlpatterns = patterns(
     url('^question_settings/$', 'question_settings', name='question_settings'),
     url('^auth_activity/$', 'auth_activity', name='auth_activity'),
     url('^notify_settings/$', 'notify_settings', name='notify_settings'),
+    url('^logging_settings/$', 'logging_settings', name='logging_settings'),
+    url('^send_codes/$', 'send_codes', name='send_codes'),
 )

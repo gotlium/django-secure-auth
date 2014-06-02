@@ -1,0 +1,14 @@
+{% extends "secureauth/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Logging settings' %}{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'logging_settings' %}">
+    <table>
+        {{ form.as_table }}
+    </table>
+    {% csrf_token %}
+    <input type="submit" value="{% trans 'Save' %}"/>
+</form>
+{% endblock content %}

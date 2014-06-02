@@ -1,4 +1,7 @@
-from django.http import HttpResponseRedirect, Http404, HttpResponse
+# -*- coding: utf-8 -*-
+
+from django.http import (
+    HttpResponseRedirect, Http404, HttpResponse, HttpResponseBadRequest)
 from django.utils.translation import ugettext as _
 from django.template.response import TemplateResponse
 from django.utils.http import is_safe_url
@@ -26,11 +29,12 @@ from secureauth.filters import UserAuthActivityFilter
 from secureauth.tables import UserAuthActivityTable
 from secureauth.utils.decorators import ajax_required
 from secureauth.forms import (
-    BasicForm, CodeForm, PhoneBasicForm, QuestionForm, NotificationForm)
+    BasicForm, CodeForm, PhoneBasicForm, QuestionForm,
+    NotificationForm, LoggingForm)
 from secureauth.models import (
     UserAuthPhone, UserAuthCode, UserAuthQuestion, UserAuthToken,
-    UserAuthActivity, UserAuthNotification)
-from secureauth.defaults import SMS_AGE, SMS_FORCE
+    UserAuthActivity, UserAuthNotification, UserAuthAttempt, UserAuthLogging)
+from secureauth.defaults import SMS_AGE, SMS_FORCE, CHECK_ATTEMPT
 
 
 def _get_data(request):
@@ -51,6 +55,9 @@ def login(request, template_name='secureauth/login.html',
           authentication_form=AuthenticationForm,
           current_app=None, extra_context=None):
     redirect_to = request.REQUEST.get(redirect_field_name, '')
+
+    if CHECK_ATTEMPT and UserAuthAttempt.is_banned(request):
+        return HttpResponseBadRequest()
 
     if request.method == "POST":
         form = authentication_form(request, data=request.POST)
@@ -75,7 +82,14 @@ def login(request, template_name='secureauth/login.html',
                     '%s?data=%s' % (reverse('auth_confirmation'), data))
             else:
                 auth_login(request, user)
+                if UserAuthLogging.is_enabled(request):
+                    UserAuthActivity.check_location(request)
+                    UserAuthActivity.log_auth(request)
+                UserAuthAttempt.remove(request)
                 return HttpResponseRedirect(redirect_to)
+        elif CHECK_ATTEMPT is True:
+            UserAuthAttempt.clean()
+            UserAuthAttempt.store(request)
     else:
         form = authentication_form(request)
 
@@ -101,6 +115,10 @@ def login(request, template_name='secureauth/login.html',
 def login_confirmation(request, template_name='secureauth/confirmation.html',
                        authentication_form=ConfirmAuthenticationForm,
                        extra_context=None, current_app=None):
+
+    if CHECK_ATTEMPT and UserAuthAttempt.is_banned(request):
+        return HttpResponseBadRequest()
+
     data = _get_data(request)
     if request.method == "POST":
         form = authentication_form(data, request.POST)
@@ -112,9 +130,12 @@ def login_confirmation(request, template_name='secureauth/confirmation.html',
                 if request.session.test_cookie_worked():
                     request.session.delete_test_cookie()
 
-                UserAuthActivity.check_location(request)
-                UserAuthActivity.log_auth(request)
+                if UserAuthLogging.is_enabled(request):
+                    UserAuthActivity.check_location(request)
+                    UserAuthActivity.log_auth(request)
+
                 UserAuthNotification.notify(request)
+                UserAuthAttempt.remove(request)
 
                 return HttpResponseRedirect(data.get('redirect_to'))
             else:
@@ -301,6 +322,15 @@ def codes_settings(request):
 
 @login_required
 @never_cache
+def send_codes(request):
+    if UserAuthCode.send_codes(request):
+        messages.info(request, _('Codes were sent to the email'))
+        UserAuthNotification.notify(request, _('Codes were sent to the email'))
+    return redirect('codes_settings')
+
+
+@login_required
+@never_cache
 def question_settings(request):
     view = BasicView(
         request, UserAuthQuestion, 'question_settings',
@@ -315,7 +345,6 @@ def auth_activity(request):
         user=request.user)
     queryset = UserAuthActivityFilter(request.GET, queryset=queryset)
     table = UserAuthActivityTable(queryset)
-    # table.paginate(page=request.GET.get('page', 1))
     RequestConfig(request).configure(table)
     return render(request, 'secureauth/auth_activity.html', {
         'table': table,
@@ -323,19 +352,33 @@ def auth_activity(request):
     })
 
 
-@login_required
-@never_cache
-def notify_settings(request):
-    instance = UserAuthNotification.objects.get_or_create(user=request.user)[0]
+def _settings_view(request, model_class, form_class, template):
+    instance = model_class.objects.get_or_create(user=request.user)[0]
     data = request.method == 'POST' and request.POST or model_to_dict(instance)
-    form = NotificationForm(data, instance=instance)
-    if request.method == 'POST':
-        if form.is_valid():
+    form = form_class(data, instance=instance)
+    if request.method == 'POST' and form.is_valid():
             form.save(commit=False)
             form.user = request.user
             form.save()
             messages.info(request, _('Successfully saved'))
             if not form.cleaned_data.get('enabled'):
                 UserAuthNotification.notify(
-                    request, _('Notification was disabled'), force=True)
-    return render(request, 'secureauth/notify_settings.html', {'form': form})
+                    request, _('Successfully disabled'), force=True)
+    return render(request, template, {'form': form})
+
+@login_required
+@never_cache
+def notify_settings(request):
+    return _settings_view(
+        request, UserAuthNotification, NotificationForm,
+        'secureauth/notify_settings.html'
+    )
+
+
+@login_required
+@never_cache
+def logging_settings(request):
+    return _settings_view(
+        request, UserAuthLogging, LoggingForm,
+        'secureauth/logging_settings.html'
+    )

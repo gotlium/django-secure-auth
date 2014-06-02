@@ -48,6 +48,13 @@
         </a>
     </li>
     {% endenabled %}
+    {% enabled logging %}
+    <li>
+        <a href="{% url 'logging_settings' %}">
+            {% trans 'Logging settings' %}
+        </a>
+    </li>
+    {% endenabled %}
 </ul>
 
 {% endblock content %}

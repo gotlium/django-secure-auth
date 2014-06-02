@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import struct
+import socket
+
 from django.core.mail import send_mail as dj_send_mail
 from django.contrib.gis.geoip import GeoIP
 from django.conf import settings
@@ -7,7 +10,11 @@ from django.conf import settings
 from secureauth.defaults import USE_CELERY
 from secureauth import defaults
 
-__all__ = ["send_sms", "send_mail", "get_ip", "get_geo"]
+import phonenumbers
+
+
+__all__ = ["send_sms", "send_mail", "get_ip", "get_geo",
+           "inet_aton", "is_phone"]
 
 
 def _send_sms(*args, **kwargs):
@@ -65,6 +72,10 @@ def get_ip(request):
     return ip.strip()
 
 
+def inet_aton(ip):
+    return struct.unpack('!L', socket.inet_aton(ip))[0]
+
+
 def get_geo(ip):
     g = GeoIP()
     info = g.city(ip)
@@ -74,3 +85,8 @@ def get_geo(ip):
         info.get('country_name', 'Unknown') or 'Unknown',
         info.get('city', 'Unknown') or 'Unknown',
     )
+
+
+def is_phone(phone):
+    z = phonenumbers.parse(phone, None)
+    return phonenumbers.is_valid_number(z)

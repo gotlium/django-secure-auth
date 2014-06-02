@@ -8,6 +8,7 @@ import json
 from django.utils.translation import ugettext as _
 from django.core.exceptions import ValidationError
 from django.contrib.sites.models import Site
+from django.utils.timezone import now
 from django.utils.timezone import utc
 from django.contrib import messages
 from django.db import models
@@ -16,13 +17,15 @@ from django.conf import settings
 from httpagentparser import detect
 
 from secureauth.utils.token import random_seed, check_seed, get_google_url
+from secureauth.utils import get_ip, get_geo, inet_aton
 from secureauth.utils.codes import RandomPassword
 from secureauth.utils import send_sms, send_mail
-from secureauth.utils import get_ip, get_geo
 from secureauth.utils.sign import Sign
+from secureauth.utils import is_phone
 from secureauth.defaults import (
     SMS_MESSAGE, SMS_CODE_LEN, SMS_AGE, SMS_FROM,
-    CODE_RANGES, SMS_NOTIFICATION_MESSAGE, SMS_NOTIFICATION_SUBJECT)
+    CODE_RANGES, SMS_NOTIFICATION_MESSAGE, SMS_NOTIFICATION_SUBJECT,
+    LOGIN_ATTEMPT, BAN_TIME, CHECK_ATTEMPT, CODES_SUBJECT)
 
 
 class UserAuthAbstract(models.Model):
@@ -90,6 +93,26 @@ class UserAuthCode(UserAuthAbstract):
             number=self.get_code_number()
         )
 
+    @classmethod
+    def send_codes(cls, request):
+        settings_list = cls.objects.filter(user=request.user)
+
+        if settings_list.exists():
+            created_seconds = (now() - settings_list[0].created).seconds
+            if created_seconds > 300:
+                return
+
+            codes = json.loads(Sign().unsign(settings_list[0].code))
+            codes_list = collections.OrderedDict(
+                sorted(codes.items(), key=lambda t: int(t[0])))
+            message = ''
+            for (k, v) in codes_list.items():
+                message += '%s. %s\n' % (k, v)
+            send_mail(
+                [request.user.email], CODES_SUBJECT, message
+            )
+            return True
+
 
 class UserAuthToken(UserAuthAbstract):
     def get_google_url(self):
@@ -115,7 +138,7 @@ class UserAuthPhone(UserAuthAbstract):
     phone = models.CharField(_('Phone'), max_length=255, unique=True)
 
     def clean(self):
-        if not self.phone or not self.phone.startswith('+'):
+        if not is_phone(self.phone) or not self.phone.startswith('+'):
             raise ValidationError(
                 _('Phone does not contain spaces and must be starts with a +'))
 
@@ -210,3 +233,47 @@ class UserAuthActivity(models.Model):
                 obj[0].geo, obj[0].ip, obj[0].agent, unicode(
                     _('If it was not you, then change authorization data.')))
             messages.warning(request, show_msg)
+
+
+class UserAuthAttempt(models.Model):
+    ip = models.IntegerField(db_index=True)
+    attempt = models.IntegerField(default=0)
+    created = models.DateTimeField(auto_now=True, auto_now_add=True)
+
+    @classmethod
+    def get_obj(cls, request):
+        return cls.objects.get_or_create(ip=inet_aton(get_ip(request)))[0]
+
+    @classmethod
+    def store(cls, request):
+        obj = cls.get_obj(request)
+        obj.attempt = models.F('attempt') + 1
+        obj.save(update_fields=['attempt'])
+
+    @classmethod
+    def remove(cls, request):
+        if CHECK_ATTEMPT is True:
+            obj = cls.get_obj(request)
+            obj.delete()
+
+    @classmethod
+    def is_banned(cls, request):
+        obj = cls.get_obj(request)
+        if obj.attempt > LOGIN_ATTEMPT:
+            if (now() - obj.created).seconds < BAN_TIME:
+                return True
+
+    @classmethod
+    def clean(cls):
+        old = now() - datetime.timedelta(seconds=BAN_TIME)
+        cls.objects.filter(created__lt=old).delete()
+
+
+class UserAuthLogging(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, verbose_name=_('User'))
+    enabled = models.BooleanField(_('Enabled'), default=False)
+
+    @classmethod
+    def is_enabled(cls, request):
+        return cls.objects.filter(user=request.user, enabled=1).exists()

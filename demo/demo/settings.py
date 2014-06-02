@@ -47,7 +47,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -81,9 +81,9 @@ INSTALLED_APPS = (
     'grappelli',
     'django.contrib.admin',
     'django_extensions',
-    'debug_toolbar',
+    #'debug_toolbar',
     'bootstrap',
-    'djcelery',
+    # 'djcelery',
     'django_tables2',
     'registration',
     'south',
@@ -138,6 +138,12 @@ CSRF_FAILURE_VIEW = 'demo.csrf_failure'
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True
 
+
+
+import djcelery
+djcelery.setup_loader()
+
+BROKER_URL = 'redis://127.0.0.1:6379/4'
 
 try:
     from local_settings import *

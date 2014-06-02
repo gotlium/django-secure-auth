@@ -3,8 +3,9 @@
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 
-from models import UserAuthNotification
+from models import UserAuthNotification, UserAuthLogging
 from utils.sign import Sign
+from utils import is_phone
 
 
 class BasicForm(forms.Form):
@@ -69,6 +70,9 @@ class PhoneBasicForm(BasicForm):
         if phone and not phone.startswith('+') or ' ' in phone:
             raise forms.ValidationError(
                 _('Phone does not contain spaces and must be starts with a +'))
+        elif not is_phone(phone):
+            raise forms.ValidationError(
+                _('The phone number entered is not valid'))
         return phone
 
     def save(self):
@@ -102,6 +106,12 @@ class NotificationForm(forms.ModelForm):
         exclude = ('user',)
 
 
+class LoggingForm(forms.ModelForm):
+    class Meta:
+        model = UserAuthLogging
+        exclude = ('user',)
+
+
 class ActivatePhoneForm(forms.Form):
     phone = forms.CharField(label=_('Phone'), required=True, max_length=16)
 
@@ -110,4 +120,7 @@ class ActivatePhoneForm(forms.Form):
         if not phone.startswith('+') or ' ' in phone:
             raise forms.ValidationError(
                 _('Phone does not contain spaces and must be starts with a +'))
+        elif not is_phone(phone):
+            raise forms.ValidationError(
+                _('The phone number entered is not valid'))
         return phone

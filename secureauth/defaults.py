@@ -24,6 +24,8 @@ DEFAULT_AUTH_TYPE = get_settings('AUTH_DEFAULT_TYPE', 'phone')
 # Notification when user is authenticated on site
 SMS_NOTIFICATION_SUBJECT = get_settings(
     'AUTH_SMS_NOTIFICATION_SUBJECT', 'Auth activity')
+CODES_SUBJECT = get_settings(
+    'AUTH_CODES_SUBJECT', 'Your security codes')
 SMS_NOTIFICATION_MESSAGE = get_settings(
     'AUTH_SMS_NOTIFICATION_MESSAGE',
     "Authorization was made. If it's not you, then contact with us.")
@@ -40,4 +42,9 @@ METHODS_ENABLED = get_settings('AUTH_METHODS_ENABLED', (
     'code',
     'activity',
     'notification',
+    'logging',
 ))
+
+CHECK_ATTEMPT = get_settings('AUTH_CHECK_ATTEMPT', True)
+LOGIN_ATTEMPT = get_settings('AUTH_LOGIN_ATTEMPT', 3)
+BAN_TIME = get_settings('AUTH_LOGIN_ATTEMPT_BAN_TIME', 3600)

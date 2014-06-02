@@ -1,6 +1,5 @@
-Captcha field
-Secure code to email
 Forms for admin
+Secure code to email
 
 Registration:
     captcha, if user can not auth after 3 attempts

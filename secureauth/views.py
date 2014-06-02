@@ -14,7 +14,6 @@ from django.conf import settings
 from django.forms.models import model_to_dict
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 from django.contrib.sites.models import get_current_site
-from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -24,6 +23,7 @@ from django_tables2 import RequestConfig
 
 from secureauth.auth_forms import get_available_auth_methods
 from secureauth.auth_forms import ConfirmAuthenticationForm
+from secureauth.auth_forms import BaseAuthForm
 from secureauth.utils.sign import Sign
 from secureauth.filters import UserAuthActivityFilter
 from secureauth.tables import UserAuthActivityTable
@@ -52,7 +52,7 @@ def _get_data(request):
 @never_cache
 def login(request, template_name='secureauth/login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
-          authentication_form=AuthenticationForm,
+          authentication_form=BaseAuthForm,
           current_app=None, extra_context=None):
     redirect_to = request.REQUEST.get(redirect_field_name, '')
 

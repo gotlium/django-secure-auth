@@ -88,7 +88,9 @@ INSTALLED_APPS = (
     'registration',
     'south',
     'rosetta',
+
     'secureauth',
+    'captcha',
 )
 
 LOGGING = {
@@ -138,6 +140,12 @@ CSRF_FAILURE_VIEW = 'demo.csrf_failure'
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True
 
+CAPTCHA_LENGTH = 3
+CAPTCHA_FONT_SIZE = 24
+CAPTCHA_FOREGROUND_COLOR = '#001100'
+CAPTCHA_TIMEOUT = 10
+CAPTCHA_LETTER_ROTATION = (-10, 10)
+CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)
 
 
 import djcelery

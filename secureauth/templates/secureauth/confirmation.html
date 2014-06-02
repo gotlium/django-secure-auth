@@ -40,6 +40,7 @@
         {{ form.as_table }}
     </table>
     {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}" />
     <input type="submit" value="{% trans 'Log in' %}"/>
 </form>
 {% endblock content %}

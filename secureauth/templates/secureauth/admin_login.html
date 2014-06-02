@@ -1,0 +1,17 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+  <form action="{{ app_path }}" method="post" id="login-form">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <input type="hidden" name="next" value="{{ next }}" />
+    <input type="submit" value="{% trans 'Log in' %}"/>
+  </form>
+
+  <script type="text/javascript">
+    document.getElementById('id_username').focus()
+  </script>
+{% endblock %}

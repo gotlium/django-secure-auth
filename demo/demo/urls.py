@@ -1,7 +1,9 @@
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from secureauth.adminsite import site
 
+admin.site = site
 admin.autodiscover()
 
 urlpatterns = patterns(

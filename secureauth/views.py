@@ -53,8 +53,8 @@ def _get_data(request):
 def login(request, template_name='secureauth/login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=BaseAuthForm,
-          current_app=None, extra_context=None):
-    redirect_to = request.REQUEST.get(redirect_field_name, '')
+          current_app=None, extra_context=None, redirect_to=''):
+    redirect_to = request.REQUEST.get(redirect_field_name, redirect_to)
 
     if CHECK_ATTEMPT and UserAuthAttempt.is_banned(request):
         return HttpResponseBadRequest()
@@ -76,6 +76,7 @@ def login(request, template_name='secureauth/login.html',
                     'user_pk': user.pk,
                     'credentials': form.cleaned_data,
                     'ip': request.META.get('REMOTE_ADDR'),
+                    'extra_context': extra_context,
                 }
                 data = Sign().sign(data)
                 return HttpResponseRedirect(
@@ -120,6 +121,9 @@ def login_confirmation(request, template_name='secureauth/confirmation.html',
         return HttpResponseBadRequest()
 
     data = _get_data(request)
+    if extra_context is None and data.get('extra_context'):
+        extra_context = data.get('extra_context')
+
     if request.method == "POST":
         form = authentication_form(data, request.POST)
         if form.is_valid():

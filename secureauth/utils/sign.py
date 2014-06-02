@@ -9,7 +9,7 @@ class Sign(object):
         self.signer = signing.TimestampSigner(salt=salt)
 
     def sign(self, data):
-        return self.signer.sign(signing.dumps({"data": data}))
+        return self.signer.sign(signing.dumps({"data": data}, compress=True))
 
     def unsign(self, signed, age=None):
         try:

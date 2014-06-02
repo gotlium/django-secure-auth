@@ -1,0 +1,14 @@
+{% extends "secureauth/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Disable methods' %}{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'disable_methods' pk %}">
+    <table>
+        {{ form.as_table }}
+    </table>
+    {% csrf_token %}
+    <input type="submit" value="{% trans 'Set status' %}"/>
+</form>
+{% endblock content %}

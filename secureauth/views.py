@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http import (
     HttpResponseRedirect, Http404, HttpResponse, HttpResponseBadRequest)
 from django.utils.translation import ugettext as _
@@ -30,7 +31,7 @@ from secureauth.tables import UserAuthActivityTable
 from secureauth.utils.decorators import ajax_required
 from secureauth.forms import (
     BasicForm, CodeForm, PhoneBasicForm, QuestionForm,
-    NotificationForm, LoggingForm)
+    NotificationForm, LoggingForm, DisableMethodForm)
 from secureauth.models import (
     UserAuthPhone, UserAuthCode, UserAuthQuestion, UserAuthToken,
     UserAuthActivity, UserAuthNotification, UserAuthAttempt, UserAuthLogging)
@@ -386,3 +387,17 @@ def logging_settings(request):
         request, UserAuthLogging, LoggingForm,
         'secureauth/logging_settings.html'
     )
+
+
+@staff_member_required
+@login_required
+@never_cache
+def disable_methods(request, pk):
+    form = DisableMethodForm(request, pk, request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        messages.info(request, _('Successfully saved'))
+        form.save()
+        return redirect('disable_methods', pk)
+    return render(request, 'secureauth/admin_disable_methods.html', {
+        'form': form, 'pk': pk
+    })

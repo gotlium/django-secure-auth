@@ -3,7 +3,9 @@
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 
-from models import UserAuthNotification, UserAuthLogging
+from models import (
+    UserAuthNotification, UserAuthLogging, UserAuthToken,
+    UserAuthCode, UserAuthPhone, UserAuthQuestion)
 from utils.sign import Sign
 from utils import is_phone
 
@@ -124,3 +126,42 @@ class ActivatePhoneForm(forms.Form):
             raise forms.ValidationError(
                 _('The phone number entered is not valid'))
         return phone
+
+
+class DisableMethodForm(forms.Form):
+    code = forms.BooleanField(label=_('Codes Auth'), required=False)
+    token = forms.BooleanField(label=_('TOTP Auth'), required=False)
+    phone = forms.BooleanField(label=_('SMS Auth'), required=False)
+    question = forms.BooleanField(label=_('Question Auth'), required=False)
+    current_password = forms.CharField(
+        label=_('Current password:'), widget=forms.PasswordInput)
+
+    def __init__(self, request, pk, *args, **kwargs):
+        self._request = request
+        self._pk = pk
+
+        def get_status(model, key):
+            return model.objects.filter(user_id=self._pk, enabled=1).exists()
+
+        kwargs['initial'] = {
+            'code': get_status(UserAuthCode, 'code'),
+            'token': get_status(UserAuthToken, 'token'),
+            'phone': get_status(UserAuthPhone, 'phone'),
+            'question': get_status(UserAuthQuestion, 'question'),
+        }
+        super(DisableMethodForm, self).__init__(*args, **kwargs)
+
+    def clean_current_password(self):
+        current_password = self.cleaned_data.get('current_password', '')
+        if not self._request.user.check_password(current_password):
+            raise forms.ValidationError(_(u'Invalid password!'))
+
+    def save(self):
+        def set_status(model, key):
+            model.objects.filter(user_id=self._pk).update(
+                enabled=self.cleaned_data.get(key, False))
+
+        set_status(UserAuthCode, 'code')
+        set_status(UserAuthToken, 'token')
+        set_status(UserAuthPhone, 'phone')
+        set_status(UserAuthQuestion, 'question')

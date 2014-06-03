@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django.utils.translation import ugettext_lazy as _
+from django.test.client import RequestFactory
 from django import forms
 
 from models import (
-    UserAuthNotification, UserAuthLogging, UserAuthToken,
+    UserAuthNotification, UserAuthLogging, UserAuthToken, UserAuthAttempt,
     UserAuthCode, UserAuthPhone, UserAuthQuestion)
 from utils.sign import Sign
 from utils import is_phone
@@ -140,14 +141,14 @@ class DisableMethodForm(forms.Form):
         self._request = request
         self._pk = pk
 
-        def get_status(model, key):
+        def get_status(model):
             return model.objects.filter(user_id=self._pk, enabled=1).exists()
 
         kwargs['initial'] = {
-            'code': get_status(UserAuthCode, 'code'),
-            'token': get_status(UserAuthToken, 'token'),
-            'phone': get_status(UserAuthPhone, 'phone'),
-            'question': get_status(UserAuthQuestion, 'question'),
+            'code': get_status(UserAuthCode),
+            'token': get_status(UserAuthToken),
+            'phone': get_status(UserAuthPhone),
+            'question': get_status(UserAuthQuestion),
         }
         super(DisableMethodForm, self).__init__(*args, **kwargs)
 
@@ -165,3 +166,12 @@ class DisableMethodForm(forms.Form):
         set_status(UserAuthToken, 'token')
         set_status(UserAuthPhone, 'phone')
         set_status(UserAuthQuestion, 'question')
+
+
+class IpBanForm(forms.Form):
+    ip = forms.CharField(label=_('IP Address:'), required=True, max_length=16)
+
+    def save(self):
+        request = RequestFactory().get('/')
+        request.META['REMOTE_ADDR'] = self.cleaned_data.get('ip')
+        UserAuthAttempt.remove(request)

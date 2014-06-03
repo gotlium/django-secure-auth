@@ -236,7 +236,7 @@ class UserAuthActivity(models.Model):
 
 
 class UserAuthAttempt(models.Model):
-    ip = models.IntegerField(db_index=True)
+    ip = models.BigIntegerField(db_index=True)
     attempt = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now=True, auto_now_add=True)
 

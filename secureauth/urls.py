@@ -21,5 +21,6 @@ urlpatterns = patterns(
     url('^logging_settings/$', 'logging_settings', name='logging_settings'),
     url('^send_codes/$', 'send_codes', name='send_codes'),
     url('^disable_methods/(\d+)/$', 'disable_methods', name='disable_methods'),
+    url('^unban_ip/$', 'unban_ip', name='unban_ip'),
     url(r'^captcha/', include('captcha.urls')),
 )

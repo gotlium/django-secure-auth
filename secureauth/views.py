@@ -30,7 +30,7 @@ from secureauth.filters import UserAuthActivityFilter
 from secureauth.tables import UserAuthActivityTable
 from secureauth.utils.decorators import ajax_required
 from secureauth.forms import (
-    BasicForm, CodeForm, PhoneBasicForm, QuestionForm,
+    BasicForm, CodeForm, PhoneBasicForm, QuestionForm, IpBanForm,
     NotificationForm, LoggingForm, DisableMethodForm)
 from secureauth.models import (
     UserAuthPhone, UserAuthCode, UserAuthQuestion, UserAuthToken,
@@ -400,4 +400,18 @@ def disable_methods(request, pk):
         return redirect('disable_methods', pk)
     return render(request, 'secureauth/admin_disable_methods.html', {
         'form': form, 'pk': pk
+    })
+
+
+@staff_member_required
+@login_required
+@never_cache
+def unban_ip(request):
+    form = IpBanForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        messages.info(request, _('Successfully saved'))
+        form.save()
+        return redirect('unban_ip')
+    return render(request, 'secureauth/admin_ban_ip.html', {
+        'form': form
     })

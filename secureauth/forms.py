@@ -7,6 +7,7 @@ from django import forms
 from models import (
     UserAuthNotification, UserAuthLogging, UserAuthToken, UserAuthAttempt,
     UserAuthCode, UserAuthPhone, UserAuthQuestion)
+from defaults import CHECK_PASSWORD
 from utils.sign import Sign
 from utils import is_phone
 
@@ -14,16 +15,27 @@ from utils import is_phone
 class BasicForm(forms.Form):
     enabled = forms.BooleanField(label=_('Enabled'), required=False)
 
-    def decrypt(self, key, *args):
-        if len(args) > 2 and args[2] and key in args[2]:
-            unsigned = Sign().unsign(args[2][key])
-            if unsigned is not None:
-                args[2][key] = unsigned
+    def decrypt(self, key, **kwargs):
+        if 'initial' in kwargs:
+            if kwargs['initial'] and key in kwargs['initial'].keys():
+                unsigned = Sign().unsign(kwargs['initial'][key])
+                if unsigned is not None:
+                    kwargs['initial'][key] = unsigned
 
-    def __init__(self, user, model, *args, **kwargs):
-        self.user = user
+    def __init__(self, request, model, *args, **kwargs):
+        self.request = request
+        self.user = request.user
         self.model = model
         super(BasicForm, self).__init__(*args, **kwargs)
+
+        if CHECK_PASSWORD is True:
+            self.fields['current_password'] = forms.CharField(
+                label=_('Current password:'), widget=forms.PasswordInput)
+
+    def clean_current_password(self):
+        current_password = self.cleaned_data.get('current_password', '')
+        if not self.request.user.check_password(current_password):
+            raise forms.ValidationError(_(u'Invalid password!'))
 
     def save(self):
         if not self.user:
@@ -65,7 +77,7 @@ class PhoneBasicForm(BasicForm):
     phone = forms.CharField(label=_('Phone'), required=True, max_length=16)
 
     def __init__(self, *args, **kwargs):
-        self.decrypt('phone', *args)
+        self.decrypt('phone', **kwargs)
         super(PhoneBasicForm, self).__init__(*args, **kwargs)
 
     def clean_phone(self):
@@ -90,10 +102,11 @@ class QuestionForm(BasicForm):
     code = forms.CharField(label=_('code'), required=True, max_length=16)
 
     def __init__(self, *args, **kwargs):
-        self.decrypt('code', *args)
-        self.decrypt('question', *args)
+        self.decrypt('code', **kwargs)
+        self.decrypt('question', **kwargs)
         super(QuestionForm, self).__init__(*args, **kwargs)
-        if args[2] and args[2].get('code'):
+
+        if kwargs.get('initial') or (args[2] and args[2].get('code')):
             self.fields['code'].widget = forms.HiddenInput()
         self.fields['code'].label = _('Answer')
 

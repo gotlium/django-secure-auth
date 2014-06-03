@@ -225,6 +225,8 @@ class BasicView(object):
 
     def __do_step(self):
         self.__set_template()
+        if self.step > 1:
+            self._check_step(self.step)
         return getattr(self, self.method_map.get(self.step))()
 
     def _url(self, step):
@@ -236,12 +238,19 @@ class BasicView(object):
         return render(self.request, self.template, self.context)
 
     def _redirect(self, step):
+        self._set_next_step(step)
         return redirect(self._url(step))
 
-    def _get_data(self, model_data=True):
-        if model_data and self.obj.exists() and self.request.method == 'GET':
+    def _get_initial(self):
+        if self.obj.exists() and self.request.method == 'GET':
             return model_to_dict(self.obj[0])
-        return self.request.method == 'POST' and self.request.POST or None
+
+    def _set_next_step(self, step):
+        self.request.session['step'] = step
+
+    def _check_step(self, step):
+        if self.request.session.get('step') != step:
+            raise Http404
 
     def settings_remove(self):
         step = 4 if self.obj.exists() else 1
@@ -265,7 +274,8 @@ class BasicView(object):
 
     def settings(self):
         self.form = self.basic_form(
-            self.request.user, self.model, self._get_data())
+            self.request, self.model, self.request.POST or None,
+            initial=self._get_initial())
         if self.request.method == 'POST':
             if self.form.is_valid():
                 form_enabled = self.form.cleaned_data.get('enabled')
@@ -282,7 +292,7 @@ class BasicView(object):
         # todo: check ip there & referer with key.
         # Do not open this page with GET url
         self.form = self.code_form(
-            self.request.user, self.model, self._get_data(False))
+            self.request.user, self.model, self.request.POST or None)
         if self.request.method == 'POST':
             if self.form.is_valid():
                 self.form.save()

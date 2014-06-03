@@ -41,7 +41,7 @@ class UserAuthAbstract(models.Model):
         _('Last verified'), blank=True, null=True, editable=False)
 
     def update_last_verified(self):
-        self.last_verified = datetime.datetime.utcnow().replace(tzinfo=utc)
+        self.last_verified = now()
         self.save(update_fields=['last_verified'])
 
     def check_auth_code(self, auth_code, force_check=False):

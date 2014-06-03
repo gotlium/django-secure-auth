@@ -193,7 +193,8 @@ def get_question(request):
 @login_required
 @never_cache
 def auth_settings(request):
-    UserAuthActivity.check_location(request)
+    if UserAuthLogging.is_enabled(request):
+        UserAuthActivity.check_location(request)
     return render(request, 'secureauth/settings.html')
 
 
@@ -356,8 +357,7 @@ def question_settings(request):
 @login_required
 @never_cache
 def auth_activity(request):
-    queryset = UserAuthActivity.objects.filter(
-        user=request.user)
+    queryset = UserAuthActivity.objects.filter(user=request.user)
     queryset = UserAuthActivityFilter(request.GET, queryset=queryset)
     table = UserAuthActivityTable(queryset)
     RequestConfig(request).configure(table)
@@ -369,8 +369,8 @@ def auth_activity(request):
 
 def _settings_view(request, model_class, form_class, template):
     instance = model_class.objects.get_or_create(user=request.user)[0]
-    data = request.method == 'POST' and request.POST or model_to_dict(instance)
-    form = form_class(data, instance=instance)
+    data = request.POST or None
+    form = form_class(request, data, instance=instance)
     if request.method == 'POST' and form.is_valid():
             form.save(commit=False)
             form.user = request.user
@@ -378,7 +378,7 @@ def _settings_view(request, model_class, form_class, template):
             messages.info(request, _('Successfully saved'))
             if not form.cleaned_data.get('enabled'):
                 UserAuthNotification.notify(
-                    request, _('Successfully disabled'), force=True)
+                    request, _('Your settings has changed'), force=True)
     return render(request, template, {'form': form})
 
 @login_required

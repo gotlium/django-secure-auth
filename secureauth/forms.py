@@ -116,13 +116,29 @@ class QuestionForm(BasicForm):
             self.cleaned_data.get('question'), self.cleaned_data.get('code'))
 
 
-class NotificationForm(forms.ModelForm):
+class PasswordCheckForm(forms.ModelForm):
+    def __init__(self, request, *args, **kwargs):
+        self.request = request
+
+        super(PasswordCheckForm, self).__init__(*args, **kwargs)
+
+        if CHECK_PASSWORD is True:
+            self.fields['current_password'] = forms.CharField(
+                label=_('Current password:'), widget=forms.PasswordInput)
+
+    def clean_current_password(self):
+        current_password = self.cleaned_data.get('current_password', '')
+        if not self.request.user.check_password(current_password):
+            raise forms.ValidationError(_(u'Invalid password!'))
+
+
+class NotificationForm(PasswordCheckForm):
     class Meta:
         model = UserAuthNotification
         exclude = ('user',)
 
 
-class LoggingForm(forms.ModelForm):
+class LoggingForm(PasswordCheckForm):
     class Meta:
         model = UserAuthLogging
         exclude = ('user',)

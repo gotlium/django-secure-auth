@@ -7,7 +7,7 @@ from models import UserAuthActivity
 
 class UserAuthActivityFilter(FilterSet):
     date = DateRangeFilter(label=_('Date'))
-    ip = ChoiceFilter(label=_('IP'))
+    ip = ChoiceFilter(label=_('IP'), required=False)
 
     class Meta:
         model = UserAuthActivity
@@ -15,8 +15,7 @@ class UserAuthActivityFilter(FilterSet):
 
     def __init__(self, *args, **kwargs):
         super(UserAuthActivityFilter, self).__init__(*args, **kwargs)
+        ip_list = self.queryset.distinct().values_list('ip', flat=1).order_by()
         self.filters['ip'].extra.update({
-            'choices': tuple(
-                set(self.queryset.values_list('ip', 'ip'))
-            )
+            'choices': [('', '----')] + [(ip, ip) for ip in ip_list]
         })

@@ -356,7 +356,7 @@ def question_settings(request):
 @login_required
 @never_cache
 def auth_activity(request):
-    queryset = UserAuthActivity.objects.select_related().filter(
+    queryset = UserAuthActivity.objects.filter(
         user=request.user)
     queryset = UserAuthActivityFilter(request.GET, queryset=queryset)
     table = UserAuthActivityTable(queryset)

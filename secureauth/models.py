@@ -200,7 +200,7 @@ class UserAuthNotification(models.Model):
 class UserAuthActivity(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, editable=False, verbose_name=_('User'))
-    ip = models.CharField(max_length=40)
+    ip = models.CharField(max_length=40, db_index=True)
     geo = models.CharField(_('GEO'), max_length=255, null=True, blank=True)
     date = models.DateTimeField(_('Date'), auto_now_add=True)
     agent = models.CharField(

@@ -17,6 +17,7 @@ SMS_CODE_LEN = get_settings('AUTH_SMS_CODE_LEN', 4)
 SMS_AGE = get_settings('AUTH_SMS_AGE', 60)
 SMS_ASCII = get_settings('AUTH_SMS_ASCII', False)
 CODE_RANGES = get_settings('AUTH_CODE_RANGES', 20)
+CODE_LEN = get_settings('AUTH_CODE_LEN', 6)
 
 # Available: code, token, phone, question
 DEFAULT_AUTH_TYPE = get_settings('AUTH_DEFAULT_TYPE', 'phone')

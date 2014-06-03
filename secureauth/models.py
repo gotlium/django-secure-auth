@@ -9,7 +9,6 @@ from django.utils.translation import ugettext as _
 from django.core.exceptions import ValidationError
 from django.contrib.sites.models import Site
 from django.utils.timezone import now
-from django.utils.timezone import utc
 from django.contrib import messages
 from django.db import models
 from django.conf import settings
@@ -24,7 +23,7 @@ from secureauth.utils.sign import Sign
 from secureauth.utils import is_phone
 from secureauth.defaults import (
     SMS_MESSAGE, SMS_CODE_LEN, SMS_AGE, SMS_FROM,
-    CODE_RANGES, SMS_NOTIFICATION_MESSAGE, SMS_NOTIFICATION_SUBJECT,
+    CODE_RANGES, CODE_LEN, SMS_NOTIFICATION_MESSAGE, SMS_NOTIFICATION_SUBJECT,
     LOGIN_ATTEMPT, BAN_TIME, CHECK_ATTEMPT, CODES_SUBJECT)
 
 
@@ -66,7 +65,7 @@ class UserAuthCode(UserAuthAbstract):
         data = {}
         rand = RandomPassword()
         for i in range(1, CODE_RANGES + 1):
-            data[i] = rand.get(max_value=8)
+            data[i] = rand.get(max_value=CODE_LEN)
         self.code = Sign().sign(json.dumps(data))
         return self.save()
 

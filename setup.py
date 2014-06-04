@@ -8,10 +8,10 @@ setup(
     name='django-secure-auth',
     version=get_version(),
     description='Secure authentication by TOTP, SMS, Codes & Question',
-    keywords='django secure auth totp sms codes question',
+    keywords='django secure auth protection totp sms codes question',
     long_description=open('README.rst').read(),
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',

@@ -25,14 +25,14 @@ Open settings:
     $ vim demo/settings.py
 
 
-Replace Twilio credentials in ``AUTH_SMS_BACKEND_AUTH`` to your demo account settings.
+Replace Twilio credentials in ``AUTH_SMS_BACKEND_AUTH`` to your demo account settings or change SMS_FORCE to False.
 
-Run RabbitMQ server and Celery daemon(or remove 'djcelery' from ``INSTALLED_APPS``):
+Run Redis server and Celery daemon(or remove 'djcelery' from ``INSTALLED_APPS``):
 
 .. code-block:: bash
 
-    $ rabbitmq-server -detached
-    $ python manage.py celeryd --loglevel=info >& /dev/null &
+    $ redis-server >& /dev/null &
+    $ python manage.py celeryd --loglevel=info >& /tmp/celery.log &
 
 
 Run test server:
@@ -45,7 +45,7 @@ Run test server:
 Now you can open http://127.0.0.1:8000/accounts/register/ and register
 new account and setup all available authentication methods.
 
-*Note: activation link will be output on console.*
+*Note: activation link will be output to console.*
 
 
 Screenshots

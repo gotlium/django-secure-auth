@@ -137,14 +137,18 @@ def login_confirmation(request, template_name='secureauth/confirmation.html',
 
                 if UserAuthLogging.is_enabled(request):
                     UserAuthActivity.check_location(request)
-                    UserAuthActivity.log_auth(request)
+                    UserAuthActivity.log_auth(
+                        request, form.cleaned_data.get('auth_type'))
 
                 UserAuthNotification.notify(request)
                 UserAuthAttempt.remove(request)
 
                 return HttpResponseRedirect(data.get('redirect_to'))
             else:
-                raise Http404('ERROR')
+                return HttpResponseBadRequest()
+        elif CHECK_ATTEMPT is True:
+            UserAuthAttempt.clean()
+            UserAuthAttempt.store(request)
     else:
         form = authentication_form(data)
 
@@ -339,9 +343,13 @@ def codes_settings(request):
 @login_required
 @never_cache
 def send_codes(request):
-    if UserAuthCode.send_codes(request):
+    if request.session.get('step') != 3:
+        raise Http404
+    elif UserAuthCode.send_codes(request):
         messages.info(request, _('Codes were sent to the email'))
         UserAuthNotification.notify(request, _('Codes were sent to the email'))
+        if request.session.get('step'):
+            del request.session['step']
     return redirect('codes_settings')
 
 
@@ -380,6 +388,7 @@ def _settings_view(request, model_class, form_class, template):
                 UserAuthNotification.notify(
                     request, _('Your settings has changed'), force=True)
     return render(request, template, {'form': form})
+
 
 @login_required
 @never_cache

@@ -35,7 +35,7 @@ class BasicForm(forms.Form):
     def clean_current_password(self):
         current_password = self.cleaned_data.get('current_password', '')
         if not self.request.user.check_password(current_password):
-            raise forms.ValidationError(_(u'Invalid password!'))
+            raise forms.ValidationError(_(u'Invalid password'))
 
     def save(self):
         if not self.user:
@@ -101,14 +101,18 @@ class QuestionForm(BasicForm):
     question = forms.CharField(label=_('Question'), required=True)
     code = forms.CharField(label=_('code'), required=True, max_length=16)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
         self.decrypt('code', **kwargs)
         self.decrypt('question', **kwargs)
-        super(QuestionForm, self).__init__(*args, **kwargs)
+        super(QuestionForm, self).__init__(request, *args, **kwargs)
 
-        if kwargs.get('initial') or (args[2] and args[2].get('code')):
-            self.fields['code'].widget = forms.HiddenInput()
         self.fields['code'].label = _('Answer')
+
+        try:
+            UserAuthQuestion.objects.get(user=request.user)
+            self.fields.pop('code')
+        except UserAuthQuestion.DoesNotExist:
+            pass
 
     def save(self):
         model = super(QuestionForm, self).save()
@@ -116,11 +120,13 @@ class QuestionForm(BasicForm):
             self.cleaned_data.get('question'), self.cleaned_data.get('code'))
 
 
-class PasswordCheckForm(forms.ModelForm):
+class BaseSettingsForm(forms.ModelForm):
+    enabled = forms.BooleanField(label=_('Enabled'), required=False)
+
     def __init__(self, request, *args, **kwargs):
         self.request = request
 
-        super(PasswordCheckForm, self).__init__(*args, **kwargs)
+        super(BaseSettingsForm, self).__init__(*args, **kwargs)
 
         if CHECK_PASSWORD is True:
             self.fields['current_password'] = forms.CharField(
@@ -129,16 +135,16 @@ class PasswordCheckForm(forms.ModelForm):
     def clean_current_password(self):
         current_password = self.cleaned_data.get('current_password', '')
         if not self.request.user.check_password(current_password):
-            raise forms.ValidationError(_(u'Invalid password!'))
+            raise forms.ValidationError(_(u'Invalid password'))
 
 
-class NotificationForm(PasswordCheckForm):
+class NotificationForm(BaseSettingsForm):
     class Meta:
         model = UserAuthNotification
         exclude = ('user',)
 
 
-class LoggingForm(PasswordCheckForm):
+class LoggingForm(BaseSettingsForm):
     class Meta:
         model = UserAuthLogging
         exclude = ('user',)
@@ -184,7 +190,7 @@ class DisableMethodForm(forms.Form):
     def clean_current_password(self):
         current_password = self.cleaned_data.get('current_password', '')
         if not self._request.user.check_password(current_password):
-            raise forms.ValidationError(_(u'Invalid password!'))
+            raise forms.ValidationError(_(u'Invalid password'))
 
     def save(self):
         def set_status(model, key):

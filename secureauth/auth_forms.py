@@ -7,15 +7,7 @@ from django import forms
 
 from defaults import CAPTCHA_ATTEMPT, CAPTCHA_ENABLED
 from captcha.fields import CaptchaField
-
-
-AUTH_TYPES = (
-    ('', '---'),
-    ('code', _('by code')),
-    ('token', _('by token')),
-    ('phone', _('by sms')),
-    ('question', _('by question')),
-)
+from models import AUTH_TYPES
 
 
 def get_available_auth_methods(user):
@@ -55,12 +47,13 @@ class ConfirmAuthenticationForm(forms.Form):
 
         if auth_type and code:
             from secureauth.backend import AuthBackend
+
             backend = AuthBackend()
             self.user_cache = backend.auth(self.credentials, auth_type, code)
             if self.user_cache is None:
                 raise forms.ValidationError(_("Please enter correct code"))
             elif not self.user_cache.is_active:
-                raise forms.ValidationError(_("This account is inactive."))
+                raise forms.ValidationError(_("This account is inactive"))
         return self.cleaned_data
 
     def get_user(self):

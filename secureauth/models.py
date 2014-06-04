@@ -7,6 +7,7 @@ import json
 
 from django.utils.translation import ugettext as _
 from django.core.exceptions import ValidationError
+from django.forms.models import model_to_dict
 from django.contrib.sites.models import Site
 from django.utils.timezone import now
 from django.contrib import messages
@@ -24,7 +25,16 @@ from secureauth.utils import is_phone
 from secureauth.defaults import (
     SMS_MESSAGE, SMS_CODE_LEN, SMS_AGE, SMS_FROM,
     CODE_RANGES, CODE_LEN, SMS_NOTIFICATION_MESSAGE, SMS_NOTIFICATION_SUBJECT,
-    LOGIN_ATTEMPT, BAN_TIME, CHECK_ATTEMPT, CODES_SUBJECT)
+    LOGIN_ATTEMPT, BAN_TIME, CHECK_ATTEMPT, CODES_SUBJECT, TOTP_NAME)
+
+
+AUTH_TYPES = (
+    ('', '---'),
+    ('code', _('by code')),
+    ('token', _('by token')),
+    ('phone', _('by sms')),
+    ('question', _('by question')),
+)
 
 
 class UserAuthAbstract(models.Model):
@@ -115,11 +125,9 @@ class UserAuthCode(UserAuthAbstract):
 
 class UserAuthToken(UserAuthAbstract):
     def get_google_url(self):
-        return get_google_url(
-            Sign().unsign(self.code),
-            "%s@%s" % (
-                self.user.get_full_name(), Site.objects.get_current().domain)
-        )
+        data = model_to_dict(Site.objects.get_current())
+        data.update(model_to_dict(self.user))
+        return get_google_url(Sign().unsign(self.code), TOTP_NAME % data)
 
     def _code_is_valid(self, code):
         return check_seed(Sign().unsign(self.code), int(code))
@@ -204,12 +212,15 @@ class UserAuthActivity(models.Model):
     date = models.DateTimeField(_('Date'), auto_now_add=True)
     agent = models.CharField(
         _('Browser'), max_length=255, null=True, blank=True)
+    confirm_method = models.CharField(
+        _('Confirm method'), max_length=10, choices=AUTH_TYPES,
+        null=True, blank=True)
 
     class Meta:
         ordering = ('-id',)
 
     @classmethod
-    def log_auth(cls, request):
+    def log_auth(cls, request, confirm_method=''):
         ip = get_ip(request)
         user_agent = request.META.get('HTTP_USER_AGENT')
         if user_agent is not None:
@@ -220,7 +231,7 @@ class UserAuthActivity(models.Model):
                 browser.get('name', ""), browser.get('version', ""))
         cls.objects.create(
             user=request.user, ip=get_ip(request), geo=get_geo(ip),
-            agent=user_agent
+            agent=user_agent, confirm_method=confirm_method
         )
 
     @classmethod

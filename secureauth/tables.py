@@ -9,6 +9,6 @@ from secureauth.models import UserAuthActivity
 class UserAuthActivityTable(tables.Table):
     class Meta:
         model = UserAuthActivity
-        fields = ('ip', 'geo', 'date', 'agent')
+        fields = ('ip', 'geo', 'date', 'agent', 'confirm_method')
         order_by = ('id',)
         per_page = ACTIVITY_PER_PAGE

@@ -8,9 +8,9 @@ from registration.models import RegistrationProfile, SHA1_RE
 from registration.backends.default import views
 
 from secureauth.forms import ActivatePhoneForm, CodeForm
+from secureauth.defaults import SMS_AGE, SMS_FORCE
 from secureauth.models import UserAuthPhone
 from secureauth.utils.sign import Sign
-from secureauth.defaults import SMS_AGE
 
 
 def _get_user(**kwargs):
@@ -83,3 +83,6 @@ class ActivationDoneView(CheckKeyMixin, views.ActivationView):
 
     def get_success_url(self, request, user):
         return ('registration_activation_complete_view', (), {})
+
+
+ActivationView = ActivationView if SMS_FORCE else views.ActivationView

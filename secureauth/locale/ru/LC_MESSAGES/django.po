@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-24 04:00+0400\n"
-"PO-Revision-Date: 2013-11-24 21:43+0230\n"
+"PO-Revision-Date: 2014-06-04 13:04+0230\n"
 "Last-Translator:   <g@g.ru>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Translated-Using: django-rosetta 0.7.3\n"
+"X-Translated-Using: django-rosetta 0.7.4\n"
 
 msgid "Russian"
 msgstr "Русский"
@@ -125,7 +125,7 @@ msgstr "код"
 msgid "Please enter correct code"
 msgstr "Пожалуйста, введите правильный код"
 
-msgid "This account is inactive."
+msgid "This account is inactive"
 msgstr "Эта учетная запись неактивна."
 
 msgid "Enabled"
@@ -373,7 +373,7 @@ msgid "SMS was sent!"
 msgstr "Код был выслан к Вам на мобильный телефон"
 
 msgid "Default backend can not be removed"
-msgstr "Нельзя удалить настройки"
+msgstr "Нельзя удалить настройки по умолчанию"
 
 msgid "Auth method was disabled"
 msgstr "Один из методов аутентификации был отключен"
@@ -395,3 +395,39 @@ msgstr "Уведомления отключены. Если это не Вы, п
 
 msgid "Answer"
 msgstr "Ответ"
+
+msgid "Current password:"
+msgstr "Текущий пароль:"
+
+msgid "Logging settings"
+msgstr "Настройка логирования"
+
+msgid "Confirm Method"
+msgstr "Метод подтверждения"
+
+msgid "Invalid password"
+msgstr "Неверный пароль"
+
+msgid "Successfully saved"
+msgstr "Успешно сохранено"
+
+msgid "Your settings has changed"
+msgstr "Настройки изменились"
+
+msgid "Codes were sent to the email"
+msgstr "Коды отправлены на email"
+
+msgid "Send codes to email"
+msgstr "Отправить коды на почту"
+
+msgid "Your code is: %s"
+msgstr "Ваш код: %s"
+
+msgid "Auth activity"
+msgstr "Код авторизации"
+
+msgid "Your security codes"
+msgstr "Ваши коды безопасности"
+
+msgid "Authorization was made. If it's not you, then contact with us."
+msgstr "Был произведен вход. Если это не Вы, то свяжитесь с нами."

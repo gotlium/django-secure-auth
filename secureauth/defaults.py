@@ -16,7 +16,7 @@ SMS_BACKEND_AUTH = get_settings('AUTH_SMS_BACKEND_AUTH', [
 SMS_FROM = get_settings('AUTH_SMS_FROM', '+12242315966')
 SMS_MESSAGE = get_settings('AUTH_SMS_MESSAGE', _('Your code is: %s'))
 SMS_CODE_LEN = get_settings('AUTH_SMS_CODE_LEN', 4)
-SMS_AGE = get_settings('AUTH_SMS_AGE', 60)
+SMS_AGE = get_settings('AUTH_SMS_AGE', 60 * 3)
 SMS_ASCII = get_settings('AUTH_SMS_ASCII', False)
 CODE_RANGES = get_settings('AUTH_CODE_RANGES', 20)
 CODE_LEN = get_settings('AUTH_CODE_LEN', 6)
@@ -57,3 +57,14 @@ CAPTCHA_ENABLED = get_settings('AUTH_CAPTCHA_ENABLED', True)
 CAPTCHA_ATTEMPT = get_settings('AUTH_CAPTCHA_ATTEMPTS', 1)
 
 CHECK_PASSWORD = get_settings('AUTH_CHECK_PASSWORD', True)
+SESSION_MAX = get_settings('AUTH_MAX_SESSION_AGE', 60 * 10)
+
+TEST_COOKIE_REFRESH_ENCRYPT_COOKIE_KEY = get_settings(
+    'AUTH_TEST_COOKIE_REFRESH_ENCRYPT_COOKIE_KEY', 'deadbeefdeadbeef')
+TEST_COOKIE_REFRESH_ENCRYPT_COOKIE_IV = get_settings(
+    'AUTH_TEST_COOKIE_REFRESH_ENCRYPT_COOKIE_IV', 'caaceccbbcasadfb')
+TEST_COOKIE_ENABLED = get_settings('AUTH_TEST_COOKIE_ENABLED', True)
+TEST_COOKIE_ENABLED_URLS = get_settings('AUTH_TEST_COOKIE_ENABLED_URLS', [
+    'accounts/logout/', 'accounts/'
+    #'.*?'
+])

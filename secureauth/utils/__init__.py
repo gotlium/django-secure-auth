@@ -10,6 +10,7 @@ from django.conf import settings
 from secureauth.defaults import USE_CELERY
 from secureauth import defaults
 
+from ipware.ip import get_real_ip
 import phonenumbers
 
 
@@ -66,10 +67,14 @@ def send_mail(*args, **kwargs):
 
 
 def get_ip(request):
-    ip = request.META['REMOTE_ADDR']
-    if 'HTTP_X_FORWARDED_FOR' in request.META:
-        ip = request.META['HTTP_X_FORWARDED_FOR'].split(',')[-1]
-    return ip.strip()
+    ip = get_real_ip(request)
+    if ip is not None:
+        return ip
+    else:
+        ip = request.META['REMOTE_ADDR']
+        if 'HTTP_X_FORWARDED_FOR' in request.META:
+            ip = request.META['HTTP_X_FORWARDED_FOR'].split(',')[-1]
+        return ip.strip()
 
 
 def inet_aton(ip):

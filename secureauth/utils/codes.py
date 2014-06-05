@@ -4,8 +4,6 @@ import string
 import random
 import hashlib
 
-from secureauth.defaults import SMS_ASCII
-
 
 class RandomPassword(object):
     def __init__(self):
@@ -40,9 +38,9 @@ class RandomPassword(object):
         random.shuffle(password)
         return ''.join(password)
 
-    def get(self, max_value=15):
+    def get(self, max_value=15, ascii=False):
         self.max_value = max_value
-        if SMS_ASCII is True:
+        if ascii is True:
             return self._ascii()
         else:
             return self._digits()

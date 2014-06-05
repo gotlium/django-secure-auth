@@ -23,7 +23,7 @@ from secureauth.utils import send_sms, send_mail
 from secureauth.utils.sign import Sign
 from secureauth.utils import is_phone
 from secureauth.defaults import (
-    SMS_MESSAGE, SMS_CODE_LEN, SMS_AGE, SMS_FROM,
+    SMS_MESSAGE, SMS_CODE_LEN, SMS_ASCII, SMS_AGE, SMS_FROM,
     CODE_RANGES, CODE_LEN, SMS_NOTIFICATION_MESSAGE, SMS_NOTIFICATION_SUBJECT,
     LOGIN_ATTEMPT, BAN_TIME, CHECK_ATTEMPT, CODES_SUBJECT, TOTP_NAME)
 
@@ -155,7 +155,7 @@ class UserAuthPhone(UserAuthAbstract):
         super(UserAuthPhone, self).save(*args, **kwargs)
 
     def send_sms(self):
-        code = str(RandomPassword().get(SMS_CODE_LEN)).lower()
+        code = str(RandomPassword().get(SMS_CODE_LEN, SMS_ASCII)).lower()
         send_sms(SMS_FROM, Sign().unsign(self.phone), SMS_MESSAGE % code)
         self.code = Sign().sign(code)
         self.save()
@@ -243,6 +243,10 @@ class UserAuthActivity(models.Model):
                 obj[0].geo, obj[0].ip, obj[0].agent, unicode(
                     _('If it was not you, then change authorization data.')))
             messages.warning(request, show_msg)
+            UserAuthNotification.notify(
+                request,
+                _('Your location has changed to %s' % get_geo(get_ip(request)))
+            )
 
 
 class UserAuthAttempt(models.Model):

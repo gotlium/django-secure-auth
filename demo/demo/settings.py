@@ -47,13 +47,19 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Logout, if IP will be changed after auth
+    'secureauth.middleware.SecureAuthFixedSessionIPMiddleware',
+    # Logout, if session is expired
+    'secureauth.middleware.SecureAuthSessionExpireMiddleware',
+    # Block IP, if request is not from a real browser
+    'secureauth.middleware.SecureAuthTestCookieMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -81,7 +87,6 @@ INSTALLED_APPS = (
     'grappelli',
     'django.contrib.admin',
     'django_extensions',
-    #'debug_toolbar',
     'bootstrap',
     'djcelery',
     'django_tables2',
@@ -147,6 +152,7 @@ CAPTCHA_TIMEOUT = 10
 CAPTCHA_LETTER_ROTATION = (-10, 10)
 CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)
 
+TEST_COOKIE_ENABLED = True
 
 import djcelery
 djcelery.setup_loader()

@@ -43,5 +43,7 @@ setup(
         'django-filter>=0.7',
         'phonenumbers>=6.1.0',
         'django-simple-captcha>=0.4.2',
+        'django-ipware>=0.0.8',
+        'slowaes==0.1a1',
     ]
 )

@@ -1,23 +1,19 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib.admin.views.decorators import staff_member_required
 from django.http import (
     HttpResponseRedirect, Http404, HttpResponse, HttpResponseBadRequest)
 from django.utils.translation import ugettext as _
 from django.template.response import TemplateResponse
 from django.utils.http import is_safe_url
 from django.shortcuts import resolve_url, render
-from django.views.decorators.debug import sensitive_post_parameters
-from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate
 from django.conf import settings
 from django.forms.models import model_to_dict
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 from django.contrib.sites.models import get_current_site
 from django.shortcuts import get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.utils.timezone import now
 from django.contrib import messages
 
 from django_tables2 import RequestConfig
@@ -28,7 +24,9 @@ from secureauth.auth_forms import BaseAuthForm
 from secureauth.utils.sign import Sign
 from secureauth.filters import UserAuthActivityFilter
 from secureauth.tables import UserAuthActivityTable
-from secureauth.utils.decorators import ajax_required
+from secureauth.utils.decorators import (
+    ajax_decorator, auth_decorator, staff_decorator, login_decorator)
+from secureauth.utils import get_ip
 from secureauth.forms import (
     BasicForm, CodeForm, PhoneBasicForm, QuestionForm, IpBanForm,
     NotificationForm, LoggingForm, DisableMethodForm)
@@ -39,18 +37,16 @@ from secureauth.defaults import SMS_AGE, SMS_FORCE, CHECK_ATTEMPT
 
 
 def _get_data(request):
-    data = Sign().unsign(request.GET.get('data'), age=SMS_AGE*2)
+    data = Sign().unsign(request.GET.get('data'), age=SMS_AGE * 2)
     if data is not None:
         user = authenticate(**data.get('credentials'))
         if user is not None and user.is_active:
-            if request.META.get('REMOTE_ADDR') == data.get('ip'):
+            if get_ip(request) == data.get('ip'):
                 return data
     raise Http404('Not found')
 
 
-@sensitive_post_parameters()
-@csrf_protect
-@never_cache
+@login_decorator
 def login(request, template_name='secureauth/login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=BaseAuthForm,
@@ -73,10 +69,10 @@ def login(request, template_name='secureauth/login.html',
 
             if SMS_FORCE or len(get_available_auth_methods(user)) > 1:
                 data = {
-                    'redirect_to': redirect_to,
-                    'user_pk': user.pk,
                     'credentials': form.cleaned_data,
-                    'ip': request.META.get('REMOTE_ADDR'),
+                    'user_pk': user.pk,
+                    'ip': get_ip(request),
+                    'redirect_to': redirect_to,
                     'extra_context': extra_context,
                 }
                 data = Sign().sign(data)
@@ -88,6 +84,7 @@ def login(request, template_name='secureauth/login.html',
                     UserAuthActivity.check_location(request)
                     UserAuthActivity.log_auth(request)
                 UserAuthAttempt.remove(request)
+                request.session['ip'] = get_ip(request)
                 return HttpResponseRedirect(redirect_to)
         elif CHECK_ATTEMPT is True:
             UserAuthAttempt.clean()
@@ -111,13 +108,10 @@ def login(request, template_name='secureauth/login.html',
         request, template_name, context, current_app=current_app)
 
 
-@sensitive_post_parameters()
-@csrf_protect
-@never_cache
+@login_decorator
 def login_confirmation(request, template_name='secureauth/confirmation.html',
                        authentication_form=ConfirmAuthenticationForm,
                        extra_context=None, current_app=None):
-
     if CHECK_ATTEMPT and UserAuthAttempt.is_banned(request):
         return HttpResponseBadRequest()
 
@@ -142,6 +136,7 @@ def login_confirmation(request, template_name='secureauth/confirmation.html',
 
                 UserAuthNotification.notify(request)
                 UserAuthAttempt.remove(request)
+                request.session['ip'] = get_ip(request)
 
                 return HttpResponseRedirect(data.get('redirect_to'))
             else:
@@ -168,8 +163,7 @@ def login_confirmation(request, template_name='secureauth/confirmation.html',
         request, template_name, context, current_app=current_app)
 
 
-@ajax_required
-@never_cache
+@ajax_decorator
 def phone_send_sms(request):
     data = _get_data(request)
     user = get_object_or_404(UserAuthPhone, user__id=data.get('user_pk'))
@@ -177,8 +171,7 @@ def phone_send_sms(request):
     return HttpResponse(_('SMS was sent!'))
 
 
-@ajax_required
-@never_cache
+@ajax_decorator
 def code_get_random(request):
     data = _get_data(request)
     user = get_object_or_404(UserAuthCode, user__id=data.get('user_pk'))
@@ -186,16 +179,14 @@ def code_get_random(request):
         _('Enter %d code from code saved code list') % user.get_code_number())
 
 
-@ajax_required
-@never_cache
+@ajax_decorator
 def get_question(request):
     data = _get_data(request)
     user = get_object_or_404(UserAuthQuestion, user__id=data.get('user_pk'))
     return HttpResponse(user.get_question())
 
 
-@login_required
-@never_cache
+@auth_decorator
 def auth_settings(request):
     if UserAuthLogging.is_enabled(request):
         UserAuthActivity.check_location(request)
@@ -203,7 +194,6 @@ def auth_settings(request):
 
 
 class BasicView(object):
-
     method_map = {
         1: 'settings',
         2: 'configure',
@@ -252,10 +242,17 @@ class BasicView(object):
 
     def _set_next_step(self, step):
         self.request.session['step'] = step
+        self.request.session['step_time'] = now()
+        if not self.request.session.get('ip'):
+            self.request.session['ip'] = get_ip(self.request)
 
     def _check_step(self, step):
         if self.request.session.get('step') != step:
             raise Http404
+        elif self.request.session.get('ip') != get_ip(self.request):
+            return Http404
+        elif (now() - self.request.session.get('step_time')).seconds > SMS_AGE:
+            return Http404
 
     def settings_remove(self):
         step = 4 if self.obj.exists() else 1
@@ -281,21 +278,18 @@ class BasicView(object):
         self.form = self.basic_form(
             self.request, self.model, self.request.POST or None,
             initial=self._get_initial())
-        if self.request.method == 'POST':
-            if self.form.is_valid():
-                form_enabled = self.form.cleaned_data.get('enabled')
-                if self.obj.exists() and self.obj[0].enabled and form_enabled:
-                    messages.info(self.request, _('Nothing to save'))
-                    return self._redirect(1)
-                elif form_enabled is True:
-                    return self.settings_enable()
-                else:
-                    return self.settings_remove()
+        if self.request.method == 'POST' and self.form.is_valid():
+            form_enabled = self.form.cleaned_data.get('enabled')
+            if self.obj.exists() and self.obj[0].enabled and form_enabled:
+                messages.info(self.request, _('Nothing to save'))
+                return self._redirect(1)
+            elif form_enabled is True:
+                return self.settings_enable()
+            else:
+                return self.settings_remove()
         return self._render()
 
     def configure(self):
-        # todo: check ip there & referer with key.
-        # Do not open this page with GET url
         self.form = self.code_form(
             self.request.user, self.model, self.request.POST or None)
         if self.request.method == 'POST':
@@ -317,15 +311,13 @@ class BasicView(object):
         return self.__do_step()
 
 
-@login_required
-@never_cache
+@auth_decorator
 def totp_settings(request):
     view = BasicView(request, UserAuthToken, 'totp_settings')
     return view.get()
 
 
-@login_required
-@never_cache
+@auth_decorator
 def phone_settings(request):
     view = BasicView(
         request, UserAuthPhone, 'phone_settings',
@@ -333,15 +325,13 @@ def phone_settings(request):
     return view.get()
 
 
-@login_required
-@never_cache
+@auth_decorator
 def codes_settings(request):
     view = BasicView(request, UserAuthCode, 'codes_settings')
     return view.get()
 
 
-@login_required
-@never_cache
+@auth_decorator
 def send_codes(request):
     if request.session.get('step') != 3:
         raise Http404
@@ -353,8 +343,7 @@ def send_codes(request):
     return redirect('codes_settings')
 
 
-@login_required
-@never_cache
+@auth_decorator
 def question_settings(request):
     view = BasicView(
         request, UserAuthQuestion, 'question_settings',
@@ -362,8 +351,7 @@ def question_settings(request):
     return view.get()
 
 
-@login_required
-@never_cache
+@auth_decorator
 def auth_activity(request):
     queryset = UserAuthActivity.objects.filter(user=request.user)
     queryset = UserAuthActivityFilter(request.GET, queryset=queryset)
@@ -380,18 +368,17 @@ def _settings_view(request, model_class, form_class, template):
     data = request.POST or None
     form = form_class(request, data, instance=instance)
     if request.method == 'POST' and form.is_valid():
-            form.save(commit=False)
-            form.user = request.user
-            form.save()
-            messages.info(request, _('Successfully saved'))
-            if not form.cleaned_data.get('enabled'):
-                UserAuthNotification.notify(
-                    request, _('Your settings has changed'), force=True)
+        form.save(commit=False)
+        form.user = request.user
+        form.save()
+        messages.info(request, _('Successfully saved'))
+        if not form.cleaned_data.get('enabled'):
+            UserAuthNotification.notify(
+                request, _('Your settings has changed'), force=True)
     return render(request, template, {'form': form})
 
 
-@login_required
-@never_cache
+@auth_decorator
 def notify_settings(request):
     return _settings_view(
         request, UserAuthNotification, NotificationForm,
@@ -399,8 +386,7 @@ def notify_settings(request):
     )
 
 
-@login_required
-@never_cache
+@auth_decorator
 def logging_settings(request):
     return _settings_view(
         request, UserAuthLogging, LoggingForm,
@@ -408,9 +394,7 @@ def logging_settings(request):
     )
 
 
-@staff_member_required
-@login_required
-@never_cache
+@staff_decorator
 def disable_methods(request, pk):
     form = DisableMethodForm(request, pk, request.POST or None)
     if request.method == 'POST' and form.is_valid():
@@ -422,9 +406,7 @@ def disable_methods(request, pk):
     })
 
 
-@staff_member_required
-@login_required
-@never_cache
+@staff_decorator
 def unban_ip(request):
     form = IpBanForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():

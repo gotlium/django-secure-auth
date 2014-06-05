@@ -42,5 +42,6 @@
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}" />
     <input type="submit" value="{% trans 'Log in' %}"/>
+    or <a href="{% url 'auth_login' %}">{% trans 'Cancel' %}</a>
 </form>
 {% endblock content %}

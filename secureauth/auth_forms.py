@@ -7,7 +7,7 @@ from django import forms
 
 from defaults import CAPTCHA_ATTEMPT, CAPTCHA_ENABLED
 from captcha.fields import CaptchaField
-from models import AUTH_TYPES
+from models import UserAuthAttempt, AUTH_TYPES
 
 
 def get_available_auth_methods(user):
@@ -63,17 +63,11 @@ class ConfirmAuthenticationForm(forms.Form):
 class AuthForm(AuthenticationForm):
     def __init__(self, request=None, *args, **kwargs):
         super(AuthForm, self).__init__(request, *args, **kwargs)
-        if request.session.get('login_attempts', 1) > CAPTCHA_ATTEMPT:
+        if UserAuthAttempt.get_obj(request).attempt > CAPTCHA_ATTEMPT:
             self.fields['captcha'] = CaptchaField()
 
     def is_valid(self):
-        is_valid = super(AuthForm, self).is_valid()
-        if is_valid:
-            self.request.session['login_attempts'] = 0
-        else:
-            self.request.session['login_attempts'] = self.request.session.get(
-                'login_attempts', 1) + 1
-        return is_valid
+        return super(AuthForm, self).is_valid()
 
 
 BaseAuthForm = AuthForm if CAPTCHA_ENABLED else AuthenticationForm

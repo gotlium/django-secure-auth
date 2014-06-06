@@ -307,12 +307,10 @@ class UserAuthIP(models.Model):
 class UserAuthIPRange(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, verbose_name=_('User'), editable=False)
-    start_ip = models.BigIntegerField(editable=False)
-    end_ip = models.BigIntegerField(editable=False)
     ip_range = models.CharField(max_length=18, help_text='xxx.xxx.xxx.xxx/24')
 
     class Meta:
-        unique_together = (('user', 'start_ip', 'end_ip'),)
+        unique_together = (('user', 'ip_range',),)
 
     @classmethod
     def is_allowed(cls, request):

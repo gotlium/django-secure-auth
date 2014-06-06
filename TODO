@@ -1,5 +1,6 @@
 Secure code to email
 Allow access for IP/IP range
+Authentication by ssl certificate
 
 Registration:
     add "I agree terms of use" to registration form

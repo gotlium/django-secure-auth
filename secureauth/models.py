@@ -291,3 +291,33 @@ class UserAuthLogging(models.Model):
     @classmethod
     def is_enabled(cls, request):
         return cls.objects.filter(user=request.user, enabled=1).exists()
+
+
+class UserAuthIP(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, verbose_name=_('User'))
+    enabled = models.BooleanField(_('Enabled'), default=False)
+
+    @classmethod
+    def is_enabled(cls, request):
+        return cls.objects.filter(user=request.user, enabled=1).exists()
+
+
+class UserAuthIPRange(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, verbose_name=_('User'), editable=False)
+    start_ip = models.BigIntegerField(editable=False)
+    end_ip = models.BigIntegerField(editable=False)
+    ip_range = models.CharField(max_length=18, help_text='xxx.xxx.xxx.xxx/24')
+
+    class Meta:
+        unique_together = (('user', 'start_ip', 'end_ip'),)
+
+    @classmethod
+    def by(cls, request):
+        if not UserAuthIP.is_enabled(request):
+            return True
+        ip = inet_aton(get_ip(request))
+        return cls.objects.filter(
+            start_ip__lte=ip, end_ip__gte=ip, user=request.user
+        ).exists()

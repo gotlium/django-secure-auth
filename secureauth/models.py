@@ -14,6 +14,7 @@ from django.contrib import messages
 from django.db import models
 from django.conf import settings
 
+from ipaddress import IPv4Network, IPv4Address
 from httpagentparser import detect
 
 from secureauth.utils.token import random_seed, check_seed, get_google_url
@@ -314,10 +315,13 @@ class UserAuthIPRange(models.Model):
         unique_together = (('user', 'start_ip', 'end_ip'),)
 
     @classmethod
-    def by(cls, request):
+    def is_allowed(cls, request):
         if not UserAuthIP.is_enabled(request):
             return True
-        ip = inet_aton(get_ip(request))
-        return cls.objects.filter(
-            start_ip__lte=ip, end_ip__gte=ip, user=request.user
-        ).exists()
+
+        range_list = cls.objects.values_list('ip_range', flat=True).filter(
+            user=request.user)
+        user_ip = IPv4Address(unicode(get_ip(request)))
+
+        if any([user_ip in IPv4Network(ip_range) for ip_range in range_list]):
+            return True

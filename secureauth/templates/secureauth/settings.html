@@ -5,56 +5,62 @@
 {% block title %}{% trans 'Authentication settings' %}{% endblock %}
 
 {% block content %}
-<ul>
-    {% enabled token %}
-    <li>
-        <a href="{% url 'totp_settings' %}">
-            {% trans 'Two-factor settings' %}
-        </a>
-    </li>
-    {% endenabled %}
-    {% enabled phone %}
-    <li>
-        <a href="{% url 'phone_settings' %}">
-            {% trans 'SMS settings' %}
-        </a>
-    </li>
-    {% endenabled %}
-    {% enabled code %}
-    <li>
-        <a href="{% url 'codes_settings' %}">
-            {% trans 'Codes settings' %}
-        </a>
-    </li>
-    {% endenabled %}
-    {% enabled question %}
-    <li>
-        <a href="{% url 'question_settings' %}">
-            {% trans 'Question settings' %}
-        </a>
-    </li>
-    {% endenabled %}
-    {% enabled activity %}
-    <li>
-        <a href="{% url 'auth_activity' %}">
-            {% trans 'Authentication activity' %}
-        </a>
-    </li>
-    {% endenabled %}
-    {% enabled notification %}
-    <li>
-        <a href="{% url 'notify_settings' %}">
-            {% trans 'Notification settings' %}
-        </a>
-    </li>
-    {% endenabled %}
-    {% enabled logging %}
-    <li>
-        <a href="{% url 'logging_settings' %}">
-            {% trans 'Logging settings' %}
-        </a>
-    </li>
-    {% endenabled %}
-</ul>
-
+    <ul>
+        {% enabled token %}
+            <li>
+                <a href="{% url 'totp_settings' %}">
+                    {% trans 'Two-factor settings' %}
+                </a>
+            </li>
+        {% endenabled %}
+        {% enabled phone %}
+            <li>
+                <a href="{% url 'phone_settings' %}">
+                    {% trans 'SMS settings' %}
+                </a>
+            </li>
+        {% endenabled %}
+        {% enabled code %}
+            <li>
+                <a href="{% url 'codes_settings' %}">
+                    {% trans 'Codes settings' %}
+                </a>
+            </li>
+        {% endenabled %}
+        {% enabled question %}
+            <li>
+                <a href="{% url 'question_settings' %}">
+                    {% trans 'Question settings' %}
+                </a>
+            </li>
+        {% endenabled %}
+        {% enabled activity %}
+            <li>
+                <a href="{% url 'auth_activity' %}">
+                    {% trans 'Authentication activity' %}
+                </a>
+            </li>
+        {% endenabled %}
+        {% enabled notification %}
+            <li>
+                <a href="{% url 'notify_settings' %}">
+                    {% trans 'Notification settings' %}
+                </a>
+            </li>
+        {% endenabled %}
+        {% enabled logging %}
+            <li>
+                <a href="{% url 'logging_settings' %}">
+                    {% trans 'Logging settings' %}
+                </a>
+            </li>
+        {% endenabled %}
+        {% enabled ip %}
+            <li>
+                <a href="{% url 'ip_settings' %}">
+                    {% trans 'IP settings' %}
+                </a>
+            </li>
+        {% endenabled %}
+    </ul>
 {% endblock content %}

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from django.utils.translation import ugettext_lazy as _
+from django.forms.models import inlineformset_factory
 from django.test.client import RequestFactory
 from django import forms
 
 from models import (
     UserAuthNotification, UserAuthLogging, UserAuthToken, UserAuthAttempt,
-    UserAuthCode, UserAuthPhone, UserAuthQuestion)
+    UserAuthCode, UserAuthPhone, UserAuthQuestion, UserAuthIP, UserAuthIPRange)
 from defaults import CHECK_PASSWORD
 from utils.sign import Sign
 from utils import is_phone
@@ -150,6 +151,12 @@ class LoggingForm(BaseSettingsForm):
         exclude = ('user',)
 
 
+class IPSettingsForm(BaseSettingsForm):
+    class Meta:
+        model = UserAuthIP
+        exclude = ('user',)
+
+
 class ActivatePhoneForm(forms.Form):
     phone = forms.CharField(label=_('Phone'), required=True, max_length=16)
 
@@ -210,3 +217,6 @@ class IpBanForm(forms.Form):
         request = RequestFactory().get('/')
         request.META['REMOTE_ADDR'] = self.cleaned_data.get('ip')
         UserAuthAttempt.remove(request)
+
+
+IPRangeFormSet = inlineformset_factory(UserAuthIP, UserAuthIPRange)

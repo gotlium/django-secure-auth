@@ -9,6 +9,7 @@ from django.utils.translation import ugettext as _
 from django.core.exceptions import ValidationError
 from django.forms.models import model_to_dict
 from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
 from django.utils.timezone import now
 from django.contrib import messages
 from django.db import models
@@ -19,7 +20,7 @@ from httpagentparser import detect
 
 from secureauth.utils.token import random_seed, check_seed, get_google_url
 from secureauth.utils import get_ip, get_geo, inet_aton
-from secureauth.utils.codes import RandomPassword
+from secureauth.utils.codes import RandomPassword, md5
 from secureauth.utils import send_sms, send_mail
 from secureauth.utils.sign import Sign
 from secureauth.utils import is_phone
@@ -300,26 +301,62 @@ class UserAuthIP(models.Model):
     enabled = models.BooleanField(_('Enabled'), default=False)
 
     @classmethod
-    def is_enabled(cls, request):
-        return cls.objects.filter(user=request.user, enabled=1).exists()
+    def is_enabled(cls, user):
+        return cls.objects.filter(user=user, enabled=1).exists()
 
 
 class UserAuthIPRange(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, verbose_name=_('User'), editable=False)
-    ip_range = models.CharField(max_length=18, help_text='xxx.xxx.xxx.xxx/24')
+    ip = models.ForeignKey(UserAuthIP, editable=False)
+    ip_data = models.CharField(
+        _('IP/IP range'), max_length=18,
+        help_text='xxx.xxx.xxx.xxx or xxx.xxx.xxx.xxx/24')
+    is_ip = models.BooleanField(_('Is IP'), default=False)
 
     class Meta:
-        unique_together = (('user', 'ip_range',),)
+        unique_together = (('ip', 'ip_data', 'is_ip',),)
 
     @classmethod
-    def is_allowed(cls, request):
-        if not UserAuthIP.is_enabled(request):
+    def is_allowed(cls, request, user):
+        ip = get_ip(request)
+        if cls.objects.filter(ip__user=user, ip_data=ip).exists():
             return True
 
-        range_list = cls.objects.values_list('ip_range', flat=True).filter(
-            user=request.user)
-        user_ip = IPv4Address(unicode(get_ip(request)))
+        range_list = cls.objects.values_list('ip_data', flat=True).filter(
+            ip__user=user, is_ip=False)
+        user_ip = IPv4Address(unicode(ip))
 
         if any([user_ip in IPv4Network(ip_range) for ip_range in range_list]):
             return True
+
+    @classmethod
+    def send_link(cls, request, user):
+        data = {
+            'ip': get_ip(request),
+            'user_agent': md5(request.META.get('HTTP_USER_AGENT')),
+        }
+        link = 'http://%s%s?data=%s' % (
+            Site.objects.get_current(),
+            reverse('auth_login'),
+            Sign().sign(data)
+        )
+        send_mail(
+            [user.email], _('Link for unlock access'), link
+        )
+
+    @classmethod
+    def check_access(cls, request):
+        if request.GET.get('data'):
+            data = Sign().unsign(request.GET.get('data'), SMS_AGE * 2)
+            if data.get('ip') == get_ip(request):
+                user_agent = md5(request.META['HTTP_USER_AGENT'])
+                if data.get('user_agent') == user_agent:
+                    return True
+
+    @classmethod
+    def is_blocked(cls, request, user):
+        if UserAuthIP.is_enabled(user):
+            is_allowed = cls.is_allowed(request, user)
+            access_checked = cls.check_access(request)
+            if not is_allowed and not access_checked:
+                cls.send_link(request, user)
+                return True

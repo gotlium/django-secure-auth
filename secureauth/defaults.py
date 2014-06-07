@@ -47,6 +47,7 @@ METHODS_ENABLED = get_settings('AUTH_METHODS_ENABLED', (
     'activity',
     'notification',
     'logging',
+    'ip',
 ))
 
 CHECK_ATTEMPT = get_settings('AUTH_CHECK_ATTEMPT', True)

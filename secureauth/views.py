@@ -7,7 +7,6 @@ from django.template.response import TemplateResponse
 from django.utils.http import is_safe_url
 from django.shortcuts import resolve_url, render
 from django.contrib.auth import authenticate
-from django.conf import settings
 from django.forms.models import model_to_dict
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 from django.contrib.sites.models import get_current_site
@@ -15,6 +14,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now
 from django.contrib import messages
+from django.conf import settings
 
 from django_tables2 import RequestConfig
 
@@ -28,9 +28,11 @@ from secureauth.utils.decorators import (
     ajax_decorator, auth_decorator, staff_decorator, login_decorator)
 from secureauth.utils import get_ip
 from secureauth.forms import (
-    BasicForm, CodeForm, PhoneBasicForm, QuestionForm, IpBanForm,
-    NotificationForm, LoggingForm, DisableMethodForm)
+    BasicForm, CodeForm, PhoneBasicForm, QuestionForm,
+    NotificationForm, LoggingForm, DisableMethodForm,
+    IpBanForm, IPSettingsForm, IPRangeFormSet)
 from secureauth.models import (
+    UserAuthIP, UserAuthIPRange,
     UserAuthPhone, UserAuthCode, UserAuthQuestion, UserAuthToken,
     UserAuthActivity, UserAuthNotification, UserAuthAttempt, UserAuthLogging)
 from secureauth.defaults import SMS_AGE, SMS_FORCE, CHECK_ATTEMPT
@@ -66,6 +68,9 @@ def login(request, template_name='secureauth/login.html',
                 request.session.delete_test_cookie()
 
             user = form.get_user()
+
+            if UserAuthIPRange.is_blocked(request, user):
+                return render(request, 'secureauth/blocked_ip.html')
 
             if SMS_FORCE or len(get_available_auth_methods(user)) > 1:
                 data = {
@@ -123,6 +128,7 @@ def login_confirmation(request, template_name='secureauth/confirmation.html',
         form = authentication_form(data, request.POST)
         if form.is_valid():
             user = form.get_user()
+
             if user and data.get('user_pk') == user.pk:
                 auth_login(request, user)
 
@@ -363,26 +369,32 @@ def auth_activity(request):
     })
 
 
-def _settings_view(request, model_class, form_class, template):
+def _settings_view(request, model_class, form_class, template, redirect_to,
+                   form_set=None):
     instance = model_class.objects.get_or_create(user=request.user)[0]
     data = request.POST or None
     form = form_class(request, data, instance=instance)
+    form_set = form_set and form_set(request.POST or None, instance=instance)
     if request.method == 'POST' and form.is_valid():
         form.save(commit=False)
         form.user = request.user
-        form.save()
+        instance = form.save()
+        if form_set is not None and form_set.is_valid():
+            form_set.instance = instance
+            form_set.save()
         messages.info(request, _('Successfully saved'))
         if not form.cleaned_data.get('enabled'):
             UserAuthNotification.notify(
                 request, _('Your settings has changed'), force=True)
-    return render(request, template, {'form': form})
+        return redirect(redirect_to)
+    return render(request, template, {'form': form, 'form_set': form_set})
 
 
 @auth_decorator
 def notify_settings(request):
     return _settings_view(
         request, UserAuthNotification, NotificationForm,
-        'secureauth/notify_settings.html'
+        'secureauth/notify_settings.html', 'notify_settings'
     )
 
 
@@ -390,7 +402,15 @@ def notify_settings(request):
 def logging_settings(request):
     return _settings_view(
         request, UserAuthLogging, LoggingForm,
-        'secureauth/logging_settings.html'
+        'secureauth/logging_settings.html', 'logging_settings'
+    )
+
+
+@auth_decorator
+def ip_settings(request):
+    return _settings_view(
+        request, UserAuthIP, IPSettingsForm,
+        'secureauth/ip_settings.html', 'ip_settings', IPRangeFormSet
     )
 
 

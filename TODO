@@ -1,6 +1,6 @@
 Secure code to email
-Allow access for IP/IP range
 Authentication by ssl certificate
+Check defined settings access on views
 
 Registration:
     add "I agree terms of use" to registration form

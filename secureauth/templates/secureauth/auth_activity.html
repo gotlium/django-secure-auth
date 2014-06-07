@@ -1,15 +1,15 @@
 {% extends "secureauth/base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans 'Authentication Activity' %}{% endblock %}
+{% block title %}{% trans 'Authentication activity' %}{% endblock %}
 
 {% block content %}
-{{ table.as_html }}
-<hr>
-<form action="" method="get">
-    <table>
-        {{ filter.form.as_table }}
-    </table>
-    <input type="submit" value="{% trans 'Filter' %}"/>
-</form>
+    {{ table.as_html }}
+    <hr>
+    <form action="" method="get">
+        <table>
+            {{ filter.form.as_table }}
+        </table>
+        <input type="submit" value="{% trans 'Filter' %}"/>
+    </form>
 {% endblock content %}

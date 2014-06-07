@@ -12,6 +12,8 @@ open_docs:
 	open docs/.build/html/index.html
 run_celeryd:
 	cd demo && python manage.py celeryd --loglevel=info
+run_shell:
+	cd demo && python manage.py shell_plus --print-sql
 run_rmq:
 	rabbitmq-server -detached >& /dev/null
 makemessages:

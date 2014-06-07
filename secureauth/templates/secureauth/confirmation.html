@@ -4,44 +4,44 @@
 {% block title %}{% trans 'Confirmation' %}{% endblock %}
 
 {% block content %}
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#id_auth_type').change(function () {
-            var url = "";
-            if ($(this).val() == 'phone') {
-                var url = "{% url 'phone_send_sms' %}";
-            }
-            else if ($(this).val() == 'code') {
-                var url = "{% url 'code_get_random' %}";
-            }
-            else if ($(this).val() == 'question') {
-                var url = "{% url 'get_question' %}";
-            }
-            else if ($(this).val() == '') {
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#id_auth_type').change(function () {
                 var url = "";
-            }
-            else {
-                alert('{% trans 'Enter code from your mobile app' %}')
-                $('#id_code').focus();
-            }
-            if (url != "") {
-                $.get(url + '?data={{ data }}', function (data) {
-                    alert(data);
+                if ($(this).val() == 'phone') {
+                    var url = "{% url 'phone_send_sms' %}";
+                }
+                else if ($(this).val() == 'code') {
+                    var url = "{% url 'code_get_random' %}";
+                }
+                else if ($(this).val() == 'question') {
+                    var url = "{% url 'get_question' %}";
+                }
+                else if ($(this).val() == '') {
+                    var url = "";
+                }
+                else {
+                    alert('{% trans 'Enter code from your mobile app' %}')
                     $('#id_code').focus();
-                });
-            }
-            ;
+                }
+                if (url != "") {
+                    $.get(url + '?data={{ data }}', function (data) {
+                        alert(data);
+                        $('#id_code').focus();
+                    });
+                }
+                ;
+            });
         });
-    });
-</script>
-<form method="post" action="" id="confirmation_form">
-    <table>
-        {{ form.as_table }}
-    </table>
-    {% csrf_token %}
-    <input type="hidden" name="next" value="{{ next }}" />
-    <input type="submit" value="{% trans 'Log in' %}"/>
-    or <a href="{% url 'auth_login' %}">{% trans 'Cancel' %}</a>
-</form>
+    </script>
+    <form method="post" action="" id="confirmation_form">
+        <table>
+            {{ form.as_table }}
+        </table>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}"/>
+        <input type="submit" value="{% trans 'Log in' %}"/>
+        or <a href="{% url 'auth_login' %}">{% trans 'Cancel' %}</a>
+    </form>
 {% endblock content %}

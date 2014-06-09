@@ -10,5 +10,7 @@
         </table>
         {% csrf_token %}
         <input type="submit" value="{% trans 'Save' %}"/>
+        {% trans 'or' %}
+        <a href="{% url 'auth_settings' %}">{% trans 'Cancel' %}</a>
     </form>
 {% endblock content %}

@@ -19,11 +19,13 @@ from ipaddress import IPv4Network, IPv4Address
 from httpagentparser import detect
 
 from secureauth.utils.token import random_seed, check_seed, get_google_url
+from secureauth.utils import is_phone, get_formatted_phone
 from secureauth.utils import get_ip, get_geo, inet_aton
 from secureauth.utils.codes import RandomPassword, md5
 from secureauth.utils import send_sms, send_mail
+from secureauth.utils import render_template
 from secureauth.utils.sign import Sign
-from secureauth.utils import is_phone
+
 from secureauth.defaults import (
     SMS_MESSAGE, SMS_CODE_LEN, SMS_ASCII, SMS_AGE, SMS_FROM,
     CODE_RANGES, CODE_LEN, SMS_NOTIFICATION_MESSAGE, SMS_NOTIFICATION_SUBJECT,
@@ -152,8 +154,8 @@ class UserAuthPhone(UserAuthAbstract):
                 _('Phone does not contain spaces and must be starts with a +'))
 
     def save(self, *args, **kwargs):
-        if str(self.phone).startswith('+'):
-            self.phone = Sign().sign(self.phone)
+        if self.phone.startswith('+'):
+            self.phone = Sign().sign(get_formatted_phone(self.phone))
         super(UserAuthPhone, self).save(*args, **kwargs)
 
     def send_sms(self):
@@ -217,6 +219,7 @@ class UserAuthActivity(models.Model):
     confirm_method = models.CharField(
         _('Confirm method'), max_length=10, choices=AUTH_TYPES,
         null=True, blank=True)
+    notified = models.BooleanField(default=False, editable=False)
 
     class Meta:
         ordering = ('-id',)
@@ -239,16 +242,16 @@ class UserAuthActivity(models.Model):
     @classmethod
     def check_location(cls, request):
         obj = cls.objects.filter(user_id=request.user.pk).order_by('-id')[:1]
-        if obj.exists() and get_geo(get_ip(request)) != obj[0].geo:
-            show_msg = """%s<br/>GEO: %s<br/>IP: %s<br/>PC: %s<br/>%s""" % (
-                unicode(_('Your location has changed. Former location:')),
-                obj[0].geo, obj[0].ip, obj[0].agent, unicode(
-                    _('If it was not you, then change authorization data.')))
-            messages.warning(request, show_msg)
-            UserAuthNotification.notify(
-                request,
-                _('Your location has changed to %s' % get_geo(get_ip(request)))
-            )
+        if obj.exists():
+            geo = get_geo(get_ip(request))
+            obj = obj[0]
+            if not obj.notified and geo != obj.geo:
+                messages.warning(request, render_template(
+                    'secureauth/location_message.html', {'obj': obj}))
+                UserAuthNotification.notify(
+                    request, _('Your location has changed to %s' % geo))
+                obj.notified = True
+                obj.save()
 
 
 class UserAuthAttempt(models.Model):

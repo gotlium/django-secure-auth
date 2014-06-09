@@ -5,7 +5,6 @@ from re import compile
 from time import time
 
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.template import RequestContext, loader
 from django.contrib.auth import logout
 from django.shortcuts import render
 
@@ -16,9 +15,9 @@ from secureauth.defaults import (
     TEST_COOKIE_REFRESH_ENCRYPT_COOKIE_IV,
     TEST_COOKIE_REFRESH_ENCRYPT_COOKIE_KEY,
 )
+from secureauth.utils import render_template, get_ip
 from secureauth.utils.codes import RandomPassword
 from secureauth.defaults import SESSION_MAX
-from secureauth.utils import get_ip
 from secureauth.models import UserAuthAttempt
 
 
@@ -37,7 +36,9 @@ class SecureAuthSessionExpireMiddleware(object):
     def process_request(self, request):
         if request.session.get('last_activity'):
             if (time() - request.session.get('last_activity')) > SESSION_MAX:
-                logout(request)
+                if hasattr(request, 'user'):
+                    if request.user.is_authenticated():
+                        logout(request)
 
         request.session['last_activity'] = time()
 
@@ -84,10 +85,8 @@ class SecureAuthTestCookieMiddleware(object):
             if from_session is None:
                 self._clean(request, response)
             elif from_cookie != from_session:
-                response = HttpResponse(loader.get_template(
-                    'secureauth/session_expired.html').render(
-                    RequestContext(request, {})
-                ))
+                response = HttpResponse(
+                    render_template('secureauth/session_expired.html'))
                 self._clean(request, response)
                 logout(request)
                 return response

@@ -33,6 +33,13 @@ class BasicForm(forms.Form):
             self.fields['current_password'] = forms.CharField(
                 label=_('Current password:'), widget=forms.PasswordInput)
 
+    def hide_field(self, model_class, field_name):
+        try:
+            model_class.objects.get(user=self.request.user)
+            self.fields.pop(field_name)
+        except UserAuthQuestion.DoesNotExist:
+            pass
+
     def clean_current_password(self):
         current_password = self.cleaned_data.get('current_password', '')
         if not self.request.user.check_password(current_password):
@@ -78,8 +85,8 @@ class PhoneBasicForm(BasicForm):
     phone = forms.CharField(label=_('Phone'), required=True, max_length=16)
 
     def __init__(self, *args, **kwargs):
-        self.decrypt('phone', **kwargs)
         super(PhoneBasicForm, self).__init__(*args, **kwargs)
+        self.hide_field(UserAuthPhone, 'phone')
 
     def clean_phone(self):
         phone = self.cleaned_data.get('phone')
@@ -103,17 +110,14 @@ class QuestionForm(BasicForm):
     code = forms.CharField(label=_('code'), required=True, max_length=16)
 
     def __init__(self, request, *args, **kwargs):
-        self.decrypt('code', **kwargs)
-        self.decrypt('question', **kwargs)
+        # self.decrypt('code', **kwargs)
+        # self.decrypt('question', **kwargs)
         super(QuestionForm, self).__init__(request, *args, **kwargs)
 
         self.fields['code'].label = _('Answer')
 
-        try:
-            UserAuthQuestion.objects.get(user=request.user)
-            self.fields.pop('code')
-        except UserAuthQuestion.DoesNotExist:
-            pass
+        self.hide_field(UserAuthQuestion, 'code')
+        self.hide_field(UserAuthQuestion, 'question')
 
     def save(self):
         model = super(QuestionForm, self).save()

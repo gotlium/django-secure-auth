@@ -1,0 +1,7 @@
+{% load i18n %}
+
+{% trans 'Your location has changed. Former location:' %}<br/>
+GEO: {{ obj.geo }}<br/>
+IP: {{ obj.ip }}<br/>
+PC: {{ obj.agent }}<br/>
+{% trans 'If it was not you, then change authorization data.' %}

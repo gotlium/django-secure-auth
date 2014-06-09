@@ -27,12 +27,10 @@ class ConfirmAuthenticationForm(forms.Form):
         label=_("Authentication type"),
         initial='token',
         choices=AUTH_TYPES,
-        required=True,
     )
     code = forms.CharField(
         label=_("code"),
         widget=forms.TextInput(),
-        required=False
     )
 
     def __init__(self, data, *args, **kwargs):

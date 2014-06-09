@@ -96,6 +96,7 @@ INSTALLED_APPS = (
 
     'secureauth',
     'captcha',
+    'sslserver',
 )
 
 LOGGING = {
@@ -142,8 +143,8 @@ REGISTRATION_OPEN = True
 
 CSRF_FAILURE_VIEW = 'demo.csrf_failure'
 
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 CAPTCHA_LENGTH = 3
 CAPTCHA_FONT_SIZE = 24

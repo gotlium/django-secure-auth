@@ -5,6 +5,7 @@ import socket
 
 from django.core.mail import send_mail as dj_send_mail
 from django.utils.translation import ugettext as _
+from django.template import Context, loader
 from django.contrib.gis.geoip import GeoIP
 from django.conf import settings
 
@@ -92,3 +93,14 @@ def is_phone(phone):
         return phonenumbers.is_valid_number(phonenumbers.parse(phone, None))
     except phonenumbers.NumberParseException:
         return False
+
+
+def get_formatted_phone(phone):
+    return phonenumbers.format_number(
+        phonenumbers.parse(phone), phonenumbers.PhoneNumberFormat.E164
+    )
+
+
+def render_template(template, context=None):
+    template = loader.get_template(template)
+    return template.render(Context(context or {}))

@@ -31,15 +31,15 @@ Run Redis server and Celery daemon(or remove 'djcelery' from ``INSTALLED_APPS``)
 
 .. code-block:: bash
 
-    $ redis-server >& /dev/null &
-    $ python manage.py celeryd --loglevel=info >& /tmp/celery.log &
+    $ make run_redis
+    $ make run_celery
 
 
 Run test server:
 
 .. code-block:: bash
 
-    $ python manage.py runserver
+    $ make run_server
 
 
 Now you can open http://127.0.0.1:8000/accounts/register/ and register

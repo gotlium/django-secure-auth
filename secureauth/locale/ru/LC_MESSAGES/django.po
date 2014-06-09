@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-24 04:00+0400\n"
-"PO-Revision-Date: 2014-06-07 05:37+0230\n"
+"PO-Revision-Date: 2014-06-09 06:05+0230\n"
 "Last-Translator:   <gotlium@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -459,3 +459,9 @@ msgstr "Ваша сессия устарела"
 
 msgid "Unknown"
 msgstr "Неизвестно"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "or"
+msgstr "или"

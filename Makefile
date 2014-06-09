@@ -10,12 +10,14 @@ pep8:
 	flake8 --exclude=migrations secureauth
 open_docs:
 	open docs/.build/html/index.html
-run_celeryd:
-	cd demo && python manage.py celeryd --loglevel=info
+run_server:
+	cd demo && HTTPS=on python manage.py runsslserver --traceback 1> /dev/null
+run_celery:
+	cd demo && python manage.py celeryd --loglevel=info >& /tmp/celery.log &
 run_shell:
 	cd demo && python manage.py shell_plus --print-sql
-run_rmq:
-	rabbitmq-server -detached >& /dev/null
+run_redis:
+	redis-server >& /dev/null &
 makemessages:
 	cd demo && python manage.py makemessages --all --no-location --symlinks
 compilemessages:

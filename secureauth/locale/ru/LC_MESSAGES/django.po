@@ -456,3 +456,6 @@ msgstr "Настройка доступа по IP"
 
 msgid "Your session is expired"
 msgstr "Ваша сессия устарела"
+
+msgid "Unknown"
+msgstr "Неизвестно"

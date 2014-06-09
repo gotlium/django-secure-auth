@@ -4,6 +4,7 @@ import struct
 import socket
 
 from django.core.mail import send_mail as dj_send_mail
+from django.utils.translation import ugettext as _
 from django.contrib.gis.geoip import GeoIP
 from django.conf import settings
 
@@ -69,29 +70,25 @@ def send_mail(*args, **kwargs):
 def get_ip(request):
     ip = get_real_ip(request)
     if ip is not None:
-        return ip
-    else:
-        ip = request.META['REMOTE_ADDR']
-        if 'HTTP_X_FORWARDED_FOR' in request.META:
-            ip = request.META['HTTP_X_FORWARDED_FOR'].split(',')[-1]
         return ip.strip()
+    return request.META['REMOTE_ADDR'].strip()
 
 
 def inet_aton(ip):
     return struct.unpack('!L', socket.inet_aton(ip))[0]
 
 
-def get_geo(ip):
+def get_geo(ip, unknown=_('Unknown')):
     g = GeoIP()
-    info = g.city(ip)
-    if info is None:
-        info = dict()
+    info = g.city(ip) or dict()
     return "%s:%s" % (
-        info.get('country_name', 'Unknown') or 'Unknown',
-        info.get('city', 'Unknown') or 'Unknown',
+        info.get('country_name') or unknown,
+        info.get('city') or unknown,
     )
 
 
 def is_phone(phone):
-    z = phonenumbers.parse(phone, None)
-    return phonenumbers.is_valid_number(z)
+    try:
+        return phonenumbers.is_valid_number(phonenumbers.parse(phone, None))
+    except phonenumbers.NumberParseException:
+        return False

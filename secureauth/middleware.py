@@ -85,8 +85,8 @@ class SecureAuthTestCookieMiddleware(object):
             if from_session is None:
                 self._clean(request, response)
             elif from_cookie != from_session:
-                response = HttpResponse(
-                    render_template('secureauth/session_expired.html'))
+                response.content = render_template(
+                    'secureauth/session_expired.html')
                 self._clean(request, response)
                 logout(request)
                 return response

@@ -6,7 +6,7 @@ Demo installation:
 
 .. code-block:: bash
 
-    $ sudo apt-get install geoip-database-contrib rabbitmq-server
+    $ sudo apt-get install geoip-database-contrib redis-server
     $ mkvirtualenv django-secure-auth
     $ git clone https://github.com/gotlium/django-secure-auth.git
     $ cd django-secure-auth

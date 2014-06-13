@@ -33,6 +33,7 @@ setup(
         'templates/secureauth/question_settings/*.html',
         'templates/secureauth/totp_settings/*.html',
         'locale/*/LC_MESSAGES/*.po'
+        'static/secureauth/js/*.js'
     ]},
     zip_safe=False,
     install_requires=[

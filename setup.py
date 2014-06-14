@@ -47,5 +47,6 @@ setup(
         'django-ipware>=0.0.8',
         'slowaes==0.1a1',
         'ipaddress>=1.0.6',
+        'django-phonenumber-field>=0.5',
     ]
 )

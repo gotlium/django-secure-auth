@@ -6,7 +6,9 @@ Demo installation:
 
 .. code-block:: bash
 
-    $ sudo apt-get install geoip-database-contrib redis-server
+    $ sudo apt-get install -y redis-server
+    $ pip install virtualenvwrapper
+    $ source /usr/local/bin/virtualenvwrapper.sh
     $ mkvirtualenv django-secure-auth
     $ git clone https://github.com/gotlium/django-secure-auth.git
     $ cd django-secure-auth
@@ -16,6 +18,9 @@ Demo installation:
     $ pip install -r requirements.txt
     $ python manage.py syncdb --noinput
     $ python manage.py migrate
+    $ wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+    $ gunzip GeoLiteCity.dat.gz
+    $ mkdir -p /usr/share/geoip/; mv GeoLiteCity.dat /usr/share/geoip/
 
 
 Open settings:
@@ -42,7 +47,7 @@ Run test server:
     $ make run_server
 
 
-Now you can open http://127.0.0.1:8000/accounts/register/ and register
+Now you can open https://127.0.0.1:8000/accounts/register/ and register
 new account and setup all available authentication methods.
 
 *Note: activation link will be output to console.*

@@ -153,7 +153,7 @@ CAPTCHA_TIMEOUT = 10
 CAPTCHA_LETTER_ROTATION = (-10, 10)
 CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)
 
-TEST_COOKIE_ENABLED = True
+AUTH_TEST_COOKIE_ENABLED = True
 
 import djcelery
 djcelery.setup_loader()

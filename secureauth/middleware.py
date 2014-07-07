@@ -4,7 +4,7 @@ from urllib import quote
 from re import compile
 from time import time
 
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponseBadRequest
 from django.contrib.auth import logout
 from django.shortcuts import render
 
@@ -92,13 +92,15 @@ class SecureAuthTestCookieMiddleware(object):
                 return response
         return response
 
-    def _is_enabled(self, request):
+    @staticmethod
+    def _is_enabled(request):
         if not TEST_COOKIE_ENABLED:
             return False
         path = request.path_info.lstrip('/')
         return any(m.match(path) for m in ENABLED_URLS)
 
-    def _clean(self, request, response):
+    @staticmethod
+    def _clean(request, response):
         if request.session.get('test_cookie_secret'):
             del request.session['test_cookie_secret']
         if request.COOKIES.get('satctoken'):

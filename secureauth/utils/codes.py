@@ -18,7 +18,8 @@ class RandomPassword(object):
             group = trial
         return True
 
-    def _select(self, character):
+    @staticmethod
+    def _select(character):
         for group in (string.ascii_uppercase,
                       string.ascii_lowercase,
                       string.digits):

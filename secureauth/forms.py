@@ -16,7 +16,8 @@ from utils import is_phone
 class BasicForm(forms.Form):
     enabled = forms.BooleanField(label=_('Enabled'), required=False)
 
-    def decrypt(self, key, **kwargs):
+    @staticmethod
+    def decrypt(key, **kwargs):
         if 'initial' in kwargs:
             if kwargs['initial'] and key in kwargs['initial'].keys():
                 unsigned = Sign().unsign(kwargs['initial'][key])

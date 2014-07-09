@@ -13,6 +13,9 @@ clean-pyc:
 pep8:
 	flake8 --exclude=migrations secureauth
 
+run:
+	cd demo && python manage.py runserver_plus --print-sql
+
 run_server:
 	cd demo && HTTPS=on python manage.py runsslserver --traceback 1> /dev/null
 

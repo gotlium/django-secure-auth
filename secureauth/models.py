@@ -281,6 +281,7 @@ class UserAuthAttempt(models.Model):
         if obj.attempt > LOGIN_ATTEMPT:
             if (now() - obj.created).seconds < BAN_TIME:
                 return True
+            obj.delete()
 
     @classmethod
     def clean(cls):

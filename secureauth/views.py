@@ -5,7 +5,7 @@ from django.http import (
 from django.utils.translation import ugettext as _
 from django.template.response import TemplateResponse
 from django.utils.http import is_safe_url
-from django.shortcuts import resolve_url, render
+from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.forms.models import model_to_dict
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
@@ -40,12 +40,14 @@ from secureauth.defaults import SMS_AGE, SMS_FORCE, CHECK_ATTEMPT
 
 def _get_data(request):
     data = Sign().unsign(request.GET.get('data'), age=SMS_AGE * 2)
-    if data is not None:
-        user = authenticate(**data.get('credentials'))
+    if data is not None and 'credentials' in data:
+        if 'captcha' in data['credentials']:
+            data['credentials'].pop('captcha')
+        user = authenticate(**data['credentials'])
         if user is not None and user.is_active:
             if get_ip(request) == data.get('ip'):
                 return data
-    raise Http404('Not found')
+    raise Http404('Data is not valid!')
 
 
 @login_decorator
@@ -62,7 +64,9 @@ def login(request, template_name='secureauth/login.html',
         form = authentication_form(request, data=request.POST)
         if form.is_valid():
             if not is_safe_url(url=redirect_to, host=request.get_host()):
-                redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
+                redirect_to = settings.LOGIN_REDIRECT_URL
+                if '/' not in redirect_to and '.' not in redirect_to:
+                    redirect_to = reverse(settings.LOGIN_REDIRECT_URL)
 
             if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()

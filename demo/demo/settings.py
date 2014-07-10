@@ -133,6 +133,26 @@ AUTH_SMS_BACKEND = 'Twilio'
 # here demo account settings
 AUTH_SMS_BACKEND_AUTH = [
     'ACc73704107c6a5426b2157e279c485d32', 'a2949613dc22aa3df58ea813a6e0747f']
+
+'''
+# http://www.smsaero.ru
+AUTH_SMS_BACKEND = 'SmsAero'
+AUTH_SMS_BACKEND_AUTH = [
+    'gotlium@gmail.com', 'c2c6e9d20f59dee59b7a47e39932asfds']
+AUTH_SMS_FROM = 'INFORM'
+
+# https://www.twilio.com
+AUTH_SMS_BACKEND = 'Twilio'
+AUTH_SMS_BACKEND_AUTH = [
+    'ACc73704107c6a5426b2157e279c485d32', 'a2949613dc22aa3df58ea813a6e0747f']
+
+# https://www.nexmo.com
+AUTH_SMS_BACKEND = 'Nexmo'
+AUTH_SMS_BACKEND_AUTH = ['c2e179e1', 'accv1944']
+AUTH_SMS_FROM = 'NEXMO'
+'''
+
+
 LOGIN_URL = '/accounts/'
 LOGIN_REDIRECT_URL = '/accounts/settings/'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

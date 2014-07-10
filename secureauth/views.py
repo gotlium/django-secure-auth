@@ -365,7 +365,7 @@ def question_settings(request):
 def auth_activity(request):
     queryset = UserAuthActivity.objects.filter(user=request.user)
     queryset = UserAuthActivityFilter(request.GET, queryset=queryset)
-    table = UserAuthActivityTable(queryset)
+    table = UserAuthActivityTable(queryset, request=request)
     RequestConfig(request).configure(table)
     return render(request, 'secureauth/auth_activity.html', {
         'table': table,

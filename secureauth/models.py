@@ -217,7 +217,7 @@ class UserAuthActivity(models.Model):
     agent = models.CharField(
         _('Browser'), max_length=255, null=True, blank=True)
     confirm_method = models.CharField(
-        _('Confirm method'), max_length=10, choices=AUTH_TYPES,
+        _('Confirm Method'), max_length=10, choices=AUTH_TYPES,
         null=True, blank=True)
     notified = models.BooleanField(default=False, editable=False)
 

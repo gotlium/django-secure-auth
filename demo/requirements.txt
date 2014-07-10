@@ -10,7 +10,8 @@ tornado==3.2.1
 django-bootstrap-static==2.3.2
 django-celery==3.0.23
 django-registration==1.0
-django-rosetta==0.7.4
+django-rosetta==0.7.3
 South==0.8.4
 django-sslserver==0.12
 Pillow==2.4.0
+redis==2.10.1

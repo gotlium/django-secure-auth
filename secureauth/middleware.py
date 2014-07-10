@@ -52,6 +52,7 @@ class SecureAuthTestCookieMiddleware(object):
                 request.session.save()
 
             if not request.COOKIES.get('satctoken'):
+                UserAuthAttempt.clean()
                 UserAuthAttempt.store(request)
 
     def process_response(self, request, response):

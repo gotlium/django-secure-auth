@@ -38,7 +38,7 @@ class BasicForm(forms.Form):
         try:
             model_class.objects.get(user=self.request.user)
             self.fields.pop(field_name)
-        except UserAuthQuestion.DoesNotExist:
+        except model_class.DoesNotExist:
             pass
 
     def clean_current_password(self):

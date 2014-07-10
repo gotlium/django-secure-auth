@@ -55,7 +55,7 @@ class UserAuthAbstract(models.Model):
 
     def update_last_verified(self):
         self.last_verified = now()
-        self.save(update_fields=['last_verified'])
+        self.save() #update_fields=['last_verified']
 
     def check_auth_code(self, auth_code, force_check=False):
         if (self.code and self.enabled) or force_check:
@@ -91,7 +91,7 @@ class UserAuthCode(UserAuthAbstract):
     def get_code_number(self):
         number = random.choice(range(1, CODE_RANGES + 1))
         self.number = Sign().sign(number)
-        self.save(update_fields=['number'])
+        self.save() #update_fields=['number']
         return number
 
     def make(self):
@@ -267,7 +267,7 @@ class UserAuthAttempt(models.Model):
     def store(cls, request):
         obj = cls.get_obj(request)
         obj.attempt = models.F('attempt') + 1
-        obj.save(update_fields=['attempt'])
+        obj.save() #update_fields=['attempt']
 
     @classmethod
     def remove(cls, request):

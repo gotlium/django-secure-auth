@@ -61,6 +61,12 @@ Screenshots
 .. image:: /screenshots/sms-settings.jpg
 
 
+Compatibility
+-------------
+* Python: 2.6, 2.7, 3.3
+* Django: 1.4.x, 1.5.x, 1.6
+
+
 .. image:: https://d2weczhvl823v0.cloudfront.net/gotlium/django-secure-auth/trend.png
    :alt: Bitdeli badge
    :target: https://bitdeli.com/free

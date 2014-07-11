@@ -63,7 +63,7 @@ Screenshots
 
 Compatibility
 -------------
-* Python: 2.6, 2.7, 3.3
+* Python: 2.6, 2.7
 * Django: 1.4.x, 1.5.x, 1.6
 
 

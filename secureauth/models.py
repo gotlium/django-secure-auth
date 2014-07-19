@@ -134,7 +134,8 @@ class UserAuthToken(UserAuthAbstract):
         return get_google_url(Sign().unsign(self.code), TOTP_NAME % data)
 
     def _code_is_valid(self, code):
-        return check_seed(Sign().unsign(self.code), int(code))
+        if code.isdigit():
+            return check_seed(Sign().unsign(self.code), int(code))
 
     def make(self):
         if not self.code:

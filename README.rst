@@ -64,7 +64,7 @@ Screenshots
 Compatibility
 -------------
 * Python: 2.6, 2.7
-* Django: 1.4.x, 1.5.x, 1.6
+* Django: 1.4.x, 1.5.x, 1.6.x
 
 
 .. image:: https://d2weczhvl823v0.cloudfront.net/gotlium/django-secure-auth/trend.png

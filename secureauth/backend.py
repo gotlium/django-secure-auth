@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib.auth.backends import ModelBackend
 from django.db.models import get_model
+from django.contrib.auth import authenticate
 
 
-class AuthBackend(ModelBackend):
+class AuthBackend(object):
     def auth(self, credentials, method='', code=''):
-        user = super(AuthBackend, self).authenticate(**credentials)
+        user = authenticate(**credentials)
         auth_backend = get_model('secureauth', 'UserAuth%s' % method)
 
         if auth_backend is not None and user is not None:

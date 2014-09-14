@@ -264,6 +264,11 @@ class BasicView(object):
         elif (now() - self.request.session.get('step_time')).seconds > SMS_AGE:
             return Http404
 
+    def _cleanup_if_not_enabled(self):
+        if self.request.method == 'GET':
+            self.model.objects.filter(
+                user=self.request.user, enabled=False).delete()
+
     def settings_remove(self):
         step = 4 if self.obj.exists() else 1
 
@@ -285,6 +290,7 @@ class BasicView(object):
         return self._redirect(2)
 
     def settings(self):
+        self._cleanup_if_not_enabled()
         self.form = self.basic_form(
             self.request, self.model, self.request.POST or None,
             initial=self._get_initial())

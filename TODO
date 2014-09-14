@@ -1,8 +1,13 @@
-Remove used code
-django-formset-js
+Remove all user sessions on all devices
+Remove used code from available
 Secure code to email
 Authentication by ssl certificate
 Check defined settings access on views
+Send email, if password was changed
+Send email with code for modify any secureauth settings
+Show captcha if http-agent was not set
+Change password form protection
+Confirm code by email if some settings was enabled
 
 Registration:
     add "I agree terms of use" to registration form

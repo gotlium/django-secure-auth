@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext
 from django.conf import settings
 
 
 def get_settings(key, default):
     return getattr(settings, key, default)
 
+
+def _(message):
+    try:
+        return ugettext(message)
+    except:
+        pass
 
 SMS_FORCE = get_settings('AUTH_SMS_FORCE', False)
 SMS_BACKEND = get_settings('AUTH_SMS_BACKEND', 'Twilio')

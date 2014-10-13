@@ -9,7 +9,6 @@ from django.template import Context, loader
 from django.contrib.gis.geoip import GeoIP
 from django.conf import settings
 
-from secureauth.defaults import USE_CELERY
 from secureauth import defaults
 
 from ipware.ip import get_real_ip
@@ -38,7 +37,7 @@ def _send_mail(msg_to, msg_subjects, msg_body,
     dj_send_mail(msg_subjects, msg_body, msg_from, msg_to)
 
 
-if USE_CELERY is True:
+if defaults.USE_CELERY is True:
     from celery.task import Task
 
     class _SMSSendTask(Task):

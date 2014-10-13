@@ -5,9 +5,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models import get_model
 from django import forms
 
-from defaults import CAPTCHA_ATTEMPT, CAPTCHA_ENABLED
+from secureauth.defaults import CAPTCHA_ATTEMPT, CAPTCHA_ENABLED
+from secureauth.models import UserAuthAttempt, AUTH_TYPES
 from captcha.fields import CaptchaField
-from models import UserAuthAttempt, AUTH_TYPES
 
 
 def get_available_auth_methods(user):

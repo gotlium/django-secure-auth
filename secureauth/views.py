@@ -61,15 +61,13 @@ def login(request, template_name='secureauth/login.html',
         return HttpResponseBadRequest()
 
     if request.method == "POST":
-        form = authentication_form(request, data=request.POST)
+        form = authentication_form(
+            request, data=request.POST, test_cookie_enabled=False)
         if form.is_valid():
             if not is_safe_url(url=redirect_to, host=request.get_host()):
                 redirect_to = settings.LOGIN_REDIRECT_URL
                 if '/' not in redirect_to and '.' not in redirect_to:
                     redirect_to = reverse(settings.LOGIN_REDIRECT_URL)
-
-            if request.session.test_cookie_worked():
-                request.session.delete_test_cookie()
 
             user = form.get_user()
 
@@ -89,6 +87,10 @@ def login(request, template_name='secureauth/login.html',
                     '%s?data=%s' % (reverse('auth_confirmation'), data))
             else:
                 auth_login(request, user)
+
+                if request.session.test_cookie_worked():
+                    request.session.delete_test_cookie()
+
                 if UserAuthLogging.is_enabled(request):
                     UserAuthActivity.check_location(request)
                     UserAuthActivity.log_auth(request)

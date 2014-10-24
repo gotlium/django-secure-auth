@@ -27,7 +27,7 @@ from secureauth.utils import render_template
 from secureauth.utils.sign import Sign
 
 from secureauth.defaults import (
-    SMS_MESSAGE, SMS_CODE_LEN, SMS_ASCII, SMS_AGE, SMS_FROM,
+    SMS_MESSAGE, SMS_CODE_LEN, SMS_ASCII, SMS_AGE, SMS_FROM, AUTH_USER_MODEL,
     CODE_RANGES, CODE_LEN, SMS_NOTIFICATION_MESSAGE, SMS_NOTIFICATION_SUBJECT,
     LOGIN_ATTEMPT, BAN_TIME, CHECK_ATTEMPT, CODES_SUBJECT, TOTP_NAME)
 
@@ -43,7 +43,7 @@ AUTH_TYPES = (
 
 class UserAuthAbstract(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, editable=False, verbose_name=_('User'))
+        AUTH_USER_MODEL, editable=False, verbose_name=_('User'))
     code = models.TextField()
     enabled = models.BooleanField(_('Enabled'), default=False)
     created = models.DateTimeField(
@@ -193,7 +193,7 @@ class UserAuthQuestion(UserAuthAbstract):
 
 class UserAuthNotification(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, verbose_name=_('User'))
+        AUTH_USER_MODEL, verbose_name=_('User'))
     enabled = models.BooleanField(_('Enabled'), default=False)
 
     @classmethod
@@ -211,7 +211,7 @@ class UserAuthNotification(models.Model):
 
 class UserAuthActivity(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, editable=False, verbose_name=_('User'))
+        AUTH_USER_MODEL, editable=False, verbose_name=_('User'))
     ip = models.CharField(max_length=40, db_index=True)
     geo = models.CharField(_('GEO'), max_length=255, null=True, blank=True)
     date = models.DateTimeField(_('Date'), auto_now_add=True)
@@ -261,6 +261,10 @@ class UserAuthAttempt(models.Model):
     created = models.DateTimeField(auto_now=True, auto_now_add=True)
 
     @classmethod
+    def get_attempts(cls, request):
+        return cls.get_obj(request).attempt
+
+    @classmethod
     def get_obj(cls, request):
         return cls.objects.get_or_create(ip=inet_aton(get_ip(request)))[0]
 
@@ -292,7 +296,7 @@ class UserAuthAttempt(models.Model):
 
 class UserAuthLogging(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, verbose_name=_('User'))
+        AUTH_USER_MODEL, verbose_name=_('User'))
     enabled = models.BooleanField(_('Enabled'), default=False)
 
     @classmethod
@@ -302,7 +306,7 @@ class UserAuthLogging(models.Model):
 
 class UserAuthIP(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, verbose_name=_('User'))
+        AUTH_USER_MODEL, verbose_name=_('User'))
     enabled = models.BooleanField(_('Enabled'), default=False)
 
     @classmethod

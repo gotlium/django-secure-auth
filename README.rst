@@ -6,8 +6,7 @@ Demo installation:
 
 .. code-block:: bash
 
-    $ sudo apt-get install -y redis-server
-    $ pip install virtualenvwrapper
+    $ sudo apt-get install -y virtualenvwrapper redis-server || brew install pyenv-virtualenvwrapper redis
     $ source /usr/local/bin/virtualenvwrapper.sh
     $ mkvirtualenv django-secure-auth
     $ git clone https://github.com/gotlium/django-secure-auth.git
@@ -51,6 +50,22 @@ Now you can open https://127.0.0.1:8000/accounts/register/ and register
 new account and setup all available authentication methods.
 
 *Note: activation link will be output to console.*
+
+
+Crontab
+-------
+
+If you using TOTP authorization, please update your server time.
+If your time is behind, user cannot authenticated by this method.
+
+.. code-block:: bash
+
+    SHELL=/bin/bash
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+    MAILTO=root@localhost
+
+    # Update time
+    0 */6 * * * ntpdate ntp.ubuntu.com >& /dev/null
 
 
 Screenshots

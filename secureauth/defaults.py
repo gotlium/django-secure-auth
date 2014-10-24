@@ -75,3 +75,5 @@ TEST_COOKIE_ENABLED_URLS = get_settings('AUTH_TEST_COOKIE_ENABLED_URLS', [
     'accounts/logout/', 'accounts/'
     #'.*?'
 ])
+
+AUTH_USER_MODEL = get_settings('AUTH_USER_MODEL', 'auth.User')

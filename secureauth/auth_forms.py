@@ -60,14 +60,13 @@ class ConfirmAuthenticationForm(forms.Form):
 
 class BaseAuthForm(AuthenticationForm):
     def __init__(self, request, *args, **kwargs):
-        self.test_cookie_enabled = kwargs.pop('test_cookie_enabled', True)
+        test_cookie_enabled = kwargs.pop('test_cookie_enabled', True)
 
         super(BaseAuthForm, self).__init__(request, *args, **kwargs)
+        
         if CAPTCHA_ENABLED is True:
             if UserAuthAttempt.get_attempts(request) > CAPTCHA_ATTEMPT:
                 self.fields['captcha'] = CaptchaField()
 
-    def check_for_test_cookie(self):
-        if self.request and not self.request.session.test_cookie_worked():
-            if self.test_cookie_enabled is True:
-                raise forms.ValidationError(self.error_messages['no_cookies'])
+        if test_cookie_enabled is False:
+            self.request = None

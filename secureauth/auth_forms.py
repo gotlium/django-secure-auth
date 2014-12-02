@@ -5,7 +5,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models import get_model
 from django import forms
 
-from secureauth.defaults import CAPTCHA_ATTEMPT, CAPTCHA_ENABLED
 from secureauth.models import UserAuthAttempt, AUTH_TYPES
 from captcha.fields import CaptchaField
 
@@ -60,10 +59,12 @@ class ConfirmAuthenticationForm(forms.Form):
 
 class BaseAuthForm(AuthenticationForm):
     def __init__(self, request, *args, **kwargs):
+        from secureauth.defaults import CAPTCHA_ATTEMPT, CAPTCHA_ENABLED
+
         test_cookie_enabled = kwargs.pop('test_cookie_enabled', True)
 
         super(BaseAuthForm, self).__init__(request, *args, **kwargs)
-        
+
         if CAPTCHA_ENABLED is True:
             if UserAuthAttempt.get_attempts(request) > CAPTCHA_ATTEMPT:
                 self.fields['captcha'] = CaptchaField()

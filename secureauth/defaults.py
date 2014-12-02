@@ -35,7 +35,7 @@ DEFAULT_AUTH_TYPE = get_settings('AUTH_DEFAULT_TYPE', 'phone')
 SMS_NOTIFICATION_SUBJECT = get_settings(
     'AUTH_SMS_NOTIFICATION_SUBJECT', _('Auth activity'))
 CODES_SUBJECT = get_settings(
-    'AUTH_CODES_SUBJECT', _('Your security codes'))
+    'AUTH_CODES_SUBJECT', _('Security center'))
 SMS_NOTIFICATION_MESSAGE = get_settings(
     'AUTH_SMS_NOTIFICATION_MESSAGE',
     _("Authorization was made. If it's not you, then contact with us."))

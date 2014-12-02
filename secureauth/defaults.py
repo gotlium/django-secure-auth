@@ -14,6 +14,7 @@ def _(message):
     except:
         pass
 
+
 SMS_FORCE = get_settings('AUTH_SMS_FORCE', False)
 SMS_BACKEND = get_settings('AUTH_SMS_BACKEND', 'Twilio')
 SMS_BACKEND_AUTH = get_settings('AUTH_SMS_BACKEND_AUTH', [
@@ -32,10 +33,10 @@ TOTP_NAME = get_settings('AUTH_TOTP_NAME', "%(username)s@%(domain)s")
 DEFAULT_AUTH_TYPE = get_settings('AUTH_DEFAULT_TYPE', 'phone')
 
 # Notification when user is authenticated on site
-SMS_NOTIFICATION_SUBJECT = get_settings(
-    'AUTH_SMS_NOTIFICATION_SUBJECT', _('Auth activity'))
+MAIL_DEFAULT_SUBJECT = get_settings(
+    'AUTH_SMS_MAIL_DEFAULT_SUBJECT', _('Security center'))
 CODES_SUBJECT = get_settings(
-    'AUTH_CODES_SUBJECT', _('Security center'))
+    'AUTH_CODES_SUBJECT', _('Your security codes'))
 SMS_NOTIFICATION_MESSAGE = get_settings(
     'AUTH_SMS_NOTIFICATION_MESSAGE',
     _("Authorization was made. If it's not you, then contact with us."))

@@ -13,7 +13,6 @@ from django.core.urlresolvers import reverse
 from django.utils.timezone import now
 from django.contrib import messages
 from django.db import models
-from django.conf import settings
 
 from ipaddress import IPv4Network, IPv4Address
 from httpagentparser import detect
@@ -28,7 +27,7 @@ from secureauth.utils.sign import Sign
 
 from secureauth.defaults import (
     SMS_MESSAGE, SMS_CODE_LEN, SMS_ASCII, SMS_AGE, SMS_FROM, AUTH_USER_MODEL,
-    CODE_RANGES, CODE_LEN, SMS_NOTIFICATION_MESSAGE, SMS_NOTIFICATION_SUBJECT,
+    CODE_RANGES, CODE_LEN, SMS_NOTIFICATION_MESSAGE, MAIL_DEFAULT_SUBJECT,
     LOGIN_ATTEMPT, BAN_TIME, CHECK_ATTEMPT, CODES_SUBJECT, TOTP_NAME)
 
 
@@ -206,7 +205,7 @@ class UserAuthNotification(models.Model):
                 send_sms(SMS_FROM, Sign().unsign(obj[0].phone), message)
             elif request.user.email:
                 send_mail(
-                    [request.user.email], SMS_NOTIFICATION_SUBJECT, message)
+                    [request.user.email], MAIL_DEFAULT_SUBJECT, message)
 
 
 class UserAuthActivity(models.Model):

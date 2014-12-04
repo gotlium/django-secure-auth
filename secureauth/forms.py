@@ -181,6 +181,8 @@ class DisableMethodForm(forms.Form):
     token = forms.BooleanField(label=_('TOTP Auth'), required=False)
     phone = forms.BooleanField(label=_('SMS Auth'), required=False)
     question = forms.BooleanField(label=_('Question Auth'), required=False)
+    ip = forms.BooleanField(label=_('IP Auth'), required=False)
+
     current_password = forms.CharField(
         label=_('Current password:'), widget=forms.PasswordInput)
 
@@ -196,6 +198,7 @@ class DisableMethodForm(forms.Form):
             'token': get_status(UserAuthToken),
             'phone': get_status(UserAuthPhone),
             'question': get_status(UserAuthQuestion),
+            'ip': get_status(UserAuthIP),
         }
         super(DisableMethodForm, self).__init__(*args, **kwargs)
 
@@ -213,6 +216,7 @@ class DisableMethodForm(forms.Form):
         set_status(UserAuthToken, 'token')
         set_status(UserAuthPhone, 'phone')
         set_status(UserAuthQuestion, 'question')
+        set_status(UserAuthIP, 'ip')
 
 
 class IpBanForm(forms.Form):

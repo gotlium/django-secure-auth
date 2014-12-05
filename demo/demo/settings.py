@@ -96,7 +96,7 @@ INSTALLED_APPS = (
     'rosetta',
     'sslserver',
 
-    # secureauth required apps
+    # secureauth
     'secureauth',
     'django_tables2',
     'captcha',
@@ -129,7 +129,7 @@ LOGGING = {
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # IMPORTANT: django-secure-auth required configs
-AUTH_SMS_FORCE = True
+AUTH_SMS_FORCE = False
 AUTH_SMS_BACKEND = 'Twilio'
 
 # You can register new account on https://www.twilio.com/ and enter

@@ -78,25 +78,28 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'grappelli',
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'grappelli',
     'django.contrib.admin',
     'django_extensions',
+
     'bootstrap',
     'djcelery',
-    'django_tables2',
     'registration',
     'south',
     'rosetta',
-
-    'secureauth',
-    'captcha',
     'sslserver',
+
+    # secureauth required apps
+    'secureauth',
+    'django_tables2',
+    'captcha',
 )
 
 LOGGING = {

@@ -1,5 +1,4 @@
 from django.shortcuts import HttpResponse
-from .admin import *
 
 
 def csrf_failure(request, *args, **kwargs):

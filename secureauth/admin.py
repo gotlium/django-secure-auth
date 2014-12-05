@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.contrib import admin
 
+from secureauth.defaults import ENABLE_ADMIN_LINKS
+
 
 class CustomUserAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ('secure_auth',)
@@ -18,5 +20,6 @@ class CustomUserAdmin(UserAdmin):
     secure_auth.short_description = 'Secure auth'
 
 
-admin.site.unregister(User)
-admin.site.register(User, CustomUserAdmin)
+if ENABLE_ADMIN_LINKS is True:
+    admin.site.unregister(User)
+    admin.site.register(User, CustomUserAdmin)

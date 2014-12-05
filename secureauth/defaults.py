@@ -57,6 +57,8 @@ METHODS_ENABLED = get_settings('AUTH_METHODS_ENABLED', (
     'ip',
 ))
 
+ENABLE_ADMIN_LINKS = get_settings('AUTH_ENABLE_ADMIN_LINKS', True)
+
 CHECK_ATTEMPT = get_settings('AUTH_CHECK_ATTEMPT', True)
 LOGIN_ATTEMPT = get_settings('AUTH_LOGIN_ATTEMPT', 5)
 BAN_TIME = get_settings('AUTH_LOGIN_ATTEMPT_BAN_TIME', 3600)

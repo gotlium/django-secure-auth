@@ -6,20 +6,24 @@ Demo installation:
 
 .. code-block:: bash
 
-    $ sudo apt-get install -y virtualenvwrapper redis-server || brew install pyenv-virtualenvwrapper redis
-    $ source /usr/local/bin/virtualenvwrapper.sh
+    $ sudo apt-get install -y virtualenvwrapper redis-server git python-dev || brew install pyenv-virtualenvwrapper redis git
+    $ source /usr/share/virtualenvwrapper/virtualenvwrapper.sh || source /usr/local/bin/virtualenvwrapper.sh
     $ mkvirtualenv django-secure-auth
-    $ git clone https://github.com/gotlium/django-secure-auth.git
+    $ workon django-secure-auth
+    $ git clone --depth 1 https://github.com/gotlium/django-secure-auth.git
     $ cd django-secure-auth
     $ pip install -r requirements.txt
     $ python setup.py develop
     $ cd demo
     $ pip install -r requirements.txt
     $ python manage.py syncdb --noinput
-    $ python manage.py migrate
+    $ python manage.py migrate --noinput
+    $ python manage.py createsuperuser --username admin --email admin@local.host
     $ wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
     $ gunzip GeoLiteCity.dat.gz
     $ mkdir -p /usr/share/geoip/; mv GeoLiteCity.dat /usr/share/geoip/
+    $ ln -sf /bin/bash /bin/sh
+    $ cd ../
 
 
 Open settings:

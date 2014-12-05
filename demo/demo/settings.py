@@ -153,6 +153,8 @@ AUTH_SMS_FROM = 'NEXMO'
 '''
 
 
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
 LOGIN_URL = '/accounts/'
 LOGIN_REDIRECT_URL = '/accounts/settings/'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

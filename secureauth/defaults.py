@@ -80,3 +80,4 @@ TEST_COOKIE_ENABLED_URLS = get_settings('AUTH_TEST_COOKIE_ENABLED_URLS', [
 ])
 
 AUTH_USER_MODEL = get_settings('AUTH_USER_MODEL', 'auth.User')
+INPUT_TYPE = get_settings('AUTH_INPUT_TYPE', 'password')

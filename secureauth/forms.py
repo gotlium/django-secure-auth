@@ -8,7 +8,7 @@ from django import forms
 from models import (
     UserAuthNotification, UserAuthLogging, UserAuthToken, UserAuthAttempt,
     UserAuthCode, UserAuthPhone, UserAuthQuestion, UserAuthIP, UserAuthIPRange)
-from defaults import CHECK_PASSWORD
+from defaults import CHECK_PASSWORD, INPUT_TYPE
 from utils.sign import Sign
 from utils import is_phone
 
@@ -59,7 +59,11 @@ class BasicForm(forms.Form):
 
 
 class CodeForm(forms.Form):
-    code = forms.CharField(label=_('Code'), required=True)
+    code = forms.CharField(
+        label=_('Code'), required=True,
+        widget=forms.TextInput(attrs={
+            'autocomplete': 'off', 'type': INPUT_TYPE
+        }))
 
     def __init__(self, user, model, *args, **kwargs):
         self.user = user

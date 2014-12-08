@@ -29,7 +29,7 @@ class ConfirmAuthenticationForm(forms.Form):
     )
     code = forms.CharField(
         label=_("code"),
-        widget=forms.TextInput(),
+        widget=forms.PasswordInput(attrs={'autocomplete': 'off'}),
     )
 
     def __init__(self, data, *args, **kwargs):

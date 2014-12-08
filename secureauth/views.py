@@ -130,7 +130,9 @@ def login_confirmation(request, template_name='secureauth/confirmation.html',
     if extra_context is None and data.get('extra_context'):
         extra_context = data.get('extra_context')
 
-    if request.method == "POST":
+    if hasattr(request, 'user') and request.user.is_authenticated():
+        return HttpResponseRedirect(data.get('redirect_to', '/'))
+    elif request.method == "POST":
         form = authentication_form(data, request.POST)
         if form.is_valid():
             user = form.get_user()

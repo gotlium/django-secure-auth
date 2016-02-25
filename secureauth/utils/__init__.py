@@ -78,6 +78,10 @@ def inet_aton(ip):
     return struct.unpack('!L', socket.inet_aton(ip))[0]
 
 
+def inet_ntoa(ip):
+    return socket.inet_ntoa(struct.pack('!L', ip))
+
+
 def get_geo(ip, unknown=_('Unknown')):
     g = GeoIP()
     info = g.city(ip) or dict()

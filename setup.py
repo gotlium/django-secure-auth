@@ -37,8 +37,7 @@ setup(
     ]},
     zip_safe=False,
     install_requires=[
-        'pyotp==1.3.1',
-        'twilio>=3.6.4',
+        'pyotp>=1.3.1',
         'httpagentparser>=1.5.0',
         'django-tables2>=0.14.0',
         'django-filter>=0.7',

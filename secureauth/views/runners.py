@@ -1,5 +1,4 @@
 # coding=utf-8;
-__author__ = 'ilstreltsov'
 
 from django.views.generic import FormView, TemplateView
 from django.http import Http404
@@ -12,7 +11,6 @@ from django.contrib import messages
 from django.core.exceptions import ImproperlyConfigured
 
 from secureauth.utils import get_ip
-from secureauth.forms import BasicForm, CodeForm
 from secureauth.models import UserAuthNotification
 from secureauth.defaults import SMS_FORCE
 

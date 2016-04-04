@@ -232,4 +232,5 @@ class IpBanForm(forms.Form):
         UserAuthAttempt.remove(request)
 
 
-IPRangeFormSet = inlineformset_factory(UserAuthIP, UserAuthIPRange)
+IPRangeFormSet = inlineformset_factory(
+    UserAuthIP, UserAuthIPRange, exclude=('ip',))

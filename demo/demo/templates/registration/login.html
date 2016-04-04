@@ -11,9 +11,9 @@
     </form>
 
     <p>{% trans "Forgot password" %}?
-        <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>!
+        <a href="{% url auth_password_reset %}">{% trans "Reset it" %}</a>!
     </p>
     <p>{% trans "Not member" %}?
-        <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>!
+        <a href="{% url registration_register %}">{% trans "Register" %}</a>!
     </p>
 {% endblock %}

@@ -1,6 +1,29 @@
 Django-Secure-Auth
 ==================
 
+.. image:: https://landscape.io/github/gotlium/django-secure-auth/master/landscape.svg
+   :target: https://landscape.io/github/gotlium/django-secure-auth/master
+   :alt: Code Health
+.. image:: https://api.codacy.com/project/badge/grade/e1788d6ac7ca437aa6bbb3abfdf19dce
+    :target: https://www.codacy.com/app/gotlium/django-secure-auth
+    :alt: Codacy
+.. image:: https://img.shields.io/badge/python-2.7,3.4+-blue.svg
+    :alt: Python 2.7, 3.4+
+    :target: https://pypi.python.org/pypi/django-secure-auth/
+.. image:: https://img.shields.io/pypi/v/django-secure-auth.svg
+    :alt: Current version on PyPi
+    :target: https://pypi.python.org/pypi/django-secure-auth/
+.. image:: https://img.shields.io/pypi/dm/django-secure-auth.svg
+    :alt: Downloads from PyPi
+    :target: https://pypi.python.org/pypi/django-secure-auth/
+.. image:: https://img.shields.io/badge/license-GPLv3-green.svg
+    :target: https://pypi.python.org/pypi/django-secure-auth/
+    :alt: License
+
+Module which provide secure authentication by TOTP/SMS/Codes/Question.
+Login protected by IP ranges and with captcha, when login attempt will fail.
+
+
 Demo installation:
 ------------------
 
@@ -59,8 +82,9 @@ new account and setup all available authentication methods.
 Crontab
 -------
 
-If you using TOTP authorization, please update your server time.
-If your time is behind, user cannot authenticated by this method.
+When you are using TOTP auth method, please update your server time.
+If your server time is behind from real time, user cannot be authenticated by authenticator app.
+You can run ntpd clients, or update time on server by cron job:
 
 .. code-block:: bash
 
@@ -82,10 +106,5 @@ Screenshots
 
 Compatibility
 -------------
-* Python: 2.6, 2.7
-* Django: 1.4.x, 1.5.x, 1.6.x
-
-
-.. image:: https://d2weczhvl823v0.cloudfront.net/gotlium/django-secure-auth/trend.png
-   :alt: Bitdeli badge
-   :target: https://bitdeli.com/free
+* Python: 2.7
+* Django: 1.4, 1.8

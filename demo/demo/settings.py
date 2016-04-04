@@ -21,7 +21,7 @@ DATABASES = {
 }
 
 SECRET_KEY = 'ki02dd*#ff-t(-q6f@b07+7m$xn*noao%r4x0gi(@9m!yxmzl^'
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 SITE_ID = 1
 
 LANGUAGE_CODE = 'en-us'
@@ -92,11 +92,9 @@ INSTALLED_APPS = (
     'bootstrap',
     'djcelery',
     'registration',
-    'south',
     'rosetta',
     'sslserver',
 
-    # secureauth
     'secureauth',
     'django_tables2',
     'captcha',
@@ -180,8 +178,8 @@ CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)
 
 AUTH_TEST_COOKIE_ENABLED = True
 
-import djcelery
-djcelery.setup_loader()
+# import djcelery
+# djcelery.setup_loader()
 
 BROKER_URL = 'redis://127.0.0.1:6379/4'
 

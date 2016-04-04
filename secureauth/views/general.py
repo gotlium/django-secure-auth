@@ -1,5 +1,4 @@
 # coding=utf-8;
-__author__ = 'ilstreltsov'
 
 from django.http import (
     HttpResponseRedirect, Http404, HttpResponse, HttpResponseBadRequest)
@@ -35,8 +34,9 @@ from secureauth.models import (
     UserAuthPhone, UserAuthCode, UserAuthQuestion, UserAuthToken,
     UserAuthActivity, UserAuthNotification, UserAuthAttempt, UserAuthLogging)
 from secureauth.defaults import SMS_FORCE, CHECK_ATTEMPT
-from secureauth.views.runners import *
-from secureauth.views.base import SecureAuthBasicView, SettingsView, AjaxViewMixin
+from secureauth.views.base import (
+    SecureAuthBasicView, SettingsView, AjaxViewMixin
+)
 
 
 @login_decorator

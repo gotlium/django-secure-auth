@@ -90,7 +90,7 @@ class UserAuthCode(UserAuthAbstract):
     def get_code_number(self):
         number = random.choice(range(1, CODE_RANGES + 1))
         self.number = Sign().sign(number)
-        self.save() #update_fields=['number']
+        self.save() # update_fields=['number']
         return number
 
     def make(self):

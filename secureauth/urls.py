@@ -1,6 +1,7 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8;
 
 from django.conf.urls import patterns, url, include
+
 import secureauth.views as v
 
 urlpatterns = patterns(
@@ -8,6 +9,7 @@ urlpatterns = patterns(
     url(r'^$', 'login'),
     url(r'^login/$', 'login', name='auth_login'),
     url('^confirmation/$', 'login_confirmation', name='auth_confirmation'),
+
     url('^code_get_random/$', v.CodeGetRandomView.as_view(),
         name='code_get_random'),
     url('^phone_send_sms/$', v.PhoneSendSmsView.as_view(),

@@ -1,6 +1,6 @@
 # coding=utf-8;
 
-from general import (
+from secureauth.views.general import (
     login, login_confirmation,
     PhoneSendSmsView, CodeGetRandomView, GetQuestionView,
     AuthSettingsView, TotpSettingsView, PhoneSettingsView,

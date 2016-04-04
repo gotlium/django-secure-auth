@@ -2,7 +2,7 @@
 
 from django_filters import FilterSet, DateRangeFilter, ChoiceFilter
 from django.utils.translation import ugettext_lazy as _
-from models import UserAuthActivity
+from secureauth.models import UserAuthActivity
 
 
 class UserAuthActivityFilter(FilterSet):

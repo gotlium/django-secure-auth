@@ -10,3 +10,7 @@ ignore-paths:
     - secureauth/south_migrations
     - secureauth/management
     - demo
+pylint:
+  disable:
+    - unused-argument
+    - model-missing-unicode

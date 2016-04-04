@@ -8,7 +8,10 @@ from django.shortcuts import get_object_or_404
 from secureauth.utils import get_ip
 from secureauth.forms import BasicForm, CodeForm
 from secureauth.defaults import SMS_AGE
-from secureauth.views.runners import *
+from secureauth.views.runners import (
+    SettingsRunner, ConfigureRunner, DoneRunner,
+    DisabledRunner, OneStepSettingsRunner,
+)
 from secureauth.utils.decorators import AuthDecoratorMixin
 from secureauth.utils import get_data
 

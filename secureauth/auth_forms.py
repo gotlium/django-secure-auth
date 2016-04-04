@@ -34,6 +34,7 @@ class ConfirmAuthenticationForm(forms.Form):
 
     def __init__(self, data, *args, **kwargs):
         self.credentials = data.get('credentials')
+        self.user_cache = None
         super(ConfirmAuthenticationForm, self).__init__(*args, **kwargs)
         self.fields['auth_type'].choices = get_available_auth_methods(
             data.get('user_pk'))

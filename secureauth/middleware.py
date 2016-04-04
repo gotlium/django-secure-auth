@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
+from re import compile as re_compile
 from urllib import quote
-from re import compile
 from time import time
 
 from django.http import HttpResponseBadRequest
@@ -21,7 +21,7 @@ from secureauth.defaults import SESSION_MAX
 from secureauth.models import UserAuthAttempt
 
 
-ENABLED_URLS = [compile(expr) for expr in TEST_COOKIE_ENABLED_URLS]
+ENABLED_URLS = [re_compile(expr) for expr in TEST_COOKIE_ENABLED_URLS]
 
 
 class SecureAuthFixedSessionIPMiddleware(object):

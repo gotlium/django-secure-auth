@@ -1,5 +1,7 @@
 # coding=utf-8;
 
+from functools import wraps
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
@@ -9,18 +11,12 @@ from django.views.decorators.cache import never_cache
 from django.http import HttpResponseBadRequest
 
 
-def ajax_required(f):
-    """
-    url: https://djangosnippets.org/snippets/771/
-    """
-
+def ajax_required(func):
+    @wraps(func)
     def wrap(request, *args, **kwargs):
         if not request.is_ajax():
             return HttpResponseBadRequest()
-        return f(request, *args, **kwargs)
-
-    wrap.__doc__ = f.__doc__
-    wrap.__name__ = f.__name__
+        return func(request, *args, **kwargs)
     return wrap
 
 

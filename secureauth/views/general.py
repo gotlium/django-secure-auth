@@ -43,7 +43,8 @@ from secureauth.views.base import (
 def login(request, template_name='secureauth/login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=BaseAuthForm,
-          current_app=None, extra_context=None, redirect_to=''):
+          current_app=None, extra_context=None, redirect_to=''
+          ):  # pylint: disable=R0913
     redirect_to = request.REQUEST.get(redirect_field_name, redirect_to)
 
     if CHECK_ATTEMPT and UserAuthAttempt.is_banned(request):
@@ -111,7 +112,8 @@ def login(request, template_name='secureauth/login.html',
 @login_decorator
 def login_confirmation(request, template_name='secureauth/confirmation.html',
                        authentication_form=ConfirmAuthenticationForm,
-                       extra_context=None, current_app=None):
+                       extra_context=None, current_app=None
+                       ):  # pylint: disable=R0913
     if CHECK_ATTEMPT and UserAuthAttempt.is_banned(request):
         return HttpResponseBadRequest()
 

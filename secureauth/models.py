@@ -54,7 +54,7 @@ class UserAuthAbstract(models.Model):
 
     def update_last_verified(self):
         self.last_verified = now()
-        self.save() #update_fields=['last_verified']
+        self.save()  # update_fields=['last_verified']
 
     def check_auth_code(self, auth_code, force_check=False):
         if (self.code and self.enabled) or force_check:
@@ -90,7 +90,7 @@ class UserAuthCode(UserAuthAbstract):
     def get_code_number(self):
         number = random.choice(range(1, CODE_RANGES + 1))
         self.number = Sign().sign(number)
-        self.save() # update_fields=['number']
+        self.save()  # update_fields=['number']
         return number
 
     def make(self):
@@ -226,7 +226,7 @@ class UserAuthActivity(models.Model):
 
     @classmethod
     def log_auth(cls, request, confirm_method=''):
-        ip = get_ip(request)
+        ip_address = get_ip(request)
         user_agent = request.META.get('HTTP_USER_AGENT')
         if user_agent is not None:
             parser = detect(user_agent)
@@ -235,7 +235,7 @@ class UserAuthActivity(models.Model):
                 parser.get('platform', {}).get('name', ""),
                 browser.get('name', ""), browser.get('version', ""))
         cls.objects.create(
-            user=request.user, ip=get_ip(request), geo=get_geo(ip),
+            user=request.user, ip=ip_address, geo=get_geo(ip_address),
             agent=user_agent, confirm_method=confirm_method
         )
 
@@ -325,13 +325,13 @@ class UserAuthIPRange(models.Model):
 
     @classmethod
     def is_allowed(cls, request, user):
-        ip = get_ip(request)
-        if cls.objects.filter(ip__user=user, ip_data=ip).exists():
+        ip_address = get_ip(request)
+        if cls.objects.filter(ip__user=user, ip_data=ip_address).exists():
             return True
 
         range_list = cls.objects.values_list('ip_data', flat=True).filter(
             ip__user=user, is_ip=False)
-        user_ip = IPv4Address(unicode(ip))
+        user_ip = IPv4Address(unicode(ip_address))
 
         if any([user_ip in IPv4Network(ip_range) for ip_range in range_list]):
             return True

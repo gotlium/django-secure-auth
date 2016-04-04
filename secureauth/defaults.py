@@ -1,18 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from django.utils.translation import ugettext
+from django.utils.translation import ugettext as _
 from django.conf import settings
 
 
 def get_settings(key, default):
     return getattr(settings, key, default)
-
-
-def _(message):
-    try:
-        return ugettext(message)
-    except:
-        pass
 
 
 SMS_FORCE = get_settings('AUTH_SMS_FORCE', False)
@@ -75,8 +68,7 @@ TEST_COOKIE_REFRESH_ENCRYPT_COOKIE_IV = get_settings(
     'AUTH_TEST_COOKIE_REFRESH_ENCRYPT_COOKIE_IV', 'caaceccbbcasadfb')
 TEST_COOKIE_ENABLED = get_settings('AUTH_TEST_COOKIE_ENABLED', True)
 TEST_COOKIE_ENABLED_URLS = get_settings('AUTH_TEST_COOKIE_ENABLED_URLS', [
-    'accounts/logout/', 'accounts/'
-    #'.*?'
+    'accounts/logout/', 'accounts/'  # '.*?'
 ])
 
 AUTH_USER_MODEL = get_settings('AUTH_USER_MODEL', 'auth.User')

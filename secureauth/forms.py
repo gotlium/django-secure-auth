@@ -5,12 +5,12 @@ from django.forms.models import inlineformset_factory
 from django.test.client import RequestFactory
 from django import forms
 
-from models import (
+from secureauth.models import (
     UserAuthNotification, UserAuthLogging, UserAuthToken, UserAuthAttempt,
     UserAuthCode, UserAuthPhone, UserAuthQuestion, UserAuthIP, UserAuthIPRange)
-from defaults import CHECK_PASSWORD, INPUT_TYPE
-from utils.sign import Sign
-from utils import is_phone
+from secureauth.defaults import CHECK_PASSWORD, INPUT_TYPE
+from secureauth.utils.sign import Sign
+from secureauth.utils import is_phone
 
 
 class BasicForm(forms.Form):

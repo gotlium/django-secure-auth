@@ -7,7 +7,7 @@ from secureauth.models import UserAuthActivity
 
 
 class UserAuthActivityTable(tables.Table):
-    class Meta:
+    class Meta:  # pylint: disable=C1001
         model = UserAuthActivity
         fields = ('ip', 'geo', 'date', 'agent', 'confirm_method')
         order_by = ('id',)

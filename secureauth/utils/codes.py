@@ -47,7 +47,5 @@ class RandomPassword(object):
             return self._digits()
 
 
-def md5(email):
-    m = hashlib.md5()
-    m.update(email)
-    return m.hexdigest()
+def md5(input_string):
+    return hashlib.md5(input_string).hexdigest()

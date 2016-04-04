@@ -72,19 +72,19 @@ def send_mail(*args, **kwargs):
 
 
 def get_ip(request):
-    ip = get_real_ip(request)
-    if ip is not None:
-        return ip.strip()
+    ip_address = get_real_ip(request)
+    if ip_address is not None:
+        return ip_address.strip()
     return request.META['REMOTE_ADDR'].strip()
 
 
-def inet_aton(ip):
-    return struct.unpack('!L', socket.inet_aton(ip))[0]
+def inet_aton(ip_address):
+    return struct.unpack('!L', socket.inet_aton(ip_address))[0]
 
 
 def get_geo(ip, unknown=_('Unknown')):
-    g = GeoIP()
-    info = g.city(ip) or dict()
+    geo_ip = GeoIP()
+    info = geo_ip.city(ip) or dict()
     return "%s:%s" % (
         info.get('country_name') or unknown,
         info.get('city') or unknown,

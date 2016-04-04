@@ -55,7 +55,7 @@ class ConfirmView(CheckKeyMixin, FormView):
     template_name = 'secureauth/registration_confirm.html'
     form_class = CodeForm
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=None):
         return form_class(
             _get_user(**self.kwargs), UserAuthPhone, **self.get_form_kwargs()
         )
@@ -81,8 +81,9 @@ class ActivationDoneView(CheckKeyMixin, views.ActivationView):
             UserAuthPhone.objects.filter(user=obj).update(enabled=1)
         return obj
 
-    def get_success_url(self, request, user):
-        return ('registration_activation_complete_view', (), {})
+    @staticmethod
+    def get_success_url(*args, **kwargs):
+        return 'registration_activation_complete_view', (), {}
 
 
 ActivationView = ActivationView if SMS_FORCE else views.ActivationView

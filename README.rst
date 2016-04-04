@@ -7,7 +7,7 @@ Django-Secure-Auth
 .. image:: https://api.codacy.com/project/badge/grade/e1788d6ac7ca437aa6bbb3abfdf19dce
     :target: https://www.codacy.com/app/gotlium/django-secure-auth
     :alt: Codacy
-.. image:: https://img.shields.io/badge/python-2.7,3.4+-blue.svg
+.. image:: https://img.shields.io/badge/python-2.7-blue.svg
     :alt: Python 2.7, 3.4+
     :target: https://pypi.python.org/pypi/django-secure-auth/
 .. image:: https://img.shields.io/pypi/v/django-secure-auth.svg

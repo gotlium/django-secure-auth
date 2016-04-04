@@ -8,15 +8,19 @@ from django.utils.translation import ugettext as _
 from django.template import Context, loader
 from django.contrib.gis.geoip import GeoIP
 from django.conf import settings
+from django.contrib.auth import authenticate
+from django.http import Http404
 
 from secureauth import defaults
+from secureauth.defaults import SMS_AGE
+from secureauth.utils.sign import Sign
 
 from ipware.ip import get_real_ip
 import phonenumbers
 
 
 __all__ = ["send_sms", "send_mail", "get_ip", "get_geo",
-           "inet_aton", "is_phone"]
+           "inet_aton", "is_phone", "get_data"]
 
 
 def _send_sms(*args, **kwargs):
@@ -103,3 +107,15 @@ def get_formatted_phone(phone):
 def render_template(template, context=None):
     template = loader.get_template(template)
     return template.render(Context(context or {}))
+
+
+def get_data(request):
+    data = Sign().unsign(request.GET.get('data'), age=SMS_AGE * 2)
+    if data is not None and 'credentials' in data:
+        if 'captcha' in data['credentials']:
+            data['credentials'].pop('captcha')
+        user = authenticate(**data['credentials'])
+        if user is not None and user.is_active:
+            if get_ip(request) == data.get('ip'):
+                return data
+    raise Http404('Data is not valid!')

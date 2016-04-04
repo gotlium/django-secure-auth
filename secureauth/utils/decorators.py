@@ -2,6 +2,7 @@
 
 
 from django.contrib.admin.views.decorators import staff_member_required
+from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
@@ -24,17 +25,27 @@ def ajax_required(f):
     return wrap
 
 
-def ajax_decorator(func):
-    return ajax_required(never_cache(func))
-
-
-def auth_decorator(func):
-    return login_required(never_cache(func))
-
-
-def staff_decorator(func):
-    return login_required(staff_member_required(never_cache(func)))
-
-
 def login_decorator(func):
     return csrf_protect(never_cache(sensitive_post_parameters()(func)))
+
+
+class StaffDecoratorMixin(object):
+    @method_decorator(login_required)
+    @method_decorator(staff_member_required)
+    @method_decorator(never_cache)
+    def dispatch(self, *args, **kwargs):
+        return super(StaffDecoratorMixin, self).dispatch(*args, **kwargs)
+
+
+class AuthDecoratorMixin(object):
+    @method_decorator(login_required)
+    @method_decorator(never_cache)
+    def dispatch(self, *args, **kwargs):
+        return super(AuthDecoratorMixin, self).dispatch(*args, **kwargs)
+
+
+class AjaxDecoratorMixin(object):
+    @method_decorator(ajax_required)
+    @method_decorator(never_cache)
+    def dispatch(self, *args, **kwargs):
+        return super(AjaxDecoratorMixin, self).dispatch(*args, **kwargs)

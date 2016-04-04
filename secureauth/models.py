@@ -257,7 +257,7 @@ class UserAuthActivity(models.Model):
 class UserAuthAttempt(models.Model):
     ip = models.BigIntegerField(unique=True)
     attempt = models.IntegerField(default=0)
-    created = models.DateTimeField(auto_now=True, auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     @classmethod
     def get_attempts(cls, request):

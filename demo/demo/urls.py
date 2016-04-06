@@ -13,8 +13,8 @@ urlpatterns = patterns(
     url(r'^$', 'secureauth.views.login'),
     url(r'^accounts/', include('secureauth.urls')),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
-    url(r'^accounts/', include('secureauth.registration.urls')),
     url(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^accounts/', include('secureauth.registration.urls')),
     url(r'^rosetta/', include('rosetta.urls')),
 )
 

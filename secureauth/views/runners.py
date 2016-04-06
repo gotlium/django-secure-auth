@@ -57,8 +57,11 @@ class SettingsRunner(BasicRunnerMixin, FormView):
 
     def _cleanup_if_not_enabled(self):
         if self.request.method == 'GET':
-            self.model.objects.filter(
-                user=self.request.user, enabled=False).delete()
+            objs = self.model.objects.filter(
+                user=self.request.user, enabled=False)
+            if objs.exists():
+                objs.delete()
+                self.obj = None
 
     def get_form_class(self):
         return self.forms[0]

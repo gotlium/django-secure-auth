@@ -29,7 +29,7 @@ Demo installation:
 
 .. code-block:: bash
 
-    $ sudo apt-get install -y virtualenvwrapper redis-server git python-dev || brew install pyenv-virtualenvwrapper redis git
+    $ sudo apt-get install -y virtualenvwrapper redis-server git python-dev || brew install pyenv-virtualenvwrapper redis git geoip
     $ source /usr/share/virtualenvwrapper/virtualenvwrapper.sh || source /usr/local/bin/virtualenvwrapper.sh
     $ mkvirtualenv django-secure-auth
     $ workon django-secure-auth
@@ -45,7 +45,6 @@ Demo installation:
     $ wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
     $ gunzip GeoLiteCity.dat.gz
     $ mkdir -p /usr/share/geoip/; mv GeoLiteCity.dat /usr/share/geoip/
-    $ ln -sf /bin/bash /bin/sh
     $ cd ../
 
 

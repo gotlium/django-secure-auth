@@ -1,4 +1,5 @@
 # coding=utf-8;
+import time
 
 from django.views.generic import FormView, TemplateView
 from django.http import Http404
@@ -34,7 +35,7 @@ class BasicRunnerMixin(object):
 
     def _set_next_step(self, step):
         self.request.session['step'] = step
-        self.request.session['step_time'] = now()
+        self.request.session['step_time'] = time.mktime(now().timetuple())
         if not self.request.session.get('ip'):
             self.request.session['ip'] = get_ip(self.request)
 

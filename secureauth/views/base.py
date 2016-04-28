@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 
 from django.http import Http404
 from django.utils.timezone import now
@@ -63,11 +64,12 @@ class SecureAuthBasicView(AuthDecoratorMixin, View):
             forms=self.forms, model=self.model, obj=self.obj, view=self.view)
 
     def _check_step(self, step):
+        step_time = self.request.session.get('step_time', SMS_AGE+10)
         if self.request.session.get('step') != step:
             raise Http404
         elif self.request.session.get('ip') != get_ip(self.request):
             return Http404
-        elif (now() - self.request.session.get('step_time')).seconds > SMS_AGE:
+        elif (now() - datetime.fromtimestamp(step_time)).seconds > SMS_AGE:
             return Http404
 
     def get(self, *args, **kwargs):

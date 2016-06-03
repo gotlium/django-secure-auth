@@ -310,8 +310,10 @@ class UserAuthIP(models.Model):
 
     @classmethod
     def is_enabled(cls, user):
-        return cls.objects.filter(user=user, enabled=1).exists()
-
+        try:
+            return cls.objects.filter(user=user, enabled=1).exists()
+        except ValueError as e:
+            return False
 
 class UserAuthIPRange(models.Model):
     ip = models.ForeignKey(UserAuthIP, editable=False)

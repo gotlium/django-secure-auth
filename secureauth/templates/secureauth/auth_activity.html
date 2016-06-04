@@ -1,10 +1,11 @@
 {% extends "secureauth/base.html" %}
-{% load i18n %}
+{% load i18n %}{% load django_tables2 %}
 
 {% block title %}{% trans 'Authentication activity' %}{% endblock %}
 
 {% block content %}
-    {{ table.as_html }}
+    {% render_table table %}
+
     <hr>
     <form action="" method="get">
         <table>

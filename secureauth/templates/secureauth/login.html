@@ -11,7 +11,7 @@
         <p>
             {% trans 'You are logged in as' %}
             <b>{% firstof user.get_full_name user %}</b>.
-            <a href="{% url 'django.contrib.auth.views.logout' %}">
+            <a href="{% url 'django.contrib.auth.views.logout' %}?next=/">
                 {% trans 'Click here to log out' %}
             </a>.
         </p>

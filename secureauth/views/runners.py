@@ -1,5 +1,6 @@
 # coding=utf-8;
 import time
+import datetime
 
 from django.views.generic import FormView, TemplateView
 from django.http import Http404
@@ -7,7 +8,6 @@ from django.utils.translation import ugettext as _
 from django.forms.models import model_to_dict
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
-from django.utils.timezone import now
 from django.contrib import messages
 from django.core.exceptions import ImproperlyConfigured
 
@@ -34,8 +34,9 @@ class BasicRunnerMixin(object):
         return redirect(self._url(step))
 
     def _set_next_step(self, step):
+        now = datetime.datetime.now()
         self.request.session['step'] = step
-        self.request.session['step_time'] = time.mktime(now().timetuple())
+        self.request.session['step_time'] = time.mktime(now.timetuple())
         if not self.request.session.get('ip'):
             self.request.session['ip'] = get_ip(self.request)
 

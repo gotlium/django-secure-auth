@@ -1,13 +1,16 @@
 # coding=utf-8;
 
-from django.conf.urls import url, include
+try:
+    from django.conf.urls.defaults import url, include
+except ImportError:
+    from django.conf.urls import url, include
 
 import secureauth.views as v
 
 urlpatterns = [
-    url(r'^$', 'login'),
-    url(r'^login/$', 'login', name='auth_login'),
-    url('^confirmation/$', 'login_confirmation', name='auth_confirmation'),
+    url(r'^$', v.login),
+    url(r'^login/$', v.login, name='auth_login'),
+    url('^confirmation/$', v.login_confirmation, name='auth_confirmation'),
 
     url('^code_get_random/$', v.CodeGetRandomView.as_view(),
         name='code_get_random'),

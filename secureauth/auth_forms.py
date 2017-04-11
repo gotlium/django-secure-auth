@@ -5,7 +5,8 @@ from django.utils.translation import ugettext_lazy as _
 try:
     from django.db.models import get_model
 except ImportError:
-    from django.apps.apps import get_model
+    from django.apps import apps
+    get_model = apps.get_model
 from django import forms
 
 from secureauth.models import UserAuthAttempt, AUTH_TYPES

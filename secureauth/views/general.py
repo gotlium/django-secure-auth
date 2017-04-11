@@ -9,7 +9,10 @@ from django.shortcuts import render
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 from django.contrib.sites.models import get_current_site
 from django.shortcuts import redirect
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 from django.contrib import messages
 from django.conf import settings
 from django.views.generic import View, TemplateView, FormView

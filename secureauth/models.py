@@ -9,7 +9,10 @@ from django.utils.translation import ugettext as _
 from django.core.exceptions import ValidationError
 from django.forms.models import model_to_dict
 from django.contrib.sites.models import Site
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 from django.utils.timezone import now
 from django.contrib import messages
 from django.db import models

@@ -1,11 +1,10 @@
 # coding=utf-8;
 
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 
 import secureauth.views as v
 
-urlpatterns = patterns(
-    'secureauth.views',
+urlpatterns = [
     url(r'^$', 'login'),
     url(r'^login/$', 'login', name='auth_login'),
     url('^confirmation/$', 'login_confirmation', name='auth_confirmation'),
@@ -37,4 +36,4 @@ urlpatterns = patterns(
         name='disable_methods'),
     url('^unban_ip/$', v.UnbanIpView.as_view(), name='unban_ip'),
     url(r'^captcha/', include('captcha.urls')),
-)
+]

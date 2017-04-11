@@ -7,7 +7,10 @@ from django.template.response import TemplateResponse
 from django.utils.http import is_safe_url
 from django.shortcuts import render
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
-from django.contrib.sites.models import get_current_site
+try:
+    from django.contrib.sites.models import get_current_site
+except ImportError:
+    from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import redirect
 try:
     from django.core.urlresolvers import reverse

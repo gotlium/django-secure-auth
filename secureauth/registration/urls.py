@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import url
+try:
+    from django.conf.urls.defaults import url
+except ImportError:
+    from django.conf.urls import url
+
 from secureauth.registration.views import (
     ActivationView, ConfirmView, ActivationDoneView)
 from django.views.generic.base import TemplateView

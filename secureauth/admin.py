@@ -2,7 +2,10 @@
 
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 from django.contrib import admin
 
 from secureauth.defaults import ENABLE_ADMIN_LINKS

@@ -7,7 +7,10 @@ from django.http import Http404
 from django.utils.translation import ugettext as _
 from django.forms.models import model_to_dict
 from django.shortcuts import redirect
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 from django.contrib import messages
 from django.core.exceptions import ImproperlyConfigured
 

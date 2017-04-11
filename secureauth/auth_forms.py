@@ -2,7 +2,10 @@
 
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
-from django.db.models import get_model
+try:
+    from django.db.models import get_model
+except ImportError:
+    from django.apps.apps import get_model
 from django import forms
 
 from secureauth.models import UserAuthAttempt, AUTH_TYPES

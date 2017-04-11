@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from secureauth.registration.views import (
     ActivationView, ConfirmView, ActivationDoneView)
 from django.views.generic.base import TemplateView
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^activation/complete/$',
         TemplateView.as_view(
             template_name='registration/activation_complete.html'),
@@ -25,4 +24,4 @@ urlpatterns = patterns(
         TemplateView.as_view(
             template_name='secureauth/registration_activation_failed.html'),
         name='registration_activation_failed'),
-)
+]

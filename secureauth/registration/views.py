@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django.views.generic.edit import FormView
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect, Http404
 
 from registration.models import RegistrationProfile, SHA1_RE

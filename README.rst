@@ -7,7 +7,7 @@ Django-Secure-Auth
 .. image:: https://api.codacy.com/project/badge/grade/e1788d6ac7ca437aa6bbb3abfdf19dce
     :target: https://www.codacy.com/app/gotlium/django-secure-auth
     :alt: Codacy
-.. image:: https://img.shields.io/badge/python-2.7,3.4+-blue.svg
+.. image:: https://img.shields.io/badge/python-2.7-blue.svg
     :alt: Python 2.7, 3.4+
     :target: https://pypi.python.org/pypi/django-secure-auth/
 .. image:: https://img.shields.io/pypi/v/django-secure-auth.svg
@@ -29,7 +29,7 @@ Demo installation:
 
 .. code-block:: bash
 
-    $ sudo apt-get install -y virtualenvwrapper redis-server git python-dev || brew install pyenv-virtualenvwrapper redis git
+    $ sudo apt-get install -y virtualenvwrapper redis-server git python-dev || brew install pyenv-virtualenvwrapper redis git geoip
     $ source /usr/share/virtualenvwrapper/virtualenvwrapper.sh || source /usr/local/bin/virtualenvwrapper.sh
     $ mkvirtualenv django-secure-auth
     $ workon django-secure-auth
@@ -45,7 +45,6 @@ Demo installation:
     $ wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
     $ gunzip GeoLiteCity.dat.gz
     $ mkdir -p /usr/share/geoip/; mv GeoLiteCity.dat /usr/share/geoip/
-    $ ln -sf /bin/bash /bin/sh
     $ cd ../
 
 

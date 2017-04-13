@@ -179,8 +179,9 @@ CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)
 
 AUTH_TEST_COOKIE_ENABLED = True
 
-# import djcelery
-# djcelery.setup_loader()
+import djcelery
+
+djcelery.setup_loader()
 
 BROKER_URL = 'redis://127.0.0.1:6379/4'
 

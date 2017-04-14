@@ -1,5 +1,6 @@
 # coding=utf-8;
 
+import django
 from django.http import (
     HttpResponseRedirect, Http404, HttpResponse, HttpResponseBadRequest)
 from django.utils.translation import ugettext as _
@@ -51,7 +52,8 @@ def login(request, template_name='secureauth/login.html',
           authentication_form=BaseAuthForm,
           current_app=None, extra_context=None, redirect_to=''
           ):  # pylint: disable=R0913
-    redirect_to = request.REQUEST.get(redirect_field_name, redirect_to)
+    args = [redirect_field_name, redirect_to]
+    redirect_to = request.GET.get(*args) or request.POST.get(*args)
 
     if CHECK_ATTEMPT and UserAuthAttempt.is_banned(request):
         return HttpResponseBadRequest()
@@ -111,9 +113,12 @@ def login(request, template_name='secureauth/login.html',
     }
     if extra_context is not None:
         context.update(extra_context)
-    return TemplateResponse(
-        request, template_name, context, current_app=current_app)
-
+    if django.VERSION < (1, 8):
+        return TemplateResponse(
+            request, template_name, context, current_app=current_app)
+    else:
+        return TemplateResponse(
+            request, template_name, context)
 
 @login_decorator
 def login_confirmation(request, template_name='secureauth/confirmation.html',
@@ -170,8 +175,12 @@ def login_confirmation(request, template_name='secureauth/confirmation.html',
     }
     if extra_context is not None:
         context.update(extra_context)
-    return TemplateResponse(
-        request, template_name, context, current_app=current_app)
+    if django.VERSION < (1, 8):
+        return TemplateResponse(
+            request, template_name, context, current_app=current_app)
+    else:
+        return TemplateResponse(
+            request, template_name, context)
 
 
 class PhoneSendSmsView(AjaxViewMixin, AjaxDecoratorMixin, View):

@@ -3,6 +3,7 @@
 import struct
 import socket
 
+import django
 from django.core.mail import send_mail as dj_send_mail
 from django.utils.translation import ugettext as _
 from django.template import Context, loader
@@ -106,7 +107,11 @@ def get_formatted_phone(phone):
 
 def render_template(template, context=None):
     template = loader.get_template(template)
-    return template.render(Context(context or {}))
+
+    if django.VERSION < (1, 10):
+        return template.render(Context(context or {}))
+    else:
+        return template.render(context or {})
 
 
 def get_data(request):

@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -385,7 +385,7 @@ msgid "Auth activity"
 msgstr "Активность"
 
 msgid "Enter %d code from code saved code list"
-msgstr "Введиту код под номером %d с сохраненного ранее списка"
+msgstr "Введите код под номером %d из сохраненного ранее списка"
 
 msgid "Notification was disabled"
 msgstr "Уведомления отключены. Если это не Вы, примите меры"

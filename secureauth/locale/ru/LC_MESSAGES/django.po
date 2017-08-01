@@ -8,409 +8,266 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-31 17:48+0300\n"
+"POT-Creation-Date: 2013-11-24 04:00+0400\n"
 "PO-Revision-Date: 2014-12-05 12:14+0230\n"
 "Last-Translator:   <gotlium@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: \n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Translated-Using: django-rosetta 0.7.3\n"
 
-#: adminsite.py:20 templates/secureauth/admin_login.html:11
-#: templates/secureauth/confirmation.html:44
-#: templates/secureauth/login.html:24
+msgid "Russian"
+msgstr "Русский"
+
+msgid "English"
+msgstr "Английский"
+
+msgid "Logged in as"
+msgstr "Авторизирован как"
+
+msgid "Login"
+msgstr "Войти"
+
+msgid "Authentication settings"
+msgstr "Настройки безопасности"
+
+msgid "Registration"
+msgstr "Регистрация"
+
+msgid "Back to settings"
+msgstr "Вернуться в настройки"
+
+msgid "Account successfully activated"
+msgstr "Учетная запись успешно активирована"
+
 msgid "Log in"
 msgstr "Войти в систему"
 
-#: auth_forms.py:30
-msgid "Authentication type"
-msgstr "Тип аутентификации"
+msgid "Account activation failed"
+msgstr "Ошибка при активации аккаунта"
 
-#: auth_forms.py:35 forms.py:115
-msgid "code"
-msgstr "код"
+msgid "Your account is now activated."
+msgstr "Ваш аккаунт успешно активирован."
 
-#: auth_forms.py:56
-msgid "Please enter correct code"
-msgstr "Пожалуйста, введите правильный код"
+msgid "Activate account at"
+msgstr "Активировать аккаунт на"
 
-#: auth_forms.py:58
-msgid "This account is inactive"
-msgstr "Эта учетная запись неактивна."
-
-#: defaults.py:17
 #, python-format
-msgid "Your code is: %s"
-msgstr "Ваш код: %s"
+msgid "Link is valid for %(expiration_days)s days."
+msgstr "Ссылка действительна в течение %(expiration_days)s дней."
 
-#: defaults.py:30
-msgid "Security center"
-msgstr "Центр безопасности"
+msgid "Account activation on"
+msgstr "Активация учетной записи на"
 
-#: defaults.py:32
-msgid "Your security codes"
-msgstr "Ваши коды безопасности"
-
-#: defaults.py:35
-msgid "Authorization was made. If it's not you, then contact with us."
-msgstr "Был произведен вход. Если это не Вы, то свяжитесь с нами."
-
-#: filters.py:9 models.py:219
-msgid "Date"
-msgstr "Дата"
-
-#: filters.py:10
-msgid "IP"
-msgstr ""
-
-#: forms.py:17 forms.py:134 models.py:50 models.py:199 models.py:302
-#: models.py:312
-msgid "Enabled"
-msgstr "Включено"
-
-#: forms.py:35 forms.py:143 forms.py:191
-msgid "Current password:"
-msgstr "Текущий пароль:"
-
-#: forms.py:47 forms.py:148 forms.py:212
-msgid "Invalid password"
-msgstr "Неверный пароль"
-
-#: forms.py:63
-msgid "Code"
-msgstr "Код"
-
-#: forms.py:79
-msgid "Entered code is wrong"
-msgstr "Неправильно указан код"
-
-#: forms.py:90 forms.py:170 models.py:152
-msgid "Phone"
-msgstr "Телефон"
-
-#: forms.py:100 forms.py:176 models.py:157
-msgid "Phone does not contain spaces and must be starts with a +"
-msgstr "Телефон не должен содержать пробелы и должен начинаться со знака +"
-
-#: forms.py:103 forms.py:179
-msgid "The phone number entered is not valid"
-msgstr ""
-
-#: forms.py:114 models.py:178
-msgid "Question"
-msgstr "Вопрос"
-
-#: forms.py:122
-msgid "Answer"
-msgstr "Ответ"
-
-#: forms.py:184
-msgid "Codes Auth"
-msgstr ""
-
-#: forms.py:185
-msgid "TOTP Auth"
-msgstr ""
-
-#: forms.py:186
-msgid "SMS Auth"
-msgstr ""
-
-#: forms.py:187
-#, fuzzy
-#| msgid "Question"
-msgid "Question Auth"
-msgstr "Вопрос"
-
-#: forms.py:188
-msgid "IP Auth"
-msgstr ""
-
-#: forms.py:227
-msgid "IP Address:"
-msgstr ""
-
-#: models.py:39
-msgid "by code"
-msgstr "по коду"
-
-#: models.py:40
-msgid "by token"
-msgstr "с помощью приложения"
-
-#: models.py:41
-msgid "by sms"
-msgstr "по смс"
-
-#: models.py:42
-msgid "by question"
-msgstr "по вопросу"
-
-#: models.py:48 models.py:198 models.py:216 models.py:301 models.py:311
-msgid "User"
-msgstr "Пользователь"
-
-#: models.py:52
-msgid "Created"
-msgstr "Создан"
-
-#: models.py:54
-msgid "Updated"
-msgstr "Обновлен"
-
-#: models.py:56
-msgid "Last verified"
-msgstr "Последняя проверка"
-
-#: models.py:78
-msgid "Number"
-msgstr "Номер"
-
-#: models.py:218
-msgid "GEO"
-msgstr "ГЕО данные"
-
-#: models.py:221
-msgid "Browser"
-msgstr "Браузер"
-
-#: models.py:223
-msgid "Confirm Method"
-msgstr "Метод подтверждения"
-
-#: models.py:255
-#, fuzzy, python-format
-#| msgid "Your location has changed. Former location:"
-msgid "Your location has changed to %s"
-msgstr "Изменилось ваше местоположение. Прежнее местонахождение:"
-
-#: models.py:324
-msgid "IP/IP range"
-msgstr "IP/Подсеть"
-
-#: models.py:326
-msgid "Is IP"
-msgstr "Это IP адрес"
-
-#: models.py:356
-msgid "Link for unlock access"
-msgstr "Ссылка для разблокировки"
-
-#: templates/secureauth/admin_ban_ip.html:4
-msgid "Ban IP"
-msgstr "Блокировка IP"
-
-#: templates/secureauth/admin_ban_ip.html:12
-#: templates/secureauth/codes_settings/settings.html:12
-#: templates/secureauth/ip_settings.html:16
-#: templates/secureauth/logging_settings.html:12
-#: templates/secureauth/notify_settings.html:12
-#: templates/secureauth/phone_settings/settings.html:12
-#: templates/secureauth/question_settings/settings.html:12
-#: templates/secureauth/registration_confirm.html:12
-#: templates/secureauth/totp_settings/settings.html:12
-msgid "Save"
-msgstr "Сохранить"
-
-#: templates/secureauth/admin_disable_methods.html:4
-msgid "Disable methods"
-msgstr "Выключить методы"
-
-#: templates/secureauth/admin_disable_methods.html:12
-msgid "Set status"
-msgstr "Отключить методы"
-
-#: templates/secureauth/auth_activity.html:4
-#: templates/secureauth/settings.html:40
-msgid "Authentication activity"
-msgstr "История подключений"
-
-#: templates/secureauth/auth_activity.html:14
-msgid "Filter"
-msgstr "Фильтр"
-
-#: templates/secureauth/blocked_ip.html:4
-#: templates/secureauth/session_expired.html:4
-msgid "Error"
-msgstr "Ошибка"
-
-#: templates/secureauth/blocked_ip.html:7
-msgid "Your ip is blocked. Please, check your mail for unlock access."
-msgstr ""
-"Ваш IP заблокирован. Проверьте Вашу почту, для того что бы получить доступ."
-
-#: templates/secureauth/codes_settings/configure.html:5
-#: templates/secureauth/codes_settings/was_disabled.html:4
-#: templates/secureauth/codes_settings/was_done.html:4
-msgid "Codes configuration"
-msgstr "Конфигурация кодов"
-
-#: templates/secureauth/codes_settings/configure.html:8
-msgid "Save this codes"
-msgstr "Сохраните эти коды"
-
-#: templates/secureauth/codes_settings/configure.html:31
-msgid "Enter code number"
-msgstr "Введите код с номером"
-
-#: templates/secureauth/codes_settings/configure.html:37
-#: templates/secureauth/phone_settings/configure.html:12
-#: templates/secureauth/question_settings/configure.html:14
-#: templates/secureauth/totp_settings/configure.html:50
-msgid "Confirm"
-msgstr "Подтвердить"
-
-#: templates/secureauth/codes_settings/settings.html:4
-msgid "Codes Settings"
-msgstr "Настройки кодов"
-
-#: templates/secureauth/codes_settings/settings.html:13
-#: templates/secureauth/ip_settings.html:17
-#: templates/secureauth/logging_settings.html:13
-#: templates/secureauth/notify_settings.html:13
-#: templates/secureauth/phone_settings/settings.html:13
-#: templates/secureauth/question_settings/settings.html:13
-#: templates/secureauth/totp_settings/settings.html:13
-msgid "or"
-msgstr "или"
-
-#: templates/secureauth/codes_settings/settings.html:14
-#: templates/secureauth/confirmation.html:45
-#: templates/secureauth/ip_settings.html:18
-#: templates/secureauth/logging_settings.html:14
-#: templates/secureauth/notify_settings.html:14
-#: templates/secureauth/phone_settings/settings.html:14
-#: templates/secureauth/question_settings/settings.html:14
-#: templates/secureauth/totp_settings/settings.html:14
-msgid "Cancel"
-msgstr "Отмена"
-
-#: templates/secureauth/codes_settings/settings.html:17
-msgid ""
-"\n"
-"    Recovery codes allow you to access your account in the event that you "
-"lose\n"
-"    your two-factor authentication device and don't have access to SMS "
-"messages\n"
-"    or an authentication app.\n"
-"    "
-msgstr ""
-"\n"
-"    Коды позволяют получить доступ к вашему аккаунту в случае, если Вы "
-"потеряете\n"
-"    телефон или у Вас нет доступа к отправке SMS-сообщений\n"
-"    или к приложению аутентификации.\n"
-"    "
-
-#: templates/secureauth/codes_settings/was_disabled.html:7
-msgid "Codes authentication successfully disabled."
-msgstr "Коды для авторизации успешно отключены."
-
-#: templates/secureauth/codes_settings/was_done.html:7
-msgid "Codes authentication successfully enabled."
-msgstr "Коды для авторизации успешно включены."
-
-#: templates/secureauth/codes_settings/was_done.html:9
-msgid "Send codes to email"
-msgstr "Отправить коды на почту"
-
-#: templates/secureauth/confirmation.html:4
-msgid "Confirmation"
-msgstr "Подтверждение"
-
-#: templates/secureauth/confirmation.html:25
-msgid "Enter code from your mobile app"
-msgstr "Введите код с вашего мобильного приложения"
-
-#: templates/secureauth/ip_settings.html:4
-#: templates/secureauth/settings.html:61
-msgid "IP settings"
-msgstr "Настройка доступа по IP"
-
-#: templates/secureauth/location_message.html:3
-msgid "Your location has changed. Former location:"
-msgstr "Изменилось ваше местоположение. Прежнее местонахождение:"
-
-#: templates/secureauth/location_message.html:7
-msgid "If it was not you, then change authorization data."
-msgstr "Если это не Вы, измените данные для авторизации."
-
-#: templates/secureauth/logging_settings.html:4
-#: templates/secureauth/settings.html:54
-msgid "Logging settings"
-msgstr "Настройка логирования"
-
-#: templates/secureauth/login.html:5
-msgid "Please sign in"
-msgstr "Пожалуйста, войдите в систему"
-
-#: templates/secureauth/login.html:5
-#, fuzzy
-#| msgid "Logged out"
-msgid "Log out"
-msgstr "Выход"
-
-#: templates/secureauth/login.html:12
-msgid "You are logged in as"
-msgstr "Вы вошли как"
-
-#: templates/secureauth/login.html:15
-msgid "Click here to log out"
-msgstr "Щелкните здесь, чтобы выйти"
-
-#: templates/secureauth/login.html:28
 msgid "Forgot password"
 msgstr "Забыл пароль"
 
-#: templates/secureauth/login.html:30
 msgid "Reset it"
 msgstr "Сбросить"
 
-#: templates/secureauth/login.html:33
 msgid "Not member"
 msgstr "Не член"
 
-#: templates/secureauth/login.html:35
 msgid "Register"
 msgstr "Зарегистрироваться"
 
-#: templates/secureauth/notify_settings.html:4
-#: templates/secureauth/settings.html:47
+msgid "Logged out"
+msgstr "Выход"
+
+msgid "Password changed"
+msgstr "Пароль изменен"
+
+msgid "Submit"
+msgstr "Отправить"
+
+msgid "Password reset successfully"
+msgstr "Пароль успешно сброшен"
+
+msgid "Password reset failed"
+msgstr "Ошибка сброса пароля"
+
+msgid "Email with password reset instructions has been sent."
+msgstr "Письмо с инструкции по сбросу пароля было отправлено."
+
+#, python-format
+msgid "Reset password at %(site_name)s"
+msgstr "Сбросить пароль %(site_name)s"
+
+msgid "Registration is currently closed."
+msgstr "Регистрация в настоящее время закрыта."
+
+msgid "You are now registered. Activation email sent."
+msgstr ""
+"Теперь Вы зарегистрированы. Письмо с ссылкой на активацию аккаунта было "
+"отправлено на ваш почтовый адрес."
+
+msgid "by code"
+msgstr "по коду"
+
+msgid "by token"
+msgstr "с помощью приложения"
+
+msgid "by sms"
+msgstr "по смс"
+
+msgid "by question"
+msgstr "по вопросу"
+
+msgid "Authentication type"
+msgstr "Тип аутентификации"
+
+msgid "code"
+msgstr "код"
+
+msgid "Please enter correct code"
+msgstr "Пожалуйста, введите правильный код"
+
+msgid "This account is inactive"
+msgstr "Эта учетная запись неактивна."
+
+msgid "Enabled"
+msgstr "Включено"
+
+msgid "Code"
+msgstr "Код"
+
+msgid "Entered code is wrong"
+msgstr "Неправильно указан код"
+
+msgid "Phone"
+msgstr "Телефон"
+
+msgid "Phone does not contain spaces and must be starts with a +"
+msgstr "Телефон не должен содержать пробелы и должен начинаться со знака +"
+
+msgid "Question"
+msgstr "Вопрос"
+
+msgid "User"
+msgstr "Пользователь"
+
+msgid "Created"
+msgstr "Создан"
+
+msgid "Updated"
+msgstr "Обновлен"
+
+msgid "Last verified"
+msgstr "Последняя проверка"
+
+msgid "Number"
+msgstr "Номер"
+
+msgid "GEO"
+msgstr "ГЕО данные"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Browser"
+msgstr "Браузер"
+
+msgid "Your location has changed. Former location:"
+msgstr "Изменилось ваше местоположение. Прежнее местонахождение:"
+
+msgid "If it was not you, then change authorization data."
+msgstr "Если это не Вы, измените данные для авторизации."
+
+msgid "Filter"
+msgstr "Фильтр"
+
+msgid "Confirmation"
+msgstr "Подтверждение"
+
+msgid "Enter code from your mobile app"
+msgstr "Введите код с вашего мобильного приложения"
+
+msgid "You are logged in as"
+msgstr "Вы вошли как"
+
+msgid "Click here to log out"
+msgstr "Щелкните здесь, чтобы выйти"
+
+msgid "Please sign in"
+msgstr "Пожалуйста, войдите в систему"
+
 msgid "Notification settings"
 msgstr "Настройки уведомлений"
 
-#: templates/secureauth/notify_settings.html:17
+msgid "Save"
+msgstr "Сохранить"
+
 msgid ""
 "\n"
-"    If you want receive information about auth or any changes on your "
-"profile,\n"
+"    If you want receive information about auth or any changes on your profile,\n"
 "    you can enable notifications above.\n"
 "    We strongly recommend do it for security reason.\n"
 "    "
 msgstr ""
 "\n"
-"    Если Вы хотите получать информацию о входе или каких-либо изменениях в "
-"вашем профиле,\n"
+"    Если Вы хотите получать информацию о входе или каких-либо изменениях в вашем профиле,\n"
 "    Вы можете включить отправку уведомлений выше.\n"
 "    Мы настоятельно рекомендуем сделать это из соображений безопасности.\n"
 "    "
 
-#: templates/secureauth/phone_settings/configure.html:4
-#: templates/secureauth/phone_settings/was_disabled.html:4
-#: templates/secureauth/phone_settings/was_done.html:4
-msgid "SMS configuration"
+msgid "SMS Configuration"
 msgstr "Конфигурация SMS-сообщений"
 
-#: templates/secureauth/phone_settings/settings.html:4
-#: templates/secureauth/settings.html:19
+msgid "Two-factor settings"
+msgstr "Настройка двухэтапной аутентификации"
+
 msgid "SMS settings"
 msgstr "Настройка SMS подтверждения"
 
-#: templates/secureauth/phone_settings/settings.html:17
+msgid "Codes settings"
+msgstr "Настройка кодов подтверждения"
+
+msgid "Question settings"
+msgstr "Настройка секретного вопроса"
+
+msgid "Authentication activity"
+msgstr "История подключений"
+
+msgid "Codes configuration"
+msgstr "Конфигурация кодов"
+
+msgid "Save this codes"
+msgstr "Сохраните эти коды"
+
+msgid "Enter code number"
+msgstr "Введите код с номером"
+
+msgid "Confirm"
+msgstr "Подтвердить"
+
+msgid "Codes Settings"
+msgstr "Настройки кодов"
+
+msgid ""
+"\n"
+"    Recovery codes allow you to access your account in the event that you lose\n"
+"    your two-factor authentication device and don't have access to SMS messages\n"
+"    or an authentication app.\n"
+"    "
+msgstr ""
+"\n"
+"    Коды позволяют получить доступ к вашему аккаунту в случае, если Вы потеряете\n"
+"    телефон или у Вас нет доступа к отправке SMS-сообщений\n"
+"    или к приложению аутентификации.\n"
+"    "
+
+msgid "Codes authentication successfully disabled."
+msgstr "Коды для авторизации успешно отключены."
+
+msgid "Codes authentication successfully enabled."
+msgstr "Коды для авторизации успешно включены."
+
+msgid "SMS configuration"
+msgstr "Конфигурация SMS-сообщений"
+
 msgid ""
 "\n"
 "    We strongly recommend you provide a fallback SMS number.\n"
@@ -424,104 +281,49 @@ msgstr ""
 "    по смс, в случае потери кодов или двухэтапной аутентификации.\n"
 "    "
 
-#: templates/secureauth/phone_settings/was_disabled.html:7
 msgid "SMS authentication successfully disabled."
 msgstr "SMS-авторизация успешно отключена."
 
-#: templates/secureauth/phone_settings/was_done.html:7
 msgid "SMS authentication successfully enabled."
 msgstr "SMS-авторизация успешно включена."
 
-#: templates/secureauth/question_settings/configure.html:4
-#: templates/secureauth/settings.html:33
-msgid "Question settings"
-msgstr "Настройка секретного вопроса"
-
-#: templates/secureauth/question_settings/settings.html:4
-#: templates/secureauth/question_settings/was_disabled.html:4
-#: templates/secureauth/question_settings/was_done.html:4
 msgid "Question configuration"
 msgstr "Настройка вопроса"
 
-#: templates/secureauth/question_settings/settings.html:17
 msgid ""
 "\n"
-"    You can enter your secret question and secret answer, for "
-"authentication.\n"
+"    You can enter your secret question and secret answer, for authentication.\n"
 "    It's a best way, if you can't use another authentication type.\n"
 "    "
 msgstr ""
 "\n"
-"    Вы можете ввести ваш секретный вопрос и ответ на секретный вопрос, для "
-"проверки подлинности.\n"
-"    Это лучший способ, если вы не можете использовать другой тип "
-"аутентификации.\n"
+"    Вы можете ввести ваш секретный вопрос и ответ на секретный вопрос, для проверки подлинности.\n"
+"    Это лучший способ, если вы не можете использовать другой тип аутентификации.\n"
 "    "
 
-#: templates/secureauth/question_settings/was_disabled.html:7
 msgid "Question authentication successfully disabled."
 msgstr "Вопрос для проверки подлинности успешно отключен."
 
-#: templates/secureauth/question_settings/was_done.html:7
 msgid "Question authentication successfully enabled."
 msgstr "Вопрос для проверки подлинности успешно включен."
 
-#: templates/secureauth/registration_activation_failed.html:4
-#: templates/secureauth/registration_activation_failed.html:8
-msgid "Account activation failed"
-msgstr "Ошибка при активации аккаунта"
-
-#: templates/secureauth/registration_confirm.html:4
-msgid "SMS Configuration"
-msgstr "Конфигурация SMS-сообщений"
-
-#: templates/secureauth/session_expired.html:7
-msgid "Your session is expired"
-msgstr "Ваша сессия устарела"
-
-#: templates/secureauth/settings.html:5
-msgid "Authentication settings"
-msgstr "Настройки безопасности"
-
-#: templates/secureauth/settings.html:12
-#: templates/secureauth/totp_settings/settings.html:4
-msgid "Two-factor settings"
-msgstr "Настройка двухэтапной аутентификации"
-
-#: templates/secureauth/settings.html:26
-msgid "Codes settings"
-msgstr "Настройка кодов подтверждения"
-
-#: templates/secureauth/totp_settings/configure.html:4
-#: templates/secureauth/totp_settings/was_disabled.html:4
-#: templates/secureauth/totp_settings/was_done.html:4
 msgid "Two-factor configuration"
 msgstr "Конфигурация двухэтапной аутентификации"
 
-#: templates/secureauth/totp_settings/configure.html:9
 msgid ""
 "\n"
-"        You’ll need to install a two-factor authentication application on "
-"your\n"
+"        You’ll need to install a two-factor authentication application on your\n"
 "        smartphone or tablet. For more information, visit\n"
 "        "
 msgstr ""
 "\n"
-"        Вам понадобится установить приложение двух-этапной аутентификации на "
-"ваш\n"
-"        смартфон или планшет. Для получения дополнительной информации "
-"посетите\n"
+"        Вам понадобится установить приложение двух-этапной аутентификации на ваш\n"
+"        смартфон или планшет. Для получения дополнительной информации посетите\n"
 "        "
 
-#: templates/secureauth/totp_settings/configure.html:16
-msgid "Download application for your devices from:"
-msgstr "Скачать приложение для устройств из:"
-
-#: templates/secureauth/totp_settings/configure.html:30
 msgid "Configure the app"
 msgstr "Настройка приложения"
 
-#: templates/secureauth/totp_settings/configure.html:31
 msgid ""
 "\n"
 "        Open your two-factor authentication app and add your account by\n"
@@ -533,11 +335,9 @@ msgstr ""
 "        сканируя QR-код.\n"
 "        "
 
-#: templates/secureauth/totp_settings/configure.html:37
 msgid "Enter the code"
 msgstr "Введите код"
 
-#: templates/secureauth/totp_settings/configure.html:38
 msgid ""
 "\n"
 "        Enter the 6-digit code that the application generates into the form\n"
@@ -549,7 +349,6 @@ msgstr ""
 "        :\n"
 "        "
 
-#: templates/secureauth/totp_settings/settings.html:17
 msgid ""
 "\n"
 "    Two-factor authentication provides another layer of security to your\n"
@@ -557,128 +356,118 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"    Двухэтапная аутентификация обеспечивает дополнительный уровень "
-"безопасности к\n"
+"    Двухэтапная аутентификация обеспечивает дополнительный уровень безопасности к\n"
 "    вашему аккаунту.\n"
 "    "
 
-#: templates/secureauth/totp_settings/was_disabled.html:7
 msgid "Two-factor authentication successfully disabled."
 msgstr "Двухэтапная аутентификация успешно отключена."
 
-#: templates/secureauth/totp_settings/was_done.html:7
 msgid "Two-factor authentication successfully enabled."
 msgstr "Двухэтапная аутентификация успешно включена."
 
-#: utils/__init__.py:86
-msgid "Unknown"
-msgstr "Неизвестно"
-
-#: views/general.py:192
 msgid "SMS was sent!"
 msgstr "Код был выслан к Вам на мобильный телефон"
 
-#: views/general.py:201
-#, python-format
-msgid "Enter %d code from code saved code list"
-msgstr "Введите код под номером %d из сохраненного ранее списка"
-
-#: views/general.py:245 views/general.py:247
-msgid "Codes were sent to the email"
-msgstr "Коды отправлены на email"
-
-#: views/general.py:309 views/general.py:326 views/runners.py:184
-msgid "Successfully saved"
-msgstr "Успешно сохранено"
-
-#: views/runners.py:52
-msgid "Class name should be set"
-msgstr ""
-
-#: views/runners.py:77
-msgid "Nothing to save"
-msgstr "Сохранять нечего"
-
-#: views/runners.py:96
 msgid "Default backend can not be removed"
 msgstr "Нельзя удалить настройки по умолчанию"
 
-#: views/runners.py:101
 msgid "Auth method was disabled"
 msgstr "Один из методов аутентификации был отключен"
 
-#: views/runners.py:134
+msgid "Nothing to save"
+msgstr "Сохранять нечего"
+
 msgid "New Auth method was enabled"
 msgstr "Был включен один из способов аутентификации"
 
-#: views/runners.py:146 views/runners.py:173
-#, fuzzy
-#| msgid "Notification was disabled"
-msgid "Setting disabled"
+msgid "Auth activity"
+msgstr "Активность"
+
+msgid "Enter %d code from code saved code list"
+msgstr "Введите код под номером %d из сохраненного ранее списка"
+
+msgid "Notification was disabled"
 msgstr "Уведомления отключены. Если это не Вы, примите меры"
 
-#: views/runners.py:187
+msgid "Answer"
+msgstr "Ответ"
+
+msgid "Current password:"
+msgstr "Текущий пароль:"
+
+msgid "Logging settings"
+msgstr "Настройка логирования"
+
+msgid "Confirm Method"
+msgstr "Метод подтверждения"
+
+msgid "Invalid password"
+msgstr "Неверный пароль"
+
+msgid "Successfully saved"
+msgstr "Успешно сохранено"
+
 msgid "Your settings has changed"
 msgstr "Настройки изменились"
 
-#~ msgid "Russian"
-#~ msgstr "Русский"
+msgid "Codes were sent to the email"
+msgstr "Коды отправлены на email"
 
-#~ msgid "English"
-#~ msgstr "Английский"
+msgid "Send codes to email"
+msgstr "Отправить коды на почту"
 
-#~ msgid "Logged in as"
-#~ msgstr "Авторизирован как"
+msgid "Your code is: %s"
+msgstr "Ваш код: %s"
 
-#~ msgid "Login"
-#~ msgstr "Войти"
+msgid "Security center"
+msgstr "Центр безопасности"
 
-#~ msgid "Registration"
-#~ msgstr "Регистрация"
+msgid "Your security codes"
+msgstr "Ваши коды безопасности"
 
-#~ msgid "Back to settings"
-#~ msgstr "Вернуться в настройки"
+msgid "Authorization was made. If it's not you, then contact with us."
+msgstr "Был произведен вход. Если это не Вы, то свяжитесь с нами."
 
-#~ msgid "Account successfully activated"
-#~ msgstr "Учетная запись успешно активирована"
+msgid "IP/IP range"
+msgstr "IP/Подсеть"
 
-#~ msgid "Your account is now activated."
-#~ msgstr "Ваш аккаунт успешно активирован."
+msgid "Is IP"
+msgstr "Это IP адрес"
 
-#~ msgid "Activate account at"
-#~ msgstr "Активировать аккаунт на"
+msgid "Link for unlock access"
+msgstr "Ссылка для разблокировки"
 
-#~ msgid "Link is valid for %(expiration_days)s days."
-#~ msgstr "Ссылка действительна в течение %(expiration_days)s дней."
+msgid "Ban IP"
+msgstr "Блокировка IP"
 
-#~ msgid "Account activation on"
-#~ msgstr "Активация учетной записи на"
+msgid "Disable methods"
+msgstr "Выключить методы"
 
-#~ msgid "Password changed"
-#~ msgstr "Пароль изменен"
+msgid "Error"
+msgstr "Ошибка"
 
-#~ msgid "Submit"
-#~ msgstr "Отправить"
+msgid "Your ip is blocked. Please, check your mail for unlock access."
+msgstr ""
+"Ваш IP заблокирован. Проверьте Вашу почту, для того что бы получить доступ."
 
-#~ msgid "Password reset successfully"
-#~ msgstr "Пароль успешно сброшен"
+msgid "IP settings"
+msgstr "Настройка доступа по IP"
 
-#~ msgid "Password reset failed"
-#~ msgstr "Ошибка сброса пароля"
+msgid "Your session is expired"
+msgstr "Ваша сессия устарела"
 
-#~ msgid "Email with password reset instructions has been sent."
-#~ msgstr "Письмо с инструкции по сбросу пароля было отправлено."
+msgid "Unknown"
+msgstr "Неизвестно"
 
-#~ msgid "Reset password at %(site_name)s"
-#~ msgstr "Сбросить пароль %(site_name)s"
+msgid "Cancel"
+msgstr "Отмена"
 
-#~ msgid "Registration is currently closed."
-#~ msgstr "Регистрация в настоящее время закрыта."
+msgid "or"
+msgstr "или"
 
-#~ msgid "You are now registered. Activation email sent."
-#~ msgstr ""
-#~ "Теперь Вы зарегистрированы. Письмо с ссылкой на активацию аккаунта было "
-#~ "отправлено на ваш почтовый адрес."
+msgid "Set status"
+msgstr "Отключить методы"
 
-#~ msgid "Auth activity"
-#~ msgstr "Активность"
+msgid "Download application for your devices from:"
+msgstr "Скачать приложение для устройств из:"

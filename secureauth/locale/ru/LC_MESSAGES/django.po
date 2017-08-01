@@ -420,9 +420,6 @@ msgstr "Отправить коды на почту"
 msgid "Your code is: %s"
 msgstr "Ваш код: %s"
 
-msgid "Auth activity"
-msgstr "Код авторизации"
-
 msgid "Security center"
 msgstr "Центр безопасности"
 

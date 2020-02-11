@@ -1,4 +1,4 @@
-Django==1.8.12
+Django==1.11.28
 pyotp==2.0.1
 twilio==5.4.0
 httpagentparser==1.7.8

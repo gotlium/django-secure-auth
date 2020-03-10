@@ -391,7 +391,7 @@ var slowAES = {
 			return p;
 		},
 		
-		// galois multipication of the 4x4 matrix
+		// galois multiplication of the 4x4 matrix
 		mixColumns:function(state,isInv)
 		{
 			var column = [];
@@ -410,7 +410,7 @@ var slowAES = {
 			return state;
 		},
 
-		// galois multipication of 1 column of the 4x4 matrix
+		// galois multiplication of 1 column of the 4x4 matrix
 		mixColumn:function(column,isInv)
 		{
 			var mult = [];	

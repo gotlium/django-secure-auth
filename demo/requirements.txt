@@ -1,4 +1,4 @@
-Django==1.8.12
+Django==1.11.29
 django-grappelli==2.8.1
 django-bootstrap-static==2.3.2
 django-celery==3.1.17
